@@ -17,3 +17,8 @@ These rules govern how AI agents generate test plans and automation code in this
 - Prefer user-facing locators: `page.getByRole()`, `page.getByLabel()`, `page.getByTestId()`.
 - Use CSS or XPath only when semantic locators are unavailable.
 - Centralize all locators inside the relevant Page Object constructor.
+
+## 4. Git & Branching Standards
+- **Branch Protection**: Never commit or merge directly to `main` or `master`. Always switch to a dedicated feature or test branch before staging/committing.
+- **Commit Messages**: Write meaningful, structured commit messages following Conventional Commits format (`feat:`, `test:`, `fix:`, `refactor:`, `chore:`).
+- **Pull Requests**: Every PR must include a comprehensive description detailing changes, affected Page Objects, Specs, Test Plans, and verification steps.

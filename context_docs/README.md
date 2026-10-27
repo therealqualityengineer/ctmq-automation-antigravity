@@ -3,6 +3,7 @@
 This directory stores curated application documentation, domain guides, and business rules that serve as knowledge context for:
 - **PlanAgent**: Deriving domain-grounded test scenarios, business rule validations, and boundary cases.
 - **ScriptAgent**: Matching API contracts, payload schemas, and UI workflow specifications.
+- **GitAgent**: Managing branch protection, conventional commits, and automated PR generation.
 
 ### Recommended Files to Place Here:
 - Feature specifications & acceptance criteria documents (`*.md`)
