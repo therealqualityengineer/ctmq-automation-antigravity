@@ -1,0 +1,26 @@
+{
+  "name": "ctmq-automation-antigravity",
+  "version": "1.0.0",
+  "description": "Baseline Playwright Automation Framework with Agentic Pair Programming",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "agents"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.0.0",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.6.0"
+  }
+}
