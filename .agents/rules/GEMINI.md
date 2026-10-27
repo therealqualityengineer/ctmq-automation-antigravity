@@ -22,3 +22,18 @@ These rules govern how AI agents generate test plans and automation code in this
 - **Branch Protection**: Never commit or merge directly to `main` or `master`. Always switch to a dedicated feature or test branch before staging/committing.
 - **Commit Messages**: Write meaningful, structured commit messages following Conventional Commits format (`feat:`, `test:`, `fix:`, `refactor:`, `chore:`).
 - **Pull Requests**: Every PR must include a comprehensive description detailing changes, affected Page Objects, Specs, Test Plans, and verification steps.
+
+## 5. Agent Roles & Separation of Concerns
+- **`plan-agent` (Master of Testcase Design)**:
+  - Focuses solely on business logic, requirement interpretation, test scenario design, and QA testing methodologies.
+  - Must **never** inspect repository test files or dictate automation implementation (e.g., file paths, target page objects, code structure).
+  - Must **never** control or guide `script-agent`.
+- **`script-agent` (Master of Test Write & Execution)**:
+  - Has full ownership over automation architecture.
+  - Independently decides what to automate vs. manual and analyzes the codebase to identify reusable components vs. what must be created new.
+  - Responsible for writing clean, layered Playwright TypeScript tests.
+
+## 6. Test Execution & Failure Handling
+- **Mandatory Test Execution**: Once test writing is completed for a ticket, `script-agent` must run the tests (`npx playwright test <spec>`) and verify that all tests pass.
+- **Root Cause Analysis & Auto-Fix**: If a test fails, diagnose the root cause (locators, synchronization, fixture, test data) and fix it. Never weaken assertions to force a pass.
+- **Escalate Unfixable Failures**: If a test cannot be fixed due to an application bug, environment/service outage, or missing permissions, stop immediately and inform the user with a detailed failure report.

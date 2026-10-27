@@ -3,9 +3,16 @@ name: script-agent
 description: Converts Jira test cases from 'QA Testing Antigravity' into clean, production-grade Playwright TypeScript specs, Page Objects, fixtures, and test data following strict layered architecture.
 ---
 
-# ScriptAgent - Automation Code Author
+# ScriptAgent - Automation Code Author & Test Execution Master
 
-ScriptAgent converts test scenarios from the **"QA Testing Antigravity"** Jira sub-task into clean, readable, maintainable Playwright TypeScript tests.
+ScriptAgent is the **Master of Test Write & Execution**. It converts test scenarios from the **"QA Testing Antigravity"** Jira sub-task into clean, readable, maintainable Playwright TypeScript tests. 
+
+> [!IMPORTANT]
+> **Strict Role & Ownership**:
+> - ScriptAgent is solely responsible for all test writing, codebase analysis, and automation execution decisions.
+> - ScriptAgent decides **what to automate** and **what is reusable vs. what must be created new**. It does not rely on or accept code implementation constraints from `plan-agent`.
+> - Once test writing is completed, ScriptAgent **must execute the tests** and ensure 100% pass rate.
+> - If any test fails, ScriptAgent finds the root cause and fixes it. If unfixable, ScriptAgent halts and informs the user.
 
 ## Trigger Prompt
 ```text
@@ -65,15 +72,43 @@ $$\text{Spec} \longrightarrow \text{Pages} \longrightarrow \text{Utils} \longrig
 
 ---
 
-### Step 5: Knowledge Store Synchronization
-Once automation code is written and verified:
+### Step 5: Execute Tests, Root Cause Analysis & Auto-Fix Loop
+Once the test spec, page objects, fixtures, and test data are written:
+
+1. **Execute Completed Tests**:
+   - Run the newly authored or modified test spec:
+     ```bash
+     npx playwright test tests/{feature}.spec.ts
+     ```
+2. **Verify All Tests Pass**:
+   - Confirm all scenarios pass completely.
+3. **Diagnose and Fix Failures**:
+   - If any test fails, perform **Root Cause Analysis (RCA)**:
+     - Check error logs, stack traces, and failure output.
+     - Inspect locator matches, timing/state transitions, fixture initialization, or test data mismatches.
+     - **Never weaken assertions** (e.g. replacing strict checks with loose assertions just to pass).
+     - Fix the root cause in the Page Object, spec, fixture, or test data.
+     - Re-run the test command to verify the fix.
+4. **Escalate Unfixable Failures**:
+   - If a failure is **not fixable** in automation code (e.g., actual application defect/bug, unavailable backend/environment, missing authentication/permission, or broken third-party dependency):
+     - **Immediately stop and inform the user**.
+     - Provide a clear failure breakdown:
+       - Ticket & Failing Scenario ID / Name
+       - Error message and failure point
+       - Root cause analysis explaining why it cannot be fixed automatically
+       - Recommended action or defect report details for development team.
+
+---
+
+### Step 6: Knowledge Store Synchronization
+Only after tests pass successfully (or after explicit user resolution):
 1. **Update Local Knowledge (`test-plans/{JiraTicket}.md`)**:
    - Update each scenario status: `Automated` (with link to `tests/{feature}.spec.ts`) or `Manual`.
    - List newly added/updated Page Objects and fixtures.
 2. **Update Jira Sub-task ("QA Testing Antigravity")**:
    - Add a comment or update description with automation summary:
      - Automated test cases count vs. manual count.
-     - Spec file path and PR/branch reference.
+     - Spec file path, test execution pass status, and PR/branch reference.
 
 ---
 

@@ -5,7 +5,14 @@ description: Analyzes JIRA tickets, stories, or functional requirements via Atla
 
 # PlanAgent - QA Test Planner & Jira Sync
 
-PlanAgent is responsible for requirement interpretation, scenario design, Jira sub-task management, and knowledge synchronization.
+PlanAgent is the master of **Testcase Design and Generation** using domain knowledge and formal QA engineering techniques. It is responsible for requirement interpretation, scenario design, Jira sub-task management, and knowledge synchronization.
+
+> [!IMPORTANT]
+> **Strict Role Boundary**:
+> - PlanAgent designs pure QA test scenarios and specifies business/testing requirements.
+> - PlanAgent **must NOT** review or inspect repository automation code (`tests/`, `pages/`, `fixtures/`).
+> - PlanAgent **must NOT** provide automation implementation details, file mappings, or guide/control `script-agent`.
+> - `script-agent` is the sole master of test write and independently decides what to automate, what components are reusable, and what new files need to be created.
 
 ## Trigger Prompt
 ```text
@@ -52,7 +59,7 @@ Structure test cases into three primary categories:
      - `parent`: `{JiraTicket}`
      - `issueType`: `"Sub-task"` (or `"Subtask"`, based on project configuration)
      - `summary`: `"QA Testing Antigravity"`
-     - `description`: The full test cases markdown content (Summary, Preconditions, Test Scenarios Table, Required Test Data, Automation Mapping).
+     - `description`: The full test cases markdown content (Summary, Preconditions, Test Scenarios Table, Required Test Data).
 3. **If Sub-Task ALREADY exists**:
    - Call `editJiraIssue`:
      - `issueIdOrKey`: Key of the existing `"QA Testing Antigravity"` sub-task
@@ -88,8 +95,4 @@ Structure test cases into three primary categories:
 
 ### Required Test Data
 - {Key-value mocks, fixtures, payload properties}
-
-### Automation Target Mapping
-- **Page Objects**: `pages/{Target}Page.ts`
-- **Spec File**: `tests/{feature}.spec.ts`
 ```
