@@ -14,6 +14,7 @@ export class UserManagerPage extends BasePage {
   readonly headerLogo: Locator;
   readonly logoutButton: Locator;
   readonly feedbackBanner: Locator;
+  readonly userCreatedBanner: Locator;
   readonly userTable: Locator;
   readonly tableHeaderColumns: Locator;
   readonly tableRows: Locator;
@@ -36,6 +37,7 @@ export class UserManagerPage extends BasePage {
     this.headerLogo = page.getByAltText('CTMQ — Contractor & Talent Management');
     this.logoutButton = page.getByRole('button', { name: /log\s*out/i });
     this.feedbackBanner = page.locator('div[role="alert"], div.text-center:has-text("User saved successfully.")').first();
+    this.userCreatedBanner = page.getByText('User created successfully.');
     this.userTable = page.getByRole('table');
     this.tableHeaderColumns = page.locator('thead th');
     this.tableRows = page.locator('tbody tr');
@@ -69,6 +71,10 @@ export class UserManagerPage extends BasePage {
 
   async clickUserRow(index: number = 0): Promise<void> {
     await this.tableRows.nth(index).click();
+  }
+
+  getUserRowByUsername(username: string): Locator {
+    return this.userTable.locator('tbody tr').filter({ hasText: username });
   }
 
   async setViewport(width: number, height: number): Promise<void> {

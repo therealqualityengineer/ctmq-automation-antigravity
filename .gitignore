@@ -3,5 +3,6 @@ node_modules/
 /playwright-report/
 /playwright/.cache/
 .env
+.auth_cookies.json
 *.log
 .DS_Store
