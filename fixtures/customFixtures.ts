@@ -8,6 +8,7 @@ import { AddUserPage } from '../pages/AddUserPage';
 import { NavigationPage } from '../pages/NavigationPage';
 import { TempPage } from '../pages/TempPage';
 import { AddTempPage } from '../pages/AddTempPage';
+import { LayoutPage } from '../pages/LayoutPage';
 import { authData } from '../test-data/authData';
 
 const COOKIE_FILE = path.resolve(__dirname, '../.auth_cookies.json');
@@ -74,6 +75,8 @@ type TestFixtures = {
   authenticatedTempPage: TempPage;
   addTempPage: AddTempPage;
   authenticatedAddTempPage: AddTempPage;
+  layoutPage: LayoutPage;
+  authenticatedLayoutPage: LayoutPage;
 };
 
 export const test = baseTest.extend<TestFixtures>({
@@ -138,6 +141,16 @@ export const test = baseTest.extend<TestFixtures>({
     await addTempPage.gotoAddTemp();
     await page.waitForURL(/.*\/temp\/new.*/);
     await use(addTempPage);
+  },
+  layoutPage: async ({ page }, use) => {
+    const layoutPage = new LayoutPage(page);
+    await use(layoutPage);
+  },
+  authenticatedLayoutPage: async ({ page, context }, use) => {
+    const layoutPage = new LayoutPage(page);
+    await ensureAuthenticated(page, context);
+    await layoutPage.gotoHome();
+    await use(layoutPage);
   },
 });
 
