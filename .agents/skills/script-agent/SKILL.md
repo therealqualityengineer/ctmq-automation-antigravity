@@ -49,6 +49,13 @@ Before writing any code:
 3. Check `utils/`: Reuse existing helper functions (date helpers, random generators, string sanitizers) rather than reinventing them.
 4. Check `test-data/`: Create `test-data/{feature}Data.ts` with strongly-typed constants/objects.
 
+#### Optional: Scratch & Probe Workbench (`scratch/`)
+- For tricky UI elements (dynamic dropdowns, Shadow DOM, nested iframes, custom grids) or ambiguous locators:
+  - ScriptAgent can optionally write temporary probe scripts (e.g., `scratch/probe-{feature}.ts`) to inspect accessibility trees (`page.accessibility.snapshot()`) or test candidate locators live.
+  - `scratch/` is **git-ignored** and acts as an isolated workbench.
+  - Useful probe scripts or DOM inspection notes may be kept in `scratch/` for future agent runs to refer back to.
+  - **Rule**: Production specs must never import from `scratch/`. All verified locators must be transferred to the target Page Object in `pages/`.
+
 ### Step 4: Write Automation Code (Strict Layered Hierarchy)
 
 The architecture strictly follows:
@@ -86,6 +93,7 @@ Once the test spec, page objects, fixtures, and test data are written:
    - If any test fails, perform **Root Cause Analysis (RCA)**:
      - Check error logs, stack traces, and failure output.
      - Inspect locator matches, timing/state transitions, fixture initialization, or test data mismatches.
+     - *(Optional)* Use a quick probe script in `scratch/` to isolate and test failing selectors or inspect dynamic DOM states live.
      - **Never weaken assertions** (e.g. replacing strict checks with loose assertions just to pass).
      - Fix the root cause in the Page Object, spec, fixture, or test data.
      - Re-run the test command to verify the fix.

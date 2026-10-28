@@ -6,3 +6,4 @@ node_modules/
 .auth_cookies.json
 *.log
 .DS_Store
+/scratch/
