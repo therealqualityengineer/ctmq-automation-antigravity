@@ -5,6 +5,9 @@ import { LoginPage } from '../pages/LoginPage';
 import { TodoPage } from '../pages/TodoPage';
 import { UserManagerPage } from '../pages/UserManagerPage';
 import { AddUserPage } from '../pages/AddUserPage';
+import { NavigationPage } from '../pages/NavigationPage';
+import { TempPage } from '../pages/TempPage';
+import { AddTempPage } from '../pages/AddTempPage';
 import { authData } from '../test-data/authData';
 
 const COOKIE_FILE = path.resolve(__dirname, '../.auth_cookies.json');
@@ -65,6 +68,12 @@ type TestFixtures = {
   authenticatedUserManagerPage: UserManagerPage;
   addUserPage: AddUserPage;
   authenticatedAddUserPage: AddUserPage;
+  navigationPage: NavigationPage;
+  authenticatedNavigationPage: NavigationPage;
+  tempPage: TempPage;
+  authenticatedTempPage: TempPage;
+  addTempPage: AddTempPage;
+  authenticatedAddTempPage: AddTempPage;
 };
 
 export const test = baseTest.extend<TestFixtures>({
@@ -97,6 +106,38 @@ export const test = baseTest.extend<TestFixtures>({
     await addUserPage.gotoAddUser();
     await page.waitForURL(/.*\/admin\/users\/new.*/);
     await use(addUserPage);
+  },
+  navigationPage: async ({ page }, use) => {
+    const navigationPage = new NavigationPage(page);
+    await use(navigationPage);
+  },
+  authenticatedNavigationPage: async ({ page, context }, use) => {
+    const navigationPage = new NavigationPage(page);
+    await ensureAuthenticated(page, context);
+    await navigationPage.gotoHome();
+    await use(navigationPage);
+  },
+  tempPage: async ({ page }, use) => {
+    const tempPage = new TempPage(page);
+    await use(tempPage);
+  },
+  authenticatedTempPage: async ({ page, context }, use) => {
+    const tempPage = new TempPage(page);
+    await ensureAuthenticated(page, context);
+    await tempPage.gotoTemp();
+    await page.waitForURL(/.*\/temp.*/);
+    await use(tempPage);
+  },
+  addTempPage: async ({ page }, use) => {
+    const addTempPage = new AddTempPage(page);
+    await use(addTempPage);
+  },
+  authenticatedAddTempPage: async ({ page, context }, use) => {
+    const addTempPage = new AddTempPage(page);
+    await ensureAuthenticated(page, context);
+    await addTempPage.gotoAddTemp();
+    await page.waitForURL(/.*\/temp\/new.*/);
+    await use(addTempPage);
   },
 });
 
