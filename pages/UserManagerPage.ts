@@ -77,10 +77,6 @@ export class UserManagerPage extends BasePage {
     return this.userTable.locator('tbody tr').filter({ hasText: username });
   }
 
-  async setViewport(width: number, height: number): Promise<void> {
-    await this.page.setViewportSize({ width, height });
-  }
-
   async isButtonAboveHeading(): Promise<boolean> {
     const buttonBox = await this.addUserButton.boundingBox();
     const headingBox = await this.pageHeading.boundingBox();
@@ -110,9 +106,5 @@ export class UserManagerPage extends BasePage {
     return await this.page.evaluate(() => {
       return document.documentElement.scrollWidth > window.innerWidth;
     });
-  }
-
-  async pressTab(): Promise<void> {
-    await this.page.keyboard.press('Tab');
   }
 }

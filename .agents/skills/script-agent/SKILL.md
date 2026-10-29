@@ -32,22 +32,29 @@ Write test {JiraTicket}
    > Strictly consider **only** the `"QA Testing Antigravity"` sub-task. Ignore any other QA sub-tasks or manual testing tasks. All test cases to be implemented reside in the **`description`** of this sub-task.
 4. If local knowledge exists at `test-plans/{JiraTicket}.md`, cross-reference it for pre-designed test scenarios.
 
-### Step 2: Automation Feasibility Assessment
+### Step 2: Automation Feasibility Assessment & Deduplication Check
 Evaluate each test case in the sub-task:
 - **Automatable**: UI interactions, form validations, API responses, state changes, error messages, boundary checks.
 - **Non-Automatable (Manual)**: Scenarios requiring hardware interaction, third-party SMS/authenticator apps without API/mock hooks, CAPTCHA, or external compliance portals.
-- Explicitly list which TCs will be automated and which are deferred with justifications.
+- **Already Covered / Duplicate Detection**:
+  - Scan existing specs in `tests/*.spec.ts` to identify if any test scenarios (e.g., duplicate email checks, required field validations, double-click prevention, route protection) are already automated by previous tickets.
+  - If a scenario is already covered, **do not write a duplicate test**. Flag it as already covered, link to the existing spec, or augment the existing test only if new assertions are needed.
+- Explicitly list which TCs will be automated, which are already covered, and which are deferred to manual with justifications.
 
 ### Step 3: Analyze Repository Patterns & Plan Reusability
 Before writing any code:
-1. Check `pages/`: Does a Page Object for this feature or screen already exist?
-   - If yes: Extend it with needed locators and action methods.
-   - If no: Create `pages/{Feature}Page.ts` extending `BasePage`.
-2. Check `fixtures/customFixtures.ts`:
+1. **Check `tests/` for Overlapping Coverage**: Confirm no duplicate test cases are created across specs.
+2. **Check `pages/` & `BasePage.ts` for Existing Locators & Methods**:
+   - Does a Page Object for this feature or screen already exist?
+     - If yes: Extend it with needed locators and action methods.
+     - If no: Create `pages/{Feature}Page.ts` extending `BasePage` (or a relevant shared base class).
+   - **Reuse BasePage Capabilities**: Inherit generic actions (`setViewport`, `pressTab`, `isFieldInvalid`, `isFieldValid`, `getValidationMessage`) from `BasePage` rather than redefining them per page.
+   - **Extract Shared Form/Layout Components**: When multiple pages share identical elements (e.g. Add Temp vs Temp Detail, or global navigation), inherit from a shared base page (e.g., `BaseTempFormPage`) or reference shared components instead of duplicating 10+ identical locators.
+3. **Check `fixtures/customFixtures.ts`**:
    - Register any new Page Object so it is injected via fixtures.
    - Ensure authentication/login is handled via fixture setup (no repetitive login steps in individual specs).
-3. Check `utils/`: Reuse existing helper functions (date helpers, random generators, string sanitizers) rather than reinventing them.
-4. Check `test-data/`: Create `test-data/{feature}Data.ts` with strongly-typed constants/objects.
+4. **Check `utils/`**: Reuse existing helper functions (date helpers, random generators, string sanitizers) rather than reinventing them.
+5. **Check `test-data/`**: Check existing files in `test-data/` for shared payload types (e.g., `TempPayload`), URLs, viewports, and data generators to avoid duplicate interfaces and constants.
 
 #### Optional: Scratch & Probe Workbench (`scratch/`)
 - For tricky UI elements (dynamic dropdowns, Shadow DOM, nested iframes, custom grids) or ambiguous locators:

@@ -83,10 +83,6 @@ export class LayoutPage extends BasePage {
     await this.logoutButton.click();
   }
 
-  async setViewportSize(width: number, height: number): Promise<void> {
-    await this.page.setViewportSize({ width, height });
-  }
-
   async getMainWidth(): Promise<number> {
     const box = await this.mainContent.boundingBox();
     return box ? box.width : 0;

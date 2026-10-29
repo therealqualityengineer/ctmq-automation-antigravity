@@ -8,6 +8,10 @@ These rules govern how AI agents generate test plans and automation code in this
 - Page interactions must be encapsulated in Page Object classes under `pages/` extending `BasePage`.
 - Test data must never be hardcoded in test specs; import from `test-data/`.
 - Utility functions must live in `utils/`.
+- **Deduplication & DRY Principles**:
+  - **Specs**: Scan existing `tests/*.spec.ts` before creating new test files. Never duplicate test scenarios that are already covered by existing specs. Augment existing tests or reference them instead of creating redundant tests.
+  - **Page Objects**: Never duplicate locators or action methods across multiple Page Objects. Global layout elements (header, nav links, logout) and generic browser interactions (`setViewport`, `pressTab`, validity checks) belong in `BasePage` or shared components. Shared forms (e.g. create vs edit) must inherit from a common base form class.
+  - **Test Data**: Check `test-data/` to reuse existing interfaces, URLs, and data generators rather than duplicating data models.
 
 ## 2. Assertion & Verification Principles
 - **Never weaken assertions**: An assertion must verify genuine business intent. Do not replace strict assertions with loose checks (e.g. `toBeTruthy()`) just to force a pass.
@@ -31,6 +35,7 @@ These rules govern how AI agents generate test plans and automation code in this
 - **`script-agent` (Master of Test Write & Execution)**:
   - Has full ownership over automation architecture.
   - Independently decides what to automate vs. manual and analyzes the codebase to identify reusable components vs. what must be created new.
+  - Actively audits `tests/` and `pages/` to prevent duplicate test scenarios, duplicate locators, and redundant helper methods.
   - Responsible for writing clean, layered Playwright TypeScript tests.
 
 ## 6. Test Execution & Failure Handling

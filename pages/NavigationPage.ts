@@ -70,10 +70,6 @@ export class NavigationPage extends BasePage {
     return ariaCurrent === 'page' || (className ? className.includes('border-blue-900') : false);
   }
 
-  async setViewport(width: number, height: number): Promise<void> {
-    await this.page.setViewportSize({ width, height });
-  }
-
   async goBack(): Promise<void> {
     await this.page.goBack();
   }
