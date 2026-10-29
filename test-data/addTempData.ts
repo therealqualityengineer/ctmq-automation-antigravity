@@ -27,7 +27,9 @@ export const addTempData = {
   },
   messages: {
     successCreated: 'Temp created successfully.',
+    duplicateEmail: 'That email address is already in use.',
     noCountyFound: 'No county found for this ZIP — please check the ZIP.',
+    serverError: 'Internal Server Error',
   },
   statuses: {
     active: 'Active' as const,

@@ -139,6 +139,18 @@ export const test = baseTest.extend<TestFixtures>({
     const addTempPage = new AddTempPage(page);
     await ensureAuthenticated(page, context);
     await addTempPage.gotoAddTemp();
+    if (page.url().includes('/login')) {
+      cachedCookies = null;
+      if (fs.existsSync(COOKIE_FILE)) {
+        try {
+          fs.unlinkSync(COOKIE_FILE);
+        } catch {
+          // ignore unlink error
+        }
+      }
+      await ensureAuthenticated(page, context);
+      await addTempPage.gotoAddTemp();
+    }
     await page.waitForURL(/.*\/temp\/new.*/);
     await use(addTempPage);
   },
