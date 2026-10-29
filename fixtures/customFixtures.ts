@@ -2,7 +2,6 @@ import { test as baseTest, expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 import { LoginPage } from '../pages/LoginPage';
-import { TodoPage } from '../pages/TodoPage';
 import { UserManagerPage } from '../pages/UserManagerPage';
 import { AddUserPage } from '../pages/AddUserPage';
 import { NavigationPage } from '../pages/NavigationPage';
@@ -67,7 +66,6 @@ async function ensureAuthenticated(page: any, context: any): Promise<void> {
 
 type TestFixtures = {
   loginPage: LoginPage;
-  todoPage: TodoPage;
   userManagerPage: UserManagerPage;
   authenticatedUserManagerPage: UserManagerPage;
   addUserPage: AddUserPage;
@@ -92,10 +90,6 @@ export const test = baseTest.extend<TestFixtures>({
   loginPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await use(loginPage);
-  },
-  todoPage: async ({ page }, use) => {
-    const todoPage = new TodoPage(page);
-    await use(todoPage);
   },
   userManagerPage: async ({ page }, use) => {
     const userManagerPage = new UserManagerPage(page);

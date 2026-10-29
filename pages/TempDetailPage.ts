@@ -67,53 +67,11 @@ export class TempDetailPage extends BaseTempFormPage {
   }
 
   async areAllFieldsDisabled(): Promise<boolean> {
-    const fields = [
-      this.firstNameInput,
-      this.lastNameInput,
-      this.cellPhoneInput,
-      this.emailInput,
-      this.addressInput,
-      this.cityInput,
-      this.stateSelect,
-      this.zipInput,
-      this.countySelect,
-      this.statusSelect,
-      this.dateOfBirthInput,
-      this.genderMaleRadio,
-      this.genderFemaleRadio,
-      this.genderOtherRadio,
-      this.maritalStatusSelect,
-    ];
-    for (const field of fields) {
-      const disabled = await field.isDisabled();
-      if (!disabled) return false;
-    }
-    return true;
+    return await this.areAllTempFieldsDisabled();
   }
 
   async areAllFieldsEnabled(): Promise<boolean> {
-    const fields = [
-      this.firstNameInput,
-      this.lastNameInput,
-      this.cellPhoneInput,
-      this.emailInput,
-      this.addressInput,
-      this.cityInput,
-      this.stateSelect,
-      this.zipInput,
-      this.countySelect,
-      this.statusSelect,
-      this.dateOfBirthInput,
-      this.genderMaleRadio,
-      this.genderFemaleRadio,
-      this.genderOtherRadio,
-      this.maritalStatusSelect,
-    ];
-    for (const field of fields) {
-      const disabled = await field.isDisabled();
-      if (disabled) return false;
-    }
-    return true;
+    return await this.areAllTempFieldsEnabled();
   }
 
   async pressEnterKey(): Promise<void> {

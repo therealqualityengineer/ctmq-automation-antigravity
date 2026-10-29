@@ -38,57 +38,6 @@ export class AddTempPage extends BaseTempFormPage {
     return { status: response.status(), body };
   }
 
-  async getStateOptionValues(): Promise<string[]> {
-    await this.stateSelect.locator('option[value="AL"]').waitFor({ state: 'attached' });
-    return await this.stateSelect.evaluate((select: HTMLSelectElement) =>
-      Array.from(select.options)
-        .map((opt) => opt.value)
-        .filter((val) => Boolean(val))
-    );
-  }
-
-  async getCountyOptionTexts(): Promise<string[]> {
-    const options = this.countySelect.locator('option');
-    const count = await options.count();
-    const texts: string[] = [];
-    for (let i = 0; i < count; i++) {
-      const text = await options.nth(i).innerText();
-      texts.push(text.trim());
-    }
-    return texts;
-  }
-
-  async fillZip(zip: string): Promise<void> {
-    await this.zipInput.fill(zip);
-    await this.page.waitForTimeout(300);
-  }
-
-  async clearZip(): Promise<void> {
-    await this.zipInput.clear();
-    await this.page.waitForTimeout(300);
-  }
-
-  async getSelectedCounty(): Promise<string> {
-    return await this.countySelect.inputValue();
-  }
-
-  async getSelectedCountyText(): Promise<string> {
-    return await this.countySelect.evaluate((select: HTMLSelectElement) => {
-      const selectedOption = select.options[select.selectedIndex];
-      return selectedOption ? selectedOption.text.trim() : '';
-    });
-  }
-
-  async isCountyFieldEditable(): Promise<boolean> {
-    const tagName = await this.countySelect.evaluate((el) => el.tagName.toLowerCase());
-    if (tagName === 'input') {
-      const type = await this.countySelect.getAttribute('type');
-      const isReadOnly = await this.countySelect.evaluate((el: any) => el.readOnly || el.disabled);
-      return type !== 'hidden' && !isReadOnly;
-    }
-    return false;
-  }
-
   async pressEnterInField(locator: Locator): Promise<void> {
     await locator.focus();
     await this.page.keyboard.press('Enter');
@@ -104,23 +53,5 @@ export class AddTempPage extends BaseTempFormPage {
 
   async doubleClickSave(): Promise<void> {
     await this.saveButton.dblclick();
-  }
-
-  async mockApiResponse(urlPattern: string, status: number, body: object): Promise<void> {
-    await this.page.route(urlPattern, (route) => {
-      if (route.request().method() === 'POST') {
-        route.fulfill({
-          status,
-          contentType: 'application/json',
-          body: JSON.stringify(body),
-        });
-      } else {
-        route.continue();
-      }
-    });
-  }
-
-  async clearApiMocks(): Promise<void> {
-    await this.page.unrouteAll();
   }
 }
