@@ -1,13 +1,21 @@
 ---
 name: git-agent
-description: Enforces branch safety (blocks direct commits to master/main), stages and commits changes with structured comments, and creates Pull Requests with comprehensive descriptions.
+description: Creates fresh branches from updated main, enforces branch safety (blocks direct commits to master/main), stages and commits changes with structured comments, and creates Pull Requests with comprehensive descriptions.
 ---
 
 # GitAgent - Git Workflow & Pull Request Manager
 
-GitAgent is responsible for maintaining repository integrity, enforcing branch safety policies, structuring clean commit histories, and raising high-quality Pull Requests with detailed documentation.
+GitAgent is responsible for maintaining repository integrity, creating fresh working branches from the latest base branch, enforcing branch safety policies, structuring clean commit histories, and raising high-quality Pull Requests with detailed documentation.
 
-## Trigger Prompt
+## Trigger Prompts
+
+### 1. Create Branch Workflow
+```text
+CB {Branch Name/Ticket number}
+```
+*(Alternative variations: `CB {BranchName}`, `CB {TicketNumber}`)*
+
+### 2. Raise PR Workflow
 ```text
 Raise PR
 ```
@@ -20,13 +28,85 @@ Raise PR
 > [!IMPORTANT]
 > **Branch Protection Guardrail**:
 > Changes must **never** be committed or merged directly to `master` or `main`.
-> If the current branch is `master` or `main`, GitAgent **must halt** and automatically switch to an appropriate feature or test branch (e.g., `feat/{ticket}`, `test/{feature}`, or `fix/{issue}`) before staging or committing any code.
+> If the current branch is `master` or `main`, GitAgent **must halt** and automatically switch to an appropriate feature or test branch (e.g., `feat/{ticket}`, `test/{ticket}`, or `{ticket}-Testing`) before staging or committing any code.
 
 ---
 
-## End-to-End Workflow
+## Workflows
 
-### Step 1: Branch Verification & Protection Check
+### Workflow 1: Create Branch from Latest Main (`CB`)
+
+Triggered by `CB {Branch Name/Ticket number}`. Ensures `main` is completely up-to-date with remote, creates a new working branch off `main` with proper naming conventions, and switches to it.
+
+#### Step 1: Pre-flight & Working Tree Status Check
+1. Inspect working tree for any uncommitted changes:
+   ```bash
+   git status --porcelain
+   ```
+2. If uncommitted changes exist:
+   - Stash changes safely before switching branches:
+     ```bash
+     git stash push -m "WIP before switching to main"
+     ```
+   - Inform the user that uncommitted changes were stashed and can be reapplied to the new branch.
+
+#### Step 2: Switch to Main & Pull Latest Changes
+1. Checkout the `main` branch:
+   ```bash
+   git checkout main
+   ```
+2. Fetch and pull latest changes from `origin`:
+   ```bash
+   git fetch origin main
+   git pull origin main
+   ```
+3. Verify that local `main` is cleanly synchronized with `origin/main`:
+   ```bash
+   git status
+   ```
+
+#### Step 3: Resolve and Validate Branch Name
+Evaluate the input argument `{Branch Name/Ticket number}`:
+- **Case A: Explicit Branch Name provided** (e.g., `CB feat/login-page`, `CB custom-branch-name`):
+  - Sanitize branch name to valid git branch format (kebab-case, lowercase, no illegal characters or spaces).
+  - Use the given branch name directly.
+- **Case B: Ticket Number provided** (e.g., `CB CTMQ-25`, `CB AUTH-102`):
+  - Automatically construct a proper, conventional branch name:
+    - If Jira / Atlassian MCP is available, query ticket summary to formulate: `{TicketNumber}-{short-kebab-summary}` (e.g., `CTMQ-25-checkout-flow`).
+    - If ticket details are not queried or following repository naming standard, construct a clean name conforming to repo conventions:
+      - `{TicketNumber}-Testing` or `{TicketNumber}-QA-Testing` (consistent with repo history: `CTMQ-10-QA-Testing`, `CTMQ-12-Testing`) or `test/{TicketNumber}`.
+
+#### Step 4: Branch Collision Check & Creation
+1. Check if the target branch already exists locally or remotely:
+   ```bash
+   git branch --list <branch-name>
+   git branch -r --list "origin/<branch-name>"
+   ```
+   - **If branch already exists**: Inform user and switch to it (`git checkout <branch-name>`), or ask for a suffix if a new branch is intended.
+   - **If branch does not exist**: Create and switch to the new branch off the refreshed `main`:
+     ```bash
+     git checkout -b <branch-name> main
+     ```
+2. If changes were stashed in Step 1, pop them into the new branch:
+   ```bash
+   git stash pop
+   ```
+
+#### Step 5: Verification & Confirmation
+1. Verify active branch:
+   ```bash
+   git branch --show-current
+   ```
+2. Output a clear status summary to the user:
+   - **Active Branch**: `<branch-name>`
+   - **Base Branch**: `main` (up-to-date with `origin/main` at commit `<sha>`)
+   - **Status**: Ready for test planning, Page Object authoring, or test execution.
+
+---
+
+### Workflow 2: Raise PR, Commit & Push (`Raise PR`)
+
+#### Step 1: Branch Verification & Protection Check
 1. Determine the current active branch:
    ```bash
    git branch --show-current
@@ -44,7 +124,7 @@ Raise PR
    - **If already on a feature/working branch (not master/main)**:
      - Proceed on the current branch.
 
-### Step 2: Inspect Working Tree & Change Verification
+#### Step 2: Inspect Working Tree & Change Verification
 1. Inspect modified, created, or untracked files:
    ```bash
    git status
@@ -57,7 +137,7 @@ Raise PR
    git diff --stat
    ```
 
-### Step 3: Stage and Commit Changes with Proper Comment
+#### Step 3: Stage and Commit Changes with Proper Comment
 1. Stage modified and newly created files:
    ```bash
    git add .
@@ -87,13 +167,13 @@ Raise PR
      - Sync test plan at test-plans/AUTH-102.md"
      ```
 
-### Step 4: Push to Remote Repository
+#### Step 4: Push to Remote Repository
 1. Push the current branch to origin with upstream tracking:
    ```bash
    git push -u origin <branch-name>
    ```
 
-### Step 5: Raise Pull Request with Comprehensive Description
+#### Step 5: Raise Pull Request with Comprehensive Description
 1. Determine base branch (usually `main` or `master`).
 2. Generate a structured Pull Request:
    - **Title**: `<type>(<scope>): <clear, descriptive summary>`
@@ -136,10 +216,10 @@ Raise PR
 4. **Fallback Mechanism**:
    - If `gh` CLI is not logged in or encounters network restrictions:
      - Provide the direct GitHub compare link so the user can open it in their browser:
-       `https://github.com/<owner>/<repo>/compare/main...<branch-name>?expand=1`
+       `https://github.com/therealqualityengineer/ctmq-automation-antigravity/compare/main...<branch-name>?expand=1`
      - Output the formatted PR title and description so the user can easily copy/paste or submit it.
 
-### Step 6: Link to Jira Sub-task (Optional)
+#### Step 6: Link to Jira Sub-task (Optional)
 If a Jira ticket is linked and Atlassian MCP is active:
 1. Post a comment on the `"QA Testing Antigravity"` sub-task with the PR link and commit SHA to maintain complete traceability.
 
@@ -149,7 +229,10 @@ If a Jira ticket is linked and Atlassian MCP is active:
 
 | Scenario | Action |
 | :--- | :--- |
-| Active branch is `master` or `main` | **Abort commit**. Immediately branch off via `git checkout -b <new-branch>` |
+| Uncommitted changes when running `CB` | Stash changes with `git stash push -m "WIP before switching to main"` before checking out `main`; reapply with `git stash pop` on the new branch |
+| Merge conflict or diverged `main` during `git pull origin main` | Abort fast-forward pull, notify user immediately to resolve conflict or reset local main to `origin/main` |
+| Target branch already exists locally or remotely | Warn user; switch to existing branch if desired or disambiguate with a suffix (e.g., `{branch}-v2`) |
+| Active branch is `master` or `main` during `Raise PR` | **Abort commit**. Immediately branch off via `git checkout -b <new-branch>` |
 | Nothing to commit (`working tree clean`) | Notify user that working tree is clean; skip commit step and proceed only if remote branch lacks PR |
 | Merge conflict when pushing | Abort push; inform user to pull base branch and resolve conflicts |
 | Unauthenticated GitHub CLI | Output direct web PR URL along with complete ready-to-paste PR description |
