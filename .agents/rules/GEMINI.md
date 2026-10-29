@@ -37,6 +37,15 @@ These rules govern how AI agents generate test plans and automation code in this
   - Independently decides what to automate vs. manual and analyzes the codebase to identify reusable components vs. what must be created new.
   - Actively audits `tests/` and `pages/` to prevent duplicate test scenarios, duplicate locators, and redundant helper methods.
   - Responsible for writing clean, layered Playwright TypeScript tests.
+- **`git-agent` (Master of Git Workflow & Branch Safety)**:
+  - Enforces branch safety guardrails (blocks direct commits to `master` or `main`).
+  - Manages branch creation from updated `main` (`CB {Branch Name/Ticket number}`).
+  - Formulates Conventional Commits and generates high-quality Pull Requests with detailed documentation.
+- **`jira-agent` (Master of Jira Lifecycle & Ticket Closure)**:
+  - Manages ticket self-assignment to the active user for parent tickets and sub-tasks.
+  - Completes the `"QA Testing Antigravity"` sub-task first.
+  - Audits sibling sub-tasks and strictly enforces that all sub-tasks must be in a completed status before closing the parent ticket.
+  - Halts and immediately alerts the user if any sibling sub-tasks remain open or in progress.
 
 ## 6. Test Execution & Failure Handling
 - **Mandatory Test Execution**: Once test writing is completed for a ticket, `script-agent` must run the tests (`npx playwright test <spec>`) and verify that all tests pass.
