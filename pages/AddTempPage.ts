@@ -72,6 +72,23 @@ export class AddTempPage extends BaseTempFormPage {
     return await this.countySelect.inputValue();
   }
 
+  async getSelectedCountyText(): Promise<string> {
+    return await this.countySelect.evaluate((select: HTMLSelectElement) => {
+      const selectedOption = select.options[select.selectedIndex];
+      return selectedOption ? selectedOption.text.trim() : '';
+    });
+  }
+
+  async isCountyFieldEditable(): Promise<boolean> {
+    const tagName = await this.countySelect.evaluate((el) => el.tagName.toLowerCase());
+    if (tagName === 'input') {
+      const type = await this.countySelect.getAttribute('type');
+      const isReadOnly = await this.countySelect.evaluate((el: any) => el.readOnly || el.disabled);
+      return type !== 'hidden' && !isReadOnly;
+    }
+    return false;
+  }
+
   async pressEnterInField(locator: Locator): Promise<void> {
     await locator.focus();
     await this.page.keyboard.press('Enter');
