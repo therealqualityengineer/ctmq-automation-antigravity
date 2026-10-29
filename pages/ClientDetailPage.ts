@@ -113,8 +113,8 @@ export class ClientDetailPage extends BasePage {
     return left.y === right.y && left.x < right.x;
   }
 
-  async areAllFieldsDisabled(): Promise<boolean> {
-    const fields = [
+  getClientFormFields(): Locator[] {
+    return [
       this.fullNameInput,
       this.emailInput,
       this.addressInput,
@@ -124,29 +124,14 @@ export class ClientDetailPage extends BasePage {
       this.countySelect,
       this.statusSelect,
     ];
-    for (const field of fields) {
-      const disabled = await field.isDisabled();
-      if (!disabled) return false;
-    }
-    return true;
+  }
+
+  async areAllFieldsDisabled(): Promise<boolean> {
+    return await super.areAllFieldsDisabled(this.getClientFormFields());
   }
 
   async areAllFieldsEnabled(): Promise<boolean> {
-    const fields = [
-      this.fullNameInput,
-      this.emailInput,
-      this.addressInput,
-      this.cityInput,
-      this.stateSelect,
-      this.zipInput,
-      this.countySelect,
-      this.statusSelect,
-    ];
-    for (const field of fields) {
-      const disabled = await field.isDisabled();
-      if (disabled) return false;
-    }
-    return true;
+    return await super.areAllFieldsEnabled(this.getClientFormFields());
   }
 
   async saveAndInterceptPostResponse(): Promise<{ status: number; body: any }> {
@@ -181,36 +166,11 @@ export class ClientDetailPage extends BasePage {
 
   async getStateOptionValues(): Promise<string[]> {
     await this.stateSelect.locator('option[value="AL"]').waitFor({ state: 'attached' });
-    return await this.stateSelect.evaluate((select: HTMLSelectElement) =>
-      Array.from(select.options)
-        .map((opt) => opt.value)
-        .filter((val) => Boolean(val))
-    );
+    return await this.getSelectOptionValues(this.stateSelect);
   }
 
   async getCountyOptionTexts(): Promise<string[]> {
-    const options = this.countySelect.locator('option');
-    const count = await options.count();
-    const texts: string[] = [];
-    for (let i = 0; i < count; i++) {
-      const text = await options.nth(i).innerText();
-      texts.push(text.trim());
-    }
-    return texts;
-  }
-
-  async mockApiResponse(urlPattern: string, status: number, body: object, method: string = 'POST'): Promise<void> {
-    await this.page.route(urlPattern, (route) => {
-      if (route.request().method() === method) {
-        route.fulfill({
-          status,
-          contentType: 'application/json',
-          body: JSON.stringify(body),
-        });
-      } else {
-        route.continue();
-      }
-    });
+    return await this.getSelectOptionTexts(this.countySelect);
   }
 }
 

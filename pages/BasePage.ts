@@ -46,4 +46,57 @@ export abstract class BasePage {
   async getValidationMessage(locator: Locator): Promise<string> {
     return await locator.evaluate((el: HTMLInputElement) => el.validationMessage);
   }
+
+  async getSelectOptionValues(selectLocator: Locator): Promise<string[]> {
+    return await selectLocator.evaluate((select: HTMLSelectElement) =>
+      Array.from(select.options)
+        .map((opt) => opt.value)
+        .filter((val) => Boolean(val))
+    );
+  }
+
+  async getSelectOptionTexts(selectLocator: Locator): Promise<string[]> {
+    return await selectLocator.evaluate((select: HTMLSelectElement) =>
+      Array.from(select.options).map((opt) => opt.text.trim())
+    );
+  }
+
+  async areAllFieldsDisabled(locators: Locator[]): Promise<boolean> {
+    for (const locator of locators) {
+      const disabled = await locator.isDisabled();
+      if (!disabled) return false;
+    }
+    return true;
+  }
+
+  async areAllFieldsEnabled(locators: Locator[]): Promise<boolean> {
+    for (const locator of locators) {
+      const disabled = await locator.isDisabled();
+      if (disabled) return false;
+    }
+    return true;
+  }
+
+  async mockApiResponse(
+    urlPattern: string | RegExp,
+    status: number,
+    body: object,
+    method?: string
+  ): Promise<void> {
+    await this.page.route(urlPattern, (route) => {
+      if (!method || route.request().method() === method) {
+        route.fulfill({
+          status,
+          contentType: 'application/json',
+          body: JSON.stringify(body),
+        });
+      } else {
+        route.continue();
+      }
+    });
+  }
+
+  async clearApiMocks(): Promise<void> {
+    await this.page.unrouteAll();
+  }
 }

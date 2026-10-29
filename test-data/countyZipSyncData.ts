@@ -1,3 +1,5 @@
+import { addTempData } from './addTempData';
+
 export const countyZipSyncData = {
   validZips: {
     suffolk: {
@@ -5,21 +7,21 @@ export const countyZipSyncData = {
       expectedCounty: 'Suffolk County',
     },
     hampden: {
-      zip: '01001',
-      expectedCounty: 'Hampden County',
+      zip: addTempData.zipLookups.singleMatchHampden.zip,
+      expectedCounty: addTempData.zipLookups.singleMatchHampden.county,
     },
     beverlyHills: {
-      zip: '90210',
-      expectedCounty: 'Los Angeles County',
+      zip: addTempData.zipLookups.singleMatchBeverlyHills.zip,
+      expectedCounty: addTempData.zipLookups.singleMatchBeverlyHills.county,
     },
   },
   invalidZips: {
-    unknown: '00000',
+    unknown: addTempData.zipLookups.unknownZip,
     incomplete: '021',
   },
   defaultCountyOption: 'None',
   messages: {
-    noCountyFound: 'No county found for this ZIP — please check the ZIP.',
+    noCountyFound: addTempData.messages.noCountyFound,
   },
 };
 

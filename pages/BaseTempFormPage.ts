@@ -104,4 +104,72 @@ export abstract class BaseTempFormPage extends BasePage {
     if (!leftBox || !rightBox) return false;
     return leftBox.y + leftBox.height <= rightBox.y;
   }
+
+  async fillZip(zip: string): Promise<void> {
+    await this.zipInput.fill(zip);
+    await this.page.waitForTimeout(300);
+  }
+
+  async clearZip(): Promise<void> {
+    await this.zipInput.clear();
+    await this.page.waitForTimeout(300);
+  }
+
+  async getSelectedCounty(): Promise<string> {
+    return await this.countySelect.inputValue();
+  }
+
+  async getSelectedCountyText(): Promise<string> {
+    return await this.countySelect.evaluate((select: HTMLSelectElement) => {
+      const selectedOption = select.options[select.selectedIndex];
+      return selectedOption ? selectedOption.text.trim() : '';
+    });
+  }
+
+  async isCountyFieldEditable(): Promise<boolean> {
+    const tagName = await this.countySelect.evaluate((el) => el.tagName.toLowerCase());
+    if (tagName === 'input') {
+      const type = await this.countySelect.getAttribute('type');
+      const isReadOnly = await this.countySelect.evaluate((el: any) => el.readOnly || el.disabled);
+      return type !== 'hidden' && !isReadOnly;
+    }
+    return false;
+  }
+
+  async getStateOptionValues(): Promise<string[]> {
+    await this.stateSelect.locator('option[value="AL"]').waitFor({ state: 'attached' });
+    return await this.getSelectOptionValues(this.stateSelect);
+  }
+
+  async getCountyOptionTexts(): Promise<string[]> {
+    return await this.getSelectOptionTexts(this.countySelect);
+  }
+
+  getFormFields(): Locator[] {
+    return [
+      this.firstNameInput,
+      this.lastNameInput,
+      this.cellPhoneInput,
+      this.emailInput,
+      this.addressInput,
+      this.cityInput,
+      this.stateSelect,
+      this.zipInput,
+      this.countySelect,
+      this.statusSelect,
+      this.dateOfBirthInput,
+      this.genderMaleRadio,
+      this.genderFemaleRadio,
+      this.genderOtherRadio,
+      this.maritalStatusSelect,
+    ];
+  }
+
+  async areAllTempFieldsDisabled(): Promise<boolean> {
+    return await this.areAllFieldsDisabled(this.getFormFields());
+  }
+
+  async areAllTempFieldsEnabled(): Promise<boolean> {
+    return await this.areAllFieldsEnabled(this.getFormFields());
+  }
 }
