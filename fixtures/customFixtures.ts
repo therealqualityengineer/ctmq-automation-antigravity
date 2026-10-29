@@ -8,6 +8,7 @@ import { AddUserPage } from '../pages/AddUserPage';
 import { NavigationPage } from '../pages/NavigationPage';
 import { TempPage } from '../pages/TempPage';
 import { AddTempPage } from '../pages/AddTempPage';
+import { TempDetailPage } from '../pages/TempDetailPage';
 import { LayoutPage } from '../pages/LayoutPage';
 import { authData } from '../test-data/authData';
 
@@ -75,6 +76,8 @@ type TestFixtures = {
   authenticatedTempPage: TempPage;
   addTempPage: AddTempPage;
   authenticatedAddTempPage: AddTempPage;
+  tempDetailPage: TempDetailPage;
+  authenticatedTempDetailPage: TempDetailPage;
   layoutPage: LayoutPage;
   authenticatedLayoutPage: LayoutPage;
 };
@@ -153,6 +156,15 @@ export const test = baseTest.extend<TestFixtures>({
     }
     await page.waitForURL(/.*\/temp\/new.*/);
     await use(addTempPage);
+  },
+  tempDetailPage: async ({ page }, use) => {
+    const tempDetailPage = new TempDetailPage(page);
+    await use(tempDetailPage);
+  },
+  authenticatedTempDetailPage: async ({ page, context }, use) => {
+    const tempDetailPage = new TempDetailPage(page);
+    await ensureAuthenticated(page, context);
+    await use(tempDetailPage);
   },
   layoutPage: async ({ page }, use) => {
     const layoutPage = new LayoutPage(page);

@@ -7,6 +7,7 @@ export class TempPage extends BasePage {
   readonly searchInput: Locator;
   readonly searchButton: Locator;
   readonly tempsTable: Locator;
+  readonly tableRows: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -15,6 +16,7 @@ export class TempPage extends BasePage {
     this.searchInput = page.getByPlaceholder(/search by name or email/i);
     this.searchButton = page.getByRole('button', { name: 'Search', exact: true });
     this.tempsTable = page.getByRole('table');
+    this.tableRows = page.locator('table tbody tr[tabindex="0"]');
   }
 
   async gotoTemp(): Promise<void> {
@@ -23,6 +25,16 @@ export class TempPage extends BasePage {
 
   async clickAddTemp(): Promise<void> {
     await this.addTempButton.click();
+  }
+
+  async clickFirstRow(): Promise<void> {
+    const firstRow = this.tableRows.first();
+    await firstRow.waitFor({ state: 'visible' });
+    await firstRow.click();
+  }
+
+  async getRowCount(): Promise<number> {
+    return await this.tableRows.count();
   }
 }
 
