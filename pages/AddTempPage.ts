@@ -31,6 +31,9 @@ export class AddTempPage extends BasePage {
   readonly saveButton: Locator;
   readonly cancelButton: Locator;
   readonly successBanner: Locator;
+  readonly successStatus: Locator;
+  readonly emailDuplicateError: Locator;
+  readonly serverErrorBanner: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -58,10 +61,13 @@ export class AddTempPage extends BasePage {
     this.genderOtherRadio = page.locator('input[name="gender"][value="Other"]');
     this.maritalStatusSelect = page.locator('#maritalStatus');
 
-    // Action Buttons
+    // Action Buttons & Alerts
     this.saveButton = page.getByRole('button', { name: 'Save', exact: true });
     this.cancelButton = page.getByRole('button', { name: 'Cancel', exact: true });
     this.successBanner = page.getByText('Temp created successfully.');
+    this.successStatus = page.locator('p[role="status"]').filter({ hasText: 'Temp created successfully.' });
+    this.emailDuplicateError = page.locator('#email ~ p, p.text-red-700').filter({ hasText: 'That email address is already in use.' });
+    this.serverErrorBanner = page.locator('p.text-red-700, [role="alert"]').filter({ hasText: /Internal Server Error|failed|error/i });
   }
 
   async gotoAddTemp(): Promise<void> {
@@ -171,5 +177,44 @@ export class AddTempPage extends BasePage {
 
   async isFieldInvalid(locator: Locator): Promise<boolean> {
     return await locator.evaluate((el: HTMLInputElement | HTMLSelectElement) => !el.checkValidity());
+  }
+
+  async pressEnterInField(locator: Locator): Promise<void> {
+    await locator.focus();
+    await this.page.keyboard.press('Enter');
+  }
+
+  async getEmailErrorText(): Promise<string> {
+    return (await this.emailDuplicateError.innerText()).trim();
+  }
+
+  async getInputValue(locator: Locator): Promise<string> {
+    return await locator.inputValue();
+  }
+
+  async doubleClickSave(): Promise<void> {
+    await this.saveButton.dblclick();
+  }
+
+  async pressTab(): Promise<void> {
+    await this.page.keyboard.press('Tab');
+  }
+
+  async mockApiResponse(urlPattern: string, status: number, body: object): Promise<void> {
+    await this.page.route(urlPattern, (route) => {
+      if (route.request().method() === 'POST') {
+        route.fulfill({
+          status,
+          contentType: 'application/json',
+          body: JSON.stringify(body),
+        });
+      } else {
+        route.continue();
+      }
+    });
+  }
+
+  async clearApiMocks(): Promise<void> {
+    await this.page.unrouteAll();
   }
 }
