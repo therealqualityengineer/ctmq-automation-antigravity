@@ -5,6 +5,7 @@ export class NavigationPage extends BasePage {
   readonly navContainer: Locator;
   readonly homeLink: Locator;
   readonly tempLink: Locator;
+  readonly clientLink: Locator;
   readonly adminLink: Locator;
   readonly headerLogo: Locator;
   readonly logoutButton: Locator;
@@ -17,6 +18,7 @@ export class NavigationPage extends BasePage {
     this.navContainer = page.locator('div.flex.gap-2.px-4, nav').first();
     this.homeLink = page.getByRole('link', { name: 'Home', exact: true });
     this.tempLink = page.getByRole('link', { name: 'Temp', exact: true });
+    this.clientLink = page.getByRole('link', { name: 'Client', exact: true });
     this.adminLink = page.getByRole('link', { name: 'Admin', exact: true });
     this.headerLogo = page.getByAltText('CTMQ — Contractor & Talent Management');
     this.logoutButton = page.getByRole('button', { name: /Logout/i });
@@ -33,6 +35,10 @@ export class NavigationPage extends BasePage {
     await this.navigate('/temp');
   }
 
+  async gotoClient(): Promise<void> {
+    await this.navigate('/client');
+  }
+
   async gotoAdmin(): Promise<void> {
     await this.navigate('/admin/users');
   }
@@ -43,6 +49,10 @@ export class NavigationPage extends BasePage {
 
   async clickTemp(): Promise<void> {
     await this.tempLink.click();
+  }
+
+  async clickClient(): Promise<void> {
+    await this.clientLink.click();
   }
 
   async clickAdmin(): Promise<void> {
