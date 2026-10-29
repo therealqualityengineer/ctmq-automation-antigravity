@@ -51,10 +51,6 @@ export class LoginPage extends BasePage {
     await this.passwordInput.clear();
   }
 
-  async pressTab(): Promise<void> {
-    await this.page.keyboard.press('Tab');
-  }
-
   async pressEnterInPassword(): Promise<void> {
     await this.passwordInput.press('Enter');
   }
@@ -73,10 +69,6 @@ export class LoginPage extends BasePage {
 
   async clickUsernameLabel(): Promise<void> {
     await this.usernameLabel.click();
-  }
-
-  async setViewport(width: number, height: number): Promise<void> {
-    await this.page.setViewportSize({ width, height });
   }
 
   async hasHorizontalScrollBar(): Promise<boolean> {

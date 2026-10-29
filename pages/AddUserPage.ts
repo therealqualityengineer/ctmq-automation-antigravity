@@ -151,12 +151,4 @@ export class AddUserPage extends BasePage {
   async getSelectedStatus(): Promise<string> {
     return await this.statusSelect.inputValue();
   }
-
-  async isFieldHtmlValid(locator: Locator): Promise<boolean> {
-    return await locator.evaluate((el: HTMLInputElement | HTMLSelectElement) => el.checkValidity());
-  }
-
-  async getValidationMessage(locator: Locator): Promise<string> {
-    return await locator.evaluate((el: HTMLInputElement) => el.validationMessage);
-  }
 }
