@@ -9,6 +9,8 @@ import { NavigationPage } from '../pages/NavigationPage';
 import { TempPage } from '../pages/TempPage';
 import { AddTempPage } from '../pages/AddTempPage';
 import { TempDetailPage } from '../pages/TempDetailPage';
+import { ClientPage } from '../pages/ClientPage';
+import { ClientDetailPage } from '../pages/ClientDetailPage';
 import { LayoutPage } from '../pages/LayoutPage';
 import { authData } from '../test-data/authData';
 
@@ -78,6 +80,10 @@ type TestFixtures = {
   authenticatedAddTempPage: AddTempPage;
   tempDetailPage: TempDetailPage;
   authenticatedTempDetailPage: TempDetailPage;
+  clientPage: ClientPage;
+  authenticatedClientPage: ClientPage;
+  clientDetailPage: ClientDetailPage;
+  authenticatedClientDetailPage: ClientDetailPage;
   layoutPage: LayoutPage;
   authenticatedLayoutPage: LayoutPage;
 };
@@ -165,6 +171,26 @@ export const test = baseTest.extend<TestFixtures>({
     const tempDetailPage = new TempDetailPage(page);
     await ensureAuthenticated(page, context);
     await use(tempDetailPage);
+  },
+  clientPage: async ({ page }, use) => {
+    const clientPage = new ClientPage(page);
+    await use(clientPage);
+  },
+  authenticatedClientPage: async ({ page, context }, use) => {
+    const clientPage = new ClientPage(page);
+    await ensureAuthenticated(page, context);
+    await clientPage.gotoClient();
+    await page.waitForURL(/.*\/client.*/);
+    await use(clientPage);
+  },
+  clientDetailPage: async ({ page }, use) => {
+    const clientDetailPage = new ClientDetailPage(page);
+    await use(clientDetailPage);
+  },
+  authenticatedClientDetailPage: async ({ page, context }, use) => {
+    const clientDetailPage = new ClientDetailPage(page);
+    await ensureAuthenticated(page, context);
+    await use(clientDetailPage);
   },
   layoutPage: async ({ page }, use) => {
     const layoutPage = new LayoutPage(page);
