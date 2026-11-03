@@ -11,6 +11,18 @@ export class AdminPage extends BasePage {
   readonly logoutButton: Locator;
   readonly userIdentity: Locator;
 
+  // CTMQ-45: General Settings Card Locators
+  readonly generalSettingsCard: Locator;
+  readonly generalSettingsHeader: Locator;
+  readonly generalSubsectionHeading: Locator;
+  readonly generalSettingItems: Locator;
+  readonly generalSettingLinks: Locator;
+  readonly certificationsLink: Locator;
+  readonly specialtiesLink: Locator;
+  readonly shiftsLink: Locator;
+  readonly orderTypesLink: Locator;
+  readonly statusOptionsLink: Locator;
+
   constructor(page: Page) {
     super(page);
     this.primaryNav = page.locator('nav').first();
@@ -21,6 +33,18 @@ export class AdminPage extends BasePage {
     this.headerLogo = page.getByAltText('CTMQ — Contractor & Talent Management');
     this.logoutButton = page.getByRole('button', { name: /Logout/i });
     this.userIdentity = page.locator('header span').first();
+
+    // General Settings Card elements
+    this.generalSettingsCard = page.getByRole('region', { name: 'General Settings' });
+    this.generalSettingsHeader = this.generalSettingsCard.locator('div.border-b').first();
+    this.generalSubsectionHeading = this.generalSettingsCard.getByRole('heading', { name: 'General', exact: true });
+    this.generalSettingItems = this.generalSettingsCard.locator('ul > li');
+    this.generalSettingLinks = this.generalSettingsCard.locator('ul > li > a');
+    this.certificationsLink = this.generalSettingsCard.getByRole('link', { name: 'Certifications', exact: true });
+    this.specialtiesLink = this.generalSettingsCard.getByRole('link', { name: 'Specialties', exact: true });
+    this.shiftsLink = this.generalSettingsCard.getByRole('link', { name: 'Shifts', exact: true });
+    this.orderTypesLink = this.generalSettingsCard.getByRole('link', { name: 'Order Types', exact: true });
+    this.statusOptionsLink = this.generalSettingsCard.getByRole('link', { name: 'Status Options', exact: true });
   }
 
   async gotoAdmin(): Promise<void> {
@@ -65,6 +89,40 @@ export class AdminPage extends BasePage {
 
   async goForward(): Promise<void> {
     await this.page.goForward();
+  }
+
+  // CTMQ-45: General Settings Helper Methods
+  getGeneralSettingLink(name: string): Locator {
+    return this.generalSettingsCard.getByRole('link', { name, exact: true });
+  }
+
+  async clickGeneralSettingLink(name: string): Promise<void> {
+    await this.getGeneralSettingLink(name).click();
+  }
+
+  async getGeneralSettingItemTexts(): Promise<string[]> {
+    return await this.generalSettingLinks.allInnerTexts();
+  }
+
+  async getGeneralSettingsCardBoundingBox() {
+    return await this.generalSettingsCard.boundingBox();
+  }
+
+  async isGeneralSettingsLeftAligned(): Promise<boolean> {
+    const cardBox = await this.generalSettingsCard.boundingBox();
+    const mainBox = await this.contentArea.boundingBox();
+    if (!cardBox || !mainBox) return false;
+    // The left margin of the card relative to the main container should be aligned on the left
+    return cardBox.x - mainBox.x < 100;
+  }
+
+  async hoverGeneralSettingLink(name: string): Promise<void> {
+    await this.getGeneralSettingLink(name).hover();
+  }
+
+  async getLinkComputedStyle(name: string, property: string): Promise<string> {
+    const link = this.getGeneralSettingLink(name);
+    return await link.evaluate((el, prop) => window.getComputedStyle(el).getPropertyValue(prop), property);
   }
 }
 
