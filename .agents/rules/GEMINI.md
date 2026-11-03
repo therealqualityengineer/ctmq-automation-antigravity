@@ -27,21 +27,35 @@ These rules govern how AI agents generate test plans and automation code in this
 - **Commit Messages**: Write meaningful, structured commit messages following Conventional Commits format (`feat:`, `test:`, `fix:`, `refactor:`, `chore:`).
 - **Pull Requests**: Every PR must include a comprehensive description detailing changes, affected Page Objects, Specs, Test Plans, and verification steps.
 
-## 5. Agent Roles & Separation of Concerns
+## 5. Agent Roles, Separation of Concerns & Trigger Prompts
+
+| Agent | Trigger Prompt | Example | Primary Responsibility |
+| :--- | :--- | :--- | :--- |
+| **`plan-agent`** | `Add Testcase {JiraTicket}` | `Add Testcase CTMQ-10` | Design QA test cases & update `"QA Testing Antigravity"` sub-task |
+| **`script-agent`** | `Write test {JiraTicket}` | `Write test CTMQ-10` | Generate & run Playwright tests, execute RCA / auto-fix |
+| **`git-agent`** | `CB {Branch Name/Ticket number}`<br>`Raise PR` | `CB CTMQ-10`<br>`Raise PR` | Safe branch creation from updated main & PR creation |
+| **`jira-agent`** | `CL {JiraTicket}` | `CL CTMQ-10` | Self-assignment, complete QA sub-task, audit & close parent ticket |
+
 - **`plan-agent` (Master of Testcase Design)**:
+  - **Trigger Prompt**: `Add Testcase {JiraTicket}` (e.g., `Add Testcase CTMQ-10`)
   - Focuses solely on business logic, requirement interpretation, test scenario design, and QA testing methodologies.
   - Must **never** inspect repository test files or dictate automation implementation (e.g., file paths, target page objects, code structure).
   - Must **never** control or guide `script-agent`.
 - **`script-agent` (Master of Test Write & Execution)**:
+  - **Trigger Prompt**: `Write test {JiraTicket}` (e.g., `Write test CTMQ-10`)
   - Has full ownership over automation architecture.
   - Independently decides what to automate vs. manual and analyzes the codebase to identify reusable components vs. what must be created new.
   - Actively audits `tests/` and `pages/` to prevent duplicate test scenarios, duplicate locators, and redundant helper methods.
   - Responsible for writing clean, layered Playwright TypeScript tests.
 - **`git-agent` (Master of Git Workflow & Branch Safety)**:
+  - **Trigger Prompts**:
+    - `CB {Branch Name/Ticket number}` (e.g., `CB CTMQ-10`, `CB feat/login`) — Stashes changes, pulls latest `main`, and checks out a new branch.
+    - `Raise PR` or `Raise PR {JiraTicket}` — Validates branch safety, commits changes with Conventional Commits, and creates a detailed PR.
   - Enforces branch safety guardrails (blocks direct commits to `master` or `main`).
   - Manages branch creation from updated `main` (`CB {Branch Name/Ticket number}`).
   - Formulates Conventional Commits and generates high-quality Pull Requests with detailed documentation.
 - **`jira-agent` (Master of Jira Lifecycle & Ticket Closure)**:
+  - **Trigger Prompt**: `CL {JiraTicket}` (e.g., `CL CTMQ-10`)
   - Manages ticket self-assignment to the active user for parent tickets and sub-tasks.
   - Completes the `"QA Testing Antigravity"` sub-task first.
   - Audits sibling sub-tasks and strictly enforces that all sub-tasks must be in a completed status before closing the parent ticket.

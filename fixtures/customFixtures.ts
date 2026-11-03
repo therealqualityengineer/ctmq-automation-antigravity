@@ -11,6 +11,7 @@ import { TempDetailPage } from '../pages/TempDetailPage';
 import { ClientPage } from '../pages/ClientPage';
 import { ClientDetailPage } from '../pages/ClientDetailPage';
 import { LayoutPage } from '../pages/LayoutPage';
+import { AdminPage } from '../pages/AdminPage';
 import { authData } from '../test-data/authData';
 
 const COOKIE_FILE = path.resolve(__dirname, '../.auth_cookies.json');
@@ -19,19 +20,34 @@ let cachedCookies: any[] | null = null;
 async function ensureAuthenticated(page: any, context: any): Promise<void> {
   if (cachedCookies && cachedCookies.length > 0) {
     await context.addCookies(cachedCookies);
-    return;
-  }
-
-  if (fs.existsSync(COOKIE_FILE)) {
+  } else if (fs.existsSync(COOKIE_FILE)) {
     try {
       const stored = JSON.parse(fs.readFileSync(COOKIE_FILE, 'utf-8'));
       if (Array.isArray(stored) && stored.length > 0) {
         cachedCookies = stored;
         await context.addCookies(cachedCookies);
-        return;
       }
     } catch {
       // ignore and perform login
+    }
+  }
+
+  if (cachedCookies && cachedCookies.length > 0) {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    const isLoggedIn = await Promise.race([
+      page.waitForURL(/\/login/, { timeout: 2000 }).then(() => false).catch(() => false),
+      page.locator('header nav, header span').first().waitFor({ state: 'visible', timeout: 2000 }).then(() => true).catch(() => false),
+    ]);
+    if (isLoggedIn && !page.url().includes('/login')) {
+      return;
+    }
+    cachedCookies = null;
+    if (fs.existsSync(COOKIE_FILE)) {
+      try {
+        fs.unlinkSync(COOKIE_FILE);
+      } catch {
+        // ignore
+      }
     }
   }
 
@@ -84,6 +100,8 @@ type TestFixtures = {
   authenticatedClientDetailPage: ClientDetailPage;
   layoutPage: LayoutPage;
   authenticatedLayoutPage: LayoutPage;
+  adminPage: AdminPage;
+  authenticatedAdminPage: AdminPage;
 };
 
 export const test = baseTest.extend<TestFixtures>({
@@ -195,6 +213,17 @@ export const test = baseTest.extend<TestFixtures>({
     await ensureAuthenticated(page, context);
     await layoutPage.gotoHome();
     await use(layoutPage);
+  },
+  adminPage: async ({ page }, use) => {
+    const adminPage = new AdminPage(page);
+    await use(adminPage);
+  },
+  authenticatedAdminPage: async ({ page, context }, use) => {
+    const adminPage = new AdminPage(page);
+    await ensureAuthenticated(page, context);
+    await adminPage.gotoAdmin();
+    await page.waitForURL(/.*\/admin.*/);
+    await use(adminPage);
   },
 });
 

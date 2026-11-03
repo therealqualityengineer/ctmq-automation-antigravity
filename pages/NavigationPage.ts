@@ -40,6 +40,10 @@ export class NavigationPage extends BasePage {
   }
 
   async gotoAdmin(): Promise<void> {
+    await this.navigate('/admin');
+  }
+
+  async gotoAdminUsers(): Promise<void> {
     await this.navigate('/admin/users');
   }
 
