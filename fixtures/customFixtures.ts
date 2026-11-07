@@ -17,6 +17,7 @@ import { CertificationsPage } from '../pages/CertificationsPage';
 import { ShiftsPage } from '../pages/ShiftsPage';
 import { OrderTypesPage } from '../pages/OrderTypesPage';
 import { StatusOptionsPage } from '../pages/StatusOptionsPage';
+import { UserDetailPage } from '../pages/UserDetailPage';
 import { authData } from '../test-data/authData';
 
 const COOKIE_FILE = path.resolve(__dirname, '../.auth_cookies.json');
@@ -117,6 +118,8 @@ type TestFixtures = {
   authenticatedOrderTypesPage: OrderTypesPage;
   statusOptionsPage: StatusOptionsPage;
   authenticatedStatusOptionsPage: StatusOptionsPage;
+  userDetailPage: UserDetailPage;
+  authenticatedUserDetailPage: UserDetailPage;
 };
 
 export const test = baseTest.extend<TestFixtures>({
@@ -294,6 +297,15 @@ export const test = baseTest.extend<TestFixtures>({
     await statusOptionsPage.gotoStatusOptions();
     await page.waitForURL(/.*\/admin\/status-options.*/);
     await use(statusOptionsPage);
+  },
+  userDetailPage: async ({ page }, use) => {
+    const userDetailPage = new UserDetailPage(page);
+    await use(userDetailPage);
+  },
+  authenticatedUserDetailPage: async ({ page, context }, use) => {
+    const userDetailPage = new UserDetailPage(page);
+    await ensureAuthenticated(page, context);
+    await use(userDetailPage);
   },
 });
 

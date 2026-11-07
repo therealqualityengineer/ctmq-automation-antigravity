@@ -76,14 +76,14 @@ export class ShiftsPage extends BasePage {
 
     // Modal
     this.modalDialog = page.getByRole('dialog');
-    this.modalTitle = this.modalDialog.getByRole('heading', { name: 'Creating Shift Option', exact: true });
+    this.modalTitle = this.modalDialog.getByRole('heading').first();
     this.modalCloseButton = this.modalDialog.getByRole('button', { name: 'Close', exact: true });
     this.shiftNameInput = this.modalDialog.locator('#shift-name, #name, input[name="name"], input[name="shiftName"]').or(this.modalDialog.getByLabel(/Shift Name/i)).first();
     this.startTimeInput = this.modalDialog.locator('#shift-start-time, input[name="startTime"], input[type="time"]').or(this.modalDialog.getByLabel(/Start Time/i)).first();
     this.endTimeInput = this.modalDialog.locator('#shift-end-time, input[name="endTime"]').or(this.modalDialog.getByLabel(/End Time/i)).first();
     this.defaultShiftSelect = this.modalDialog.locator('#shift-default, #shift-is-default, select[name="isDefault"]').or(this.modalDialog.getByLabel(/Default Shift/i)).first();
     this.modalCancelButton = this.modalDialog.getByRole('button', { name: 'Cancel', exact: true });
-    this.modalSaveButton = this.modalDialog.getByRole('button', { name: 'Save Shift', exact: true });
+    this.modalSaveButton = this.modalDialog.getByRole('button', { name: /Save Changes|Save Shift|Save/i });
     this.modalRequiredFieldError = this.modalDialog.locator('.text-red-500, .text-red-600, .field-error').first();
     this.modalConflictError = this.modalDialog.getByText(/already exists/i).or(this.modalDialog.locator('text=/already exists/i')).first();
   }
@@ -157,6 +157,37 @@ export class ShiftsPage extends BasePage {
 
   async saveModal(): Promise<void> {
     await this.modalSaveButton.click();
+  }
+
+  async openEditShiftModal(name: string): Promise<void> {
+    const row = this.getShiftRow(name);
+    await row.waitFor({ state: 'visible' });
+    await row.locator('td').nth(1).click();
+    await this.modalDialog.waitFor({ state: 'visible' });
+  }
+
+  async openEditShiftModalByRow(rowIndex: number = 0): Promise<string> {
+    await this.table.waitFor({ state: 'visible' });
+    const row = this.tableRows.nth(rowIndex);
+    await row.waitFor({ state: 'visible' });
+    const shiftName = (await row.locator('td').nth(1).innerText()).trim();
+    await row.locator('td').nth(1).click();
+    await this.modalDialog.waitFor({ state: 'visible' });
+    return shiftName;
+  }
+
+  async updateShift(
+    startTime: string,
+    endTime: string,
+    isDefault?: boolean
+  ): Promise<void> {
+    await this.fillStartTime(startTime);
+    await this.fillEndTime(endTime);
+    if (isDefault !== undefined) {
+      await this.setDefaultShift(isDefault);
+    }
+    await this.saveModal();
+    await this.modalDialog.waitFor({ state: 'hidden' });
   }
 
   async createShift(

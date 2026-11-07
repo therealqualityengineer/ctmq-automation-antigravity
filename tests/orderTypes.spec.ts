@@ -164,6 +164,7 @@ test.describe('CTMQ-50 - Order Types Management under Admin General Settings', (
     await expect(authenticatedOrderTypesPage.modalDialog).toBeHidden();
     await expect(authenticatedOrderTypesPage.feedbackBanner).toBeVisible();
 
+    await authenticatedOrderTypesPage.search(uniqueName);
     const createdRow = authenticatedOrderTypesPage.getOrderTypeRow(uniqueName);
     await expect(createdRow).toBeVisible();
 
@@ -186,6 +187,7 @@ test.describe('CTMQ-50 - Order Types Management under Admin General Settings', (
     await expect(authenticatedOrderTypesPage.modalDialog).toBeHidden();
     await expect(authenticatedOrderTypesPage.feedbackBanner).toBeVisible();
 
+    await authenticatedOrderTypesPage.search(uniqueName);
     const createdRow = authenticatedOrderTypesPage.getOrderTypeRow(uniqueName);
     await expect(createdRow).toBeVisible();
 

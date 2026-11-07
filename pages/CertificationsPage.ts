@@ -27,6 +27,7 @@ export class CertificationsPage extends BasePage {
   // Modal Dialog
   readonly modalDialog: Locator;
   readonly modalTitle: Locator;
+  readonly editModalTitle: Locator;
   readonly modalCloseButton: Locator;
   readonly certNameInput: Locator;
   readonly specialtiesDropdownButton: Locator;
@@ -34,8 +35,10 @@ export class CertificationsPage extends BasePage {
   readonly statusSelect: Locator;
   readonly modalCancelButton: Locator;
   readonly modalSaveButton: Locator;
+  readonly saveChangesButton: Locator;
   readonly modalRequiredFieldError: Locator;
   readonly modalConflictError: Locator;
+  readonly modalErrorBanner: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -65,6 +68,7 @@ export class CertificationsPage extends BasePage {
     // Modal
     this.modalDialog = page.getByRole('dialog');
     this.modalTitle = this.modalDialog.getByRole('heading', { name: 'Add Certification', exact: true });
+    this.editModalTitle = this.modalDialog.getByRole('heading', { name: 'Edit Certification', exact: true });
     this.modalCloseButton = this.modalDialog.getByRole('button', { name: 'Close' });
     this.certNameInput = this.modalDialog.locator('#cert-name');
     this.specialtiesDropdownButton = this.modalDialog.locator('#mapped-specialties');
@@ -72,8 +76,10 @@ export class CertificationsPage extends BasePage {
     this.statusSelect = this.modalDialog.locator('#cert-status');
     this.modalCancelButton = this.modalDialog.getByRole('button', { name: 'Cancel', exact: true });
     this.modalSaveButton = this.modalDialog.getByRole('button', { name: 'Save', exact: true });
+    this.saveChangesButton = this.modalDialog.getByRole('button', { name: 'Save Changes', exact: true });
     this.modalRequiredFieldError = this.modalDialog.locator('text=Certification Name is required.');
     this.modalConflictError = this.modalDialog.locator('text=A certification with this name already exists.');
+    this.modalErrorBanner = this.modalDialog.locator('.bg-red-50, .text-red-800, [role="alert"]').first();
   }
 
   async gotoCertifications(): Promise<void> {
@@ -115,16 +121,21 @@ export class CertificationsPage extends BasePage {
     await this.modalDialog.waitFor({ state: 'visible' });
   }
 
+  async closeDropdownIfOpen(): Promise<void> {
+    const isExpanded = await this.specialtiesDropdownButton.getAttribute('aria-expanded');
+    if (isExpanded === 'true') {
+      await this.toggleSpecialtiesDropdown();
+    }
+  }
+
   async closeModalViaCloseButton(): Promise<void> {
+    await this.closeDropdownIfOpen();
     await this.modalCloseButton.click();
     await this.modalDialog.waitFor({ state: 'hidden' });
   }
 
   async closeModalViaCancel(): Promise<void> {
-    const isExpanded = await this.specialtiesDropdownButton.getAttribute('aria-expanded');
-    if (isExpanded === 'true') {
-      await this.toggleSpecialtiesDropdown();
-    }
+    await this.closeDropdownIfOpen();
     await this.modalCancelButton.click();
     await this.modalDialog.waitFor({ state: 'hidden' });
   }
@@ -193,20 +204,78 @@ export class CertificationsPage extends BasePage {
       await this.selectStatus(status);
     }
 
+    const postPromise = this.page.waitForResponse(
+      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'POST'
+    );
+    const getPromise = this.page.waitForResponse(
+      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'GET'
+    );
     await this.saveModal();
+    await Promise.all([postPromise, getPromise]);
+    await this.modalDialog.waitFor({ state: 'hidden' });
+  }
+
+  async openEditCertModal(name: string): Promise<void> {
+    let row = this.getCertRow(name);
+    if (!(await row.isVisible())) {
+      await this.search(name);
+      row = this.getCertRow(name);
+    }
+    await row.locator('td').first().click();
+    await this.modalDialog.waitFor({ state: 'visible' });
+  }
+
+  async saveEditChanges(): Promise<void> {
+    await this.closeDropdownIfOpen();
+    const putPromise = this.page.waitForResponse(
+      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'PUT'
+    );
+    const getPromise = this.page.waitForResponse(
+      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'GET'
+    );
+    await this.saveChangesButton.click();
+    await Promise.all([putPromise, getPromise]);
+  }
+
+  async clearAllSpecialties(): Promise<void> {
+    const isExpanded = await this.specialtiesDropdownButton.getAttribute('aria-expanded');
+    if (isExpanded !== 'true') {
+      await this.toggleSpecialtiesDropdown();
+    }
+    const anyCheckbox = this.modalDialog.locator('div.absolute.z-50 input[type="checkbox"]').first();
+    await anyCheckbox.waitFor({ state: 'visible' });
+
+    const checkedBoxes = this.modalDialog.locator('div.absolute.z-50 input[type="checkbox"]:checked');
+    while ((await checkedBoxes.count()) > 0) {
+      await checkedBoxes.first().uncheck();
+    }
+    await this.toggleSpecialtiesDropdown();
   }
 
   getCertRow(name: string): Locator {
     return this.tableRows.filter({ hasText: name }).first();
   }
 
+  async getMappedSpecialtiesLocatorFor(name: string): Promise<Locator> {
+    let row = this.getCertRow(name);
+    if (!(await row.isVisible())) {
+      await this.search(name);
+      row = this.getCertRow(name);
+    }
+    return row.locator('td').nth(1);
+  }
+
   async getMappedSpecialtiesFor(name: string): Promise<string> {
-    const row = this.getCertRow(name);
-    return (await row.locator('td').nth(1).innerText()).trim();
+    const loc = await this.getMappedSpecialtiesLocatorFor(name);
+    return (await loc.innerText()).trim();
   }
 
   async getStatusPillFor(name: string): Promise<Locator> {
-    const row = this.getCertRow(name);
+    let row = this.getCertRow(name);
+    if (!(await row.isVisible())) {
+      await this.search(name);
+      row = this.getCertRow(name);
+    }
     return row.locator('td').nth(2).locator('span');
   }
 

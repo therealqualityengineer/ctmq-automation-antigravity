@@ -260,12 +260,14 @@ test.describe('CTMQ-48 - Status Options Management under Admin General Settings'
     }
     await authenticatedStatusOptionsPage.createStatusOption(sharedName, 'Client scope');
     await expect(authenticatedStatusOptionsPage.modalDialog).toBeHidden();
+    await authenticatedStatusOptionsPage.search(sharedName);
     await expect(authenticatedStatusOptionsPage.getStatusOptionRow(sharedName)).toBeVisible();
 
     // Switch to Temp tab and create with identical name
     await authenticatedStatusOptionsPage.switchToTempTab();
     await authenticatedStatusOptionsPage.createStatusOption(sharedName, 'Temp scope');
     await expect(authenticatedStatusOptionsPage.modalDialog).toBeHidden();
+    await authenticatedStatusOptionsPage.search(sharedName);
     await expect(authenticatedStatusOptionsPage.getStatusOptionRow(sharedName)).toBeVisible();
   });
 
@@ -294,6 +296,7 @@ test.describe('CTMQ-48 - Status Options Management under Admin General Settings'
 
     // Direct reload to verify persistence and stability
     await authenticatedStatusOptionsPage.reloadPage();
+    await authenticatedStatusOptionsPage.search(name100);
     const optionRow = authenticatedStatusOptionsPage.getStatusOptionRow(name100);
     await expect(optionRow).toBeVisible();
   });

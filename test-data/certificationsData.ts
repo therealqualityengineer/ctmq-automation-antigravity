@@ -15,9 +15,13 @@ export const certificationsData = {
     nameRequired: 'Certification Name is required.',
     duplicateConflict: 'A certification with this name already exists.',
     createSuccess: 'Certification added successfully.',
+    updateSuccess: 'Certification updated successfully.',
+    updateError: 'Failed to update certification',
   },
   modal: {
     title: 'Add Certification',
+    editTitle: 'Edit Certification',
+    saveChangesButton: 'Save Changes',
     namePlaceholder: 'e.g. BLS - Basic Life Support',
     specialtiesDropdownDefault: 'Select specialties...',
   },
