@@ -148,6 +148,7 @@ test.describe('CTMQ-49 - Shifts Management under Admin General Settings', () => 
     await expect(authenticatedShiftsPage.feedbackBanner).toBeVisible();
 
     // Verify row in table
+    await authenticatedShiftsPage.search(shiftName);
     const shiftRow = authenticatedShiftsPage.getShiftRow(shiftName);
     await expect(shiftRow).toBeVisible();
 
@@ -230,11 +231,13 @@ test.describe('CTMQ-49 - Shifts Management under Admin General Settings', () => 
     );
 
     await expect(authenticatedShiftsPage.modalDialog).toBeHidden();
+    await authenticatedShiftsPage.search(longName);
     const row = authenticatedShiftsPage.getShiftRow(longName);
     await expect(row).toBeVisible();
 
     // Direct reload and verify stability
     await authenticatedShiftsPage.reloadPage();
+    await authenticatedShiftsPage.search(longName);
     await expect(authenticatedShiftsPage.getShiftRow(longName)).toBeVisible();
   });
 });

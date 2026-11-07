@@ -72,14 +72,14 @@ export class StatusOptionsPage extends BasePage {
 
     // Modal
     this.modalDialog = page.getByRole('dialog');
-    this.modalTitle = this.modalDialog.getByRole('heading', { name: 'Status Option', exact: true });
+    this.modalTitle = this.modalDialog.getByRole('heading').first();
     this.modalCloseButton = this.modalDialog.getByRole('button', { name: 'Close' });
     this.statusNameInput = this.modalDialog.locator('#status-option-name');
     this.statusDescriptionInput = this.modalDialog.locator('#status-option-description');
     this.statusIsActiveSelect = this.modalDialog.locator('#status-option-is-active');
     this.statusDisplayOrderInput = this.modalDialog.locator('#status-option-display-order');
     this.modalCancelButton = this.modalDialog.getByRole('button', { name: 'Cancel', exact: true });
-    this.modalSaveButton = this.modalDialog.getByRole('button', { name: 'Save', exact: true });
+    this.modalSaveButton = this.modalDialog.getByRole('button', { name: /Save Changes|Save/i });
     this.modalRequiredFieldError = this.modalDialog.locator('text=Status Option name is required.');
     this.modalConflictError = this.modalDialog.locator('.bg-red-50, [role="alert"]').filter({ hasText: /already exists/i });
   }
@@ -167,6 +167,10 @@ export class StatusOptionsPage extends BasePage {
     await this.statusDescriptionInput.fill(description);
   }
 
+  async fillDescription(description: string): Promise<void> {
+    await this.fillStatusDescription(description);
+  }
+
   async selectIsActive(status: 'Active' | 'Inactive'): Promise<void> {
     const value = status === 'Active' ? 'true' : 'false';
     await this.statusIsActiveSelect.selectOption(value);
@@ -174,6 +178,46 @@ export class StatusOptionsPage extends BasePage {
 
   async saveModal(): Promise<void> {
     await this.modalSaveButton.click();
+  }
+
+  async openEditStatusOptionModal(name: string): Promise<void> {
+    const row = this.getStatusOptionRow(name);
+    await row.waitFor({ state: 'visible' });
+    await row.locator('td').nth(1).click();
+    await this.modalDialog.waitFor({ state: 'visible' });
+  }
+
+  async openEditStatusOptionModalByRow(rowIndex: number = 0): Promise<string> {
+    await this.table.waitFor({ state: 'visible' });
+    const row = this.tableRows.nth(rowIndex);
+    await row.waitFor({ state: 'visible' });
+    const statusOptionName = (await row.locator('td').nth(1).innerText()).trim();
+    await row.locator('td').nth(1).click();
+    await this.modalDialog.waitFor({ state: 'visible' });
+    return statusOptionName;
+  }
+
+  async fillDisplayOrder(order: number | string): Promise<void> {
+    await this.statusDisplayOrderInput.fill(order.toString());
+  }
+
+  async updateStatusOption(data: {
+    description?: string;
+    isActive?: 'Active' | 'Inactive' | boolean;
+    displayOrder?: number | string;
+  }): Promise<void> {
+    if (data.description !== undefined) {
+      await this.fillStatusDescription(data.description);
+    }
+    if (data.isActive !== undefined) {
+      const activeChoice = typeof data.isActive === 'boolean' ? (data.isActive ? 'Active' : 'Inactive') : data.isActive;
+      await this.selectIsActive(activeChoice);
+    }
+    if (data.displayOrder !== undefined) {
+      await this.fillDisplayOrder(data.displayOrder);
+    }
+    await this.saveModal();
+    await this.modalDialog.waitFor({ state: 'hidden' });
   }
 
   async createStatusOption(

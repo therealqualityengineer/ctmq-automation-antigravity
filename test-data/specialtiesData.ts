@@ -15,9 +15,13 @@ export const specialtiesData = {
     nameRequired: 'Specialty Name is required.',
     duplicateConflict: 'A specialty with this name already exists.',
     createSuccess: 'Specialty added successfully.',
+    updateSuccess: 'Specialty updated successfully.',
+    updateError: 'Failed to update specialty',
   },
   modal: {
     title: 'Add Specialty',
+    editTitle: 'Edit Specialty',
+    saveChangesButton: 'Save Changes',
     namePlaceholder: 'e.g. Intensive Care Unit',
     certDropdownDefault: 'Select certifications...',
   },

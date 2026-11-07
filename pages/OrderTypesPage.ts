@@ -69,11 +69,11 @@ export class OrderTypesPage extends BasePage {
 
     // Modal
     this.modalDialog = page.getByRole('dialog');
-    this.modalTitle = this.modalDialog.getByRole('heading', { name: 'Order Type', exact: true });
+    this.modalTitle = this.modalDialog.getByRole('heading').first();
     this.modalSubtitle = this.modalDialog.locator('text=* indicates required field').first();
     this.modalCloseButton = this.modalDialog.getByRole('button', { name: 'Close' });
     this.modalCancelButton = this.modalDialog.getByRole('button', { name: 'Cancel', exact: true });
-    this.modalSaveButton = this.modalDialog.getByRole('button', { name: /Save Order Type|Save/i });
+    this.modalSaveButton = this.modalDialog.getByRole('button', { name: /Save Changes|Save Order Type|Save/i });
 
     // Modal Form Fields
     this.nameInput = this.modalDialog.getByRole('textbox', { name: /Order Type Name/i })
@@ -86,7 +86,7 @@ export class OrderTypesPage extends BasePage {
       .or(this.modalDialog.locator('#order-type-status'))
       .first();
     this.defaultSelect = this.modalDialog.getByRole('combobox', { name: /(Order Form Default|LT Order Form Default)/i })
-      .or(this.modalDialog.locator('#order-form-default, #is-default, select[name*="default" i]'))
+      .or(this.modalDialog.locator('#order-type-default, #order-form-default, #is-default, select[name*="default" i]'))
       .first();
 
     this.modalRequiredFieldError = this.modalDialog.locator('text=/Order Type Name is required/i');
@@ -188,6 +188,42 @@ export class OrderTypesPage extends BasePage {
 
   async saveModal(): Promise<void> {
     await this.modalSaveButton.click();
+  }
+
+  async openEditOrderTypeModal(name: string): Promise<void> {
+    const row = this.getOrderTypeRow(name);
+    await row.waitFor({ state: 'visible' });
+    await row.locator('td').nth(1).click();
+    await this.modalDialog.waitFor({ state: 'visible' });
+  }
+
+  async openEditOrderTypeModalByRow(rowIndex: number = 0): Promise<string> {
+    await this.table.waitFor({ state: 'visible' });
+    const row = this.tableRows.nth(rowIndex);
+    await row.waitFor({ state: 'visible' });
+    const orderTypeName = (await row.locator('td').nth(1).innerText()).trim();
+    await row.locator('td').nth(1).click();
+    await this.modalDialog.waitFor({ state: 'visible' });
+    return orderTypeName;
+  }
+
+  async updateOrderType(data: {
+    status?: 'Active' | 'Hidden';
+    isDefault?: 'Yes' | 'No' | boolean;
+    shiftOrderTypeDefault?: string;
+  }): Promise<void> {
+    if (data.status) {
+      await this.selectStatus(data.status);
+    }
+    if (data.isDefault !== undefined) {
+      const choice = typeof data.isDefault === 'boolean' ? (data.isDefault ? 'Yes' : 'No') : data.isDefault;
+      await this.selectDefault(choice);
+    }
+    if (data.shiftOrderTypeDefault && (await this.shiftOrderTypeDefaultSelect.isVisible())) {
+      await this.selectShiftOrderTypeDefault(data.shiftOrderTypeDefault);
+    }
+    await this.saveModal();
+    await this.modalDialog.waitFor({ state: 'hidden' });
   }
 
   async createOrderType(data: {
