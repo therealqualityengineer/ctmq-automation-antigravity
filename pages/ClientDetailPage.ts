@@ -23,11 +23,22 @@ export class ClientDetailPage extends BasePage {
   readonly saveButton: Locator;
   readonly cancelButton: Locator;
   readonly editButton: Locator;
+  readonly deleteButton: Locator;
+
+  // Delete Modal
+  readonly deleteModal: Locator;
+  readonly modalTitle: Locator;
+  readonly modalPrompt: Locator;
+  readonly modalCloseButton: Locator;
+  readonly modalCancelButton: Locator;
+  readonly modalConfirmDeleteButton: Locator;
 
   // Feedback & Alerts
   readonly createSuccessBanner: Locator;
   readonly saveSuccessBanner: Locator;
+  readonly deleteSuccessBanner: Locator;
   readonly serverErrorBanner: Locator;
+  readonly deleteErrorBanner: Locator;
   readonly noCountyFoundMessage: Locator;
 
   constructor(page: Page) {
@@ -52,11 +63,22 @@ export class ClientDetailPage extends BasePage {
     this.saveButton = page.getByRole('button', { name: 'Save', exact: true });
     this.cancelButton = page.getByRole('button', { name: 'Cancel', exact: true });
     this.editButton = page.getByRole('button', { name: 'Edit', exact: true });
+    this.deleteButton = page.locator('button:has-text("Delete")').first();
+
+    // Delete Modal
+    this.deleteModal = page.locator('div[role="dialog"]');
+    this.modalTitle = this.deleteModal.getByRole('heading', { name: /Delete Client/i });
+    this.modalPrompt = this.deleteModal.getByText("Are you sure? This can't be undone.");
+    this.modalCloseButton = this.deleteModal.getByRole('button', { name: 'Close' });
+    this.modalCancelButton = this.deleteModal.getByRole('button', { name: 'Cancel', exact: true });
+    this.modalConfirmDeleteButton = this.deleteModal.getByRole('button', { name: 'Delete', exact: true });
 
     // Feedback
     this.createSuccessBanner = page.locator('p[role="status"]').filter({ hasText: 'Client created successfully.' });
     this.saveSuccessBanner = page.locator('p[role="status"]').filter({ hasText: 'Client saved successfully.' });
+    this.deleteSuccessBanner = page.getByText('Client deleted successfully.');
     this.serverErrorBanner = page.locator('p.text-red-700, [role="alert"]').filter({ hasText: /Internal Server Error|failed|error/i });
+    this.deleteErrorBanner = page.locator('[role="alert"], p.text-red-600, p.text-red-700, span.text-red-600');
     this.noCountyFoundMessage = page.getByText('No county found for this ZIP — please check the ZIP.');
   }
 
@@ -171,6 +193,47 @@ export class ClientDetailPage extends BasePage {
 
   async getCountyOptionTexts(): Promise<string[]> {
     return await this.getSelectOptionTexts(this.countySelect);
+  }
+
+  async clickDelete(): Promise<void> {
+    await this.deleteButton.click();
+  }
+
+  async confirmDelete(): Promise<void> {
+    await this.modalConfirmDeleteButton.click();
+  }
+
+  async cancelDeleteModal(): Promise<void> {
+    await this.modalCancelButton.click();
+  }
+
+  async closeDeleteModal(): Promise<void> {
+    await this.modalCloseButton.click();
+  }
+
+  async deleteAndInterceptResponse(): Promise<{ status: number; body: any }> {
+    const responsePromise = this.page.waitForResponse(
+      (resp) => resp.url().includes('/api/clients') && resp.request().method() === 'DELETE'
+    );
+    await this.confirmDelete();
+    const response = await responsePromise;
+    let body = {};
+    try {
+      body = await response.json();
+    } catch {
+      // response body not json
+    }
+    return { status: response.status(), body };
+  }
+
+  async createClientViaApi(payload: ClientPayload): Promise<any> {
+    const response = await this.page.request.post('/api/clients', { data: payload });
+    return await response.json();
+  }
+
+  async deleteClientViaApi(id: number | string): Promise<any> {
+    const response = await this.page.request.delete(`/api/clients/${id}`);
+    return response.status();
   }
 }
 
