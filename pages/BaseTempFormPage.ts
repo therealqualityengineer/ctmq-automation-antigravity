@@ -166,10 +166,10 @@ export abstract class BaseTempFormPage extends BasePage {
   }
 
   async areAllTempFieldsDisabled(): Promise<boolean> {
-    return await this.areAllFieldsDisabled(this.getFormFields());
+    return await super.areAllFieldsDisabled(this.getFormFields());
   }
 
   async areAllTempFieldsEnabled(): Promise<boolean> {
-    return await this.areAllFieldsEnabled(this.getFormFields());
+    return await super.areAllFieldsEnabled(this.getFormFields());
   }
 }

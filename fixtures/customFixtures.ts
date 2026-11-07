@@ -39,6 +39,9 @@ async function ensureAuthenticated(page: any, context: any): Promise<void> {
   }
 
   if (cachedCookies && cachedCookies.length > 0) {
+    if (page.url() !== 'about:blank' && !page.url().includes('/login')) {
+      return;
+    }
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     const isLoggedIn = await Promise.race([
       page.waitForURL(/\/login/, { timeout: 2000 }).then(() => false).catch(() => false),
