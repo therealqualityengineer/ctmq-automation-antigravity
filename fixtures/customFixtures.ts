@@ -14,6 +14,9 @@ import { LayoutPage } from '../pages/LayoutPage';
 import { AdminPage } from '../pages/AdminPage';
 import { SpecialtiesPage } from '../pages/SpecialtiesPage';
 import { CertificationsPage } from '../pages/CertificationsPage';
+import { ShiftsPage } from '../pages/ShiftsPage';
+import { OrderTypesPage } from '../pages/OrderTypesPage';
+import { StatusOptionsPage } from '../pages/StatusOptionsPage';
 import { authData } from '../test-data/authData';
 
 const COOKIE_FILE = path.resolve(__dirname, '../.auth_cookies.json');
@@ -108,6 +111,12 @@ type TestFixtures = {
   authenticatedSpecialtiesPage: SpecialtiesPage;
   certificationsPage: CertificationsPage;
   authenticatedCertificationsPage: CertificationsPage;
+  shiftsPage: ShiftsPage;
+  authenticatedShiftsPage: ShiftsPage;
+  orderTypesPage: OrderTypesPage;
+  authenticatedOrderTypesPage: OrderTypesPage;
+  statusOptionsPage: StatusOptionsPage;
+  authenticatedStatusOptionsPage: StatusOptionsPage;
 };
 
 export const test = baseTest.extend<TestFixtures>({
@@ -252,6 +261,39 @@ export const test = baseTest.extend<TestFixtures>({
     await certificationsPage.gotoCertifications();
     await page.waitForURL(/.*\/admin\/certifications.*/);
     await use(certificationsPage);
+  },
+  shiftsPage: async ({ page }, use) => {
+    const shiftsPage = new ShiftsPage(page);
+    await use(shiftsPage);
+  },
+  authenticatedShiftsPage: async ({ page, context }, use) => {
+    const shiftsPage = new ShiftsPage(page);
+    await ensureAuthenticated(page, context);
+    await shiftsPage.gotoShifts();
+    await page.waitForURL(/.*\/admin\/shifts.*/);
+    await use(shiftsPage);
+  },
+  orderTypesPage: async ({ page }, use) => {
+    const orderTypesPage = new OrderTypesPage(page);
+    await use(orderTypesPage);
+  },
+  authenticatedOrderTypesPage: async ({ page, context }, use) => {
+    const orderTypesPage = new OrderTypesPage(page);
+    await ensureAuthenticated(page, context);
+    await orderTypesPage.gotoOrderTypes();
+    await page.waitForURL(/.*\/admin\/order-types.*/);
+    await use(orderTypesPage);
+  },
+  statusOptionsPage: async ({ page }, use) => {
+    const statusOptionsPage = new StatusOptionsPage(page);
+    await use(statusOptionsPage);
+  },
+  authenticatedStatusOptionsPage: async ({ page, context }, use) => {
+    const statusOptionsPage = new StatusOptionsPage(page);
+    await ensureAuthenticated(page, context);
+    await statusOptionsPage.gotoStatusOptions();
+    await page.waitForURL(/.*\/admin\/status-options.*/);
+    await use(statusOptionsPage);
   },
 });
 
