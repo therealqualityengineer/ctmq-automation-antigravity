@@ -13,6 +13,7 @@ import { ClientDetailPage } from '../pages/ClientDetailPage';
 import { LayoutPage } from '../pages/LayoutPage';
 import { AdminPage } from '../pages/AdminPage';
 import { SpecialtiesPage } from '../pages/SpecialtiesPage';
+import { CertificationsPage } from '../pages/CertificationsPage';
 import { authData } from '../test-data/authData';
 
 const COOKIE_FILE = path.resolve(__dirname, '../.auth_cookies.json');
@@ -105,6 +106,8 @@ type TestFixtures = {
   authenticatedAdminPage: AdminPage;
   specialtiesPage: SpecialtiesPage;
   authenticatedSpecialtiesPage: SpecialtiesPage;
+  certificationsPage: CertificationsPage;
+  authenticatedCertificationsPage: CertificationsPage;
 };
 
 export const test = baseTest.extend<TestFixtures>({
@@ -238,6 +241,17 @@ export const test = baseTest.extend<TestFixtures>({
     await specialtiesPage.gotoSpecialties();
     await page.waitForURL(/.*\/admin\/specialties.*/);
     await use(specialtiesPage);
+  },
+  certificationsPage: async ({ page }, use) => {
+    const certificationsPage = new CertificationsPage(page);
+    await use(certificationsPage);
+  },
+  authenticatedCertificationsPage: async ({ page, context }, use) => {
+    const certificationsPage = new CertificationsPage(page);
+    await ensureAuthenticated(page, context);
+    await certificationsPage.gotoCertifications();
+    await page.waitForURL(/.*\/admin\/certifications.*/);
+    await use(certificationsPage);
   },
 });
 
