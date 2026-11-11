@@ -9,6 +9,8 @@ export interface TempPayload {
   zip: string;
   county: string;
   status: 'Active' | 'Inactive';
+  certification?: string;
+  specialty?: string;
   dateOfBirth: string;
   gender: 'Male' | 'Female' | 'Other';
   maritalStatus: 'Single' | 'Married' | 'Divorced' | 'Widowed';
