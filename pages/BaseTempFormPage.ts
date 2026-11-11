@@ -19,6 +19,10 @@ export abstract class BaseTempFormPage extends BasePage {
 
   // Right Box - Status & Personal
   readonly statusSelect: Locator;
+  readonly certificationLabel: Locator;
+  readonly certificationSelect: Locator;
+  readonly specialtyLabel: Locator;
+  readonly specialtySelect: Locator;
   readonly dateOfBirthInput: Locator;
   readonly genderMaleRadio: Locator;
   readonly genderFemaleRadio: Locator;
@@ -47,6 +51,10 @@ export abstract class BaseTempFormPage extends BasePage {
 
     // Right Box
     this.statusSelect = page.locator('#status');
+    this.certificationLabel = page.locator('label[for="certification"]');
+    this.certificationSelect = page.locator('#certification');
+    this.specialtyLabel = page.locator('label[for="specialty"]');
+    this.specialtySelect = page.locator('#specialty');
     this.dateOfBirthInput = page.locator('#dateOfBirth');
     this.genderMaleRadio = page.locator('input[name="gender"][value="Male"]');
     this.genderFemaleRadio = page.locator('input[name="gender"][value="Female"]');
@@ -74,6 +82,13 @@ export abstract class BaseTempFormPage extends BasePage {
       await this.countySelect.selectOption(data.county);
     }
     if (data.status !== undefined) await this.statusSelect.selectOption(data.status);
+    if (data.certification !== undefined) {
+      await this.selectCertification(data.certification);
+      await this.page.waitForTimeout(200);
+    }
+    if (data.specialty !== undefined) {
+      await this.selectSpecialty(data.specialty);
+    }
     if (data.dateOfBirth !== undefined) await this.dateOfBirthInput.fill(data.dateOfBirth);
     if (data.gender) {
       if (data.gender === 'Male') await this.genderMaleRadio.check();
@@ -145,6 +160,39 @@ export abstract class BaseTempFormPage extends BasePage {
     return await this.getSelectOptionTexts(this.countySelect);
   }
 
+  async selectCertification(valueOrLabel: string): Promise<void> {
+    if (valueOrLabel === '') {
+      await this.certificationSelect.selectOption('');
+    } else {
+      await this.certificationSelect.selectOption({ label: valueOrLabel });
+    }
+  }
+
+  async selectSpecialty(valueOrLabel: string): Promise<void> {
+    if (valueOrLabel === '') {
+      await this.specialtySelect.selectOption('');
+    } else {
+      await this.specialtySelect.selectOption({ label: valueOrLabel });
+    }
+  }
+
+  async getCertificationOptionTexts(): Promise<string[]> {
+    await this.certificationSelect.locator('option').nth(1).waitFor({ state: 'attached', timeout: 5000 }).catch(() => {});
+    return await this.getSelectOptionTexts(this.certificationSelect);
+  }
+
+  async getSpecialtyOptionTexts(): Promise<string[]> {
+    return await this.getSelectOptionTexts(this.specialtySelect);
+  }
+
+  async getSelectedCertification(): Promise<string> {
+    return await this.certificationSelect.inputValue();
+  }
+
+  async getSelectedSpecialty(): Promise<string> {
+    return await this.specialtySelect.inputValue();
+  }
+
   getFormFields(): Locator[] {
     return [
       this.firstNameInput,
@@ -157,6 +205,8 @@ export abstract class BaseTempFormPage extends BasePage {
       this.zipInput,
       this.countySelect,
       this.statusSelect,
+      this.certificationSelect,
+      this.specialtySelect,
       this.dateOfBirthInput,
       this.genderMaleRadio,
       this.genderFemaleRadio,
@@ -170,6 +220,11 @@ export abstract class BaseTempFormPage extends BasePage {
   }
 
   async areAllTempFieldsEnabled(): Promise<boolean> {
-    return await super.areAllFieldsEnabled(this.getFormFields());
+    // Specialty is conditionally enabled based on certification selection
+    const certVal = await this.certificationSelect.inputValue().catch(() => '');
+    const fieldsToCheck = certVal
+      ? this.getFormFields()
+      : this.getFormFields().filter((f) => f !== this.specialtySelect);
+    return await super.areAllFieldsEnabled(fieldsToCheck);
   }
 }
