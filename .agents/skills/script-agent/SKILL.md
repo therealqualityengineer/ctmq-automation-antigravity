@@ -41,27 +41,32 @@ Evaluate each test case in the sub-task:
   - If a scenario is already covered, **do not write a duplicate test**. Flag it as already covered, link to the existing spec, or augment the existing test only if new assertions are needed.
 - Explicitly list which TCs will be automated, which are already covered, and which are deferred to manual with justifications.
 
-### Step 3: Analyze Repository Patterns & Plan Reusability
+### Step 3: Analyze Repository Patterns, Gotchas & Plan Reusability
 Before writing any code:
-1. **Check `tests/` for Overlapping Coverage**: Confirm no duplicate test cases are created across specs.
-2. **Check `pages/` & `BasePage.ts` for Existing Locators & Methods**:
+1. **Check Gotchas Memory (`context_docs/app_gotchas.md`)**:
+   - Review known DOM quirks, timing workarounds, modal transition gotchas, and selector strategies previously recorded across tickets.
+2. **Check `tests/` for Overlapping Coverage**: Confirm no duplicate test cases are created across specs.
+3. **Check `pages/` & `BasePage.ts` for Existing Locators & Methods**:
    - Does a Page Object for this feature or screen already exist?
      - If yes: Extend it with needed locators and action methods.
      - If no: Create `pages/{Feature}Page.ts` extending `BasePage` (or a relevant shared base class).
    - **Reuse BasePage Capabilities**: Inherit generic actions (`setViewport`, `pressTab`, `isFieldInvalid`, `isFieldValid`, `getValidationMessage`) from `BasePage` rather than redefining them per page.
    - **Extract Shared Form/Layout Components**: When multiple pages share identical elements (e.g. Add Temp vs Temp Detail, or global navigation), inherit from a shared base page (e.g., `BaseTempFormPage`) or reference shared components instead of duplicating 10+ identical locators.
-3. **Check `fixtures/customFixtures.ts`**:
+4. **Check `fixtures/customFixtures.ts`**:
    - Register any new Page Object so it is injected via fixtures.
    - Ensure authentication/login is handled via fixture setup (no repetitive login steps in individual specs).
-4. **Check `utils/`**: Reuse existing helper functions (date helpers, random generators, string sanitizers) rather than reinventing them.
-5. **Check `test-data/`**: Check existing files in `test-data/` for shared payload types (e.g., `TempPayload`), URLs, viewports, and data generators to avoid duplicate interfaces and constants.
+5. **Check `utils/`**: Reuse existing helper functions (date helpers, random generators, string sanitizers) rather than reinventing them.
+6. **Check `test-data/`**: Check existing files in `test-data/` for shared payload types (e.g., `TempPayload`), URLs, viewports, and data generators to avoid duplicate interfaces and constants.
+7. **Check `scratch/` for Existing Probes**:
+   - Check if an exploratory probe script already exists for this page/component (e.g. `scratch/probe-status-options.ts`, `scratch/probe-temp-validations.ts`).
+   - Run or adapt the existing probe to quickly verify live DOM states or inspect selectors before authoring tests.
 
-#### Optional: Scratch & Probe Workbench (`scratch/`)
-- For tricky UI elements (dynamic dropdowns, Shadow DOM, nested iframes, custom grids) or ambiguous locators:
-  - ScriptAgent can optionally write temporary probe scripts (e.g., `scratch/probe-{feature}.ts`) to inspect accessibility trees (`page.accessibility.snapshot()`) or test candidate locators live.
-  - `scratch/` is **git-ignored** and acts as an isolated workbench.
-  - Useful probe scripts or DOM inspection notes may be kept in `scratch/` for future agent runs to refer back to.
-  - **Rule**: Production specs must never import from `scratch/`. All verified locators must be transferred to the target Page Object in `pages/`.
+#### Scratch & Probe Workbench (`scratch/`)
+- `scratch/` is the dedicated **diagnostic laboratory and live element workbench**:
+  - Used for fast, isolated execution: inspecting accessibility trees (`page.accessibility.snapshot()`), Shadow DOM, iframe structures, dialog timing, or API responses without running the full test runner.
+  - Existing probe scripts in `scratch/` are reusable assets across tickets.
+  - **Rule**: Production specs must never import from `scratch/`. All verified locators and flows must be ported into their proper Page Objects (`pages/`).
+  - **Knowledge Extraction**: When a probe uncovers an application quirk or timing requirement, distill that finding into `context_docs/app_gotchas.md`.
 
 ### Step 4: Write Automation Code (Strict Layered Hierarchy)
 
@@ -115,12 +120,15 @@ Once the test spec, page objects, fixtures, and test data are written:
 
 ---
 
-### Step 6: Knowledge Store Synchronization
+### Step 6: Knowledge Store Synchronization & Continuous Learning
 Only after tests pass successfully (or after explicit user resolution):
 1. **Update Local Knowledge (`test-plans/{JiraTicket}.md`)**:
    - Update each scenario status: `Automated` (with link to `tests/{feature}.spec.ts`) or `Manual`.
    - List newly added/updated Page Objects and fixtures.
-2. **Update Jira Sub-task ("QA Testing Antigravity")**:
+2. **Update Gotchas & Timing Memory (`context_docs/app_gotchas.md`)**:
+   - If this ticket's test authoring or RCA uncovered a new UI quirk, tricky locator, modal animation workaround, or auth handling pattern, append it to `context_docs/app_gotchas.md`.
+   - Reference any diagnostic probe script created in `scratch/`.
+3. **Update Jira Sub-task ("QA Testing Antigravity")**:
    - Add a comment or update description with automation summary:
      - Automated test cases count vs. manual count.
      - Spec file path, test execution pass status, and PR/branch reference.

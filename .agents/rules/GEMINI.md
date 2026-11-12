@@ -65,3 +65,16 @@ These rules govern how AI agents generate test plans and automation code in this
 - **Mandatory Test Execution**: Once test writing is completed for a ticket, `script-agent` must run the tests (`npx playwright test <spec>`) and verify that all tests pass.
 - **Root Cause Analysis & Auto-Fix**: If a test fails, diagnose the root cause (locators, synchronization, fixture, test data) and fix it. Never weaken assertions to force a pass.
 - **Escalate Unfixable Failures**: If a test cannot be fixed due to an application bug, environment/service outage, or missing permissions, stop immediately and inform the user with a detailed failure report.
+
+## 7. Continuous Learning & Knowledge Retention
+To ensure agents build compound intelligence between Ticket #1 and Ticket #100:
+- **Application Blueprint (`context_docs/application_knowledge.md`)**:
+  - `plan-agent` must read this file before generating test scenarios to incorporate system workflows, user roles, and cross-feature dependencies.
+  - Upon completing a ticket test plan, `plan-agent` updates this blueprint with newly discovered entities, validations, and business rules.
+- **Timing & Gotchas Memory (`context_docs/app_gotchas.md`)**:
+  - `script-agent` must consult this file before authoring tests to avoid known UI timing, selector, or modal traps.
+  - When resolving failures or DOM quirks via RCA, `script-agent` records the finding and resolution here.
+- **Probe Workbench (`scratch/`)**:
+  - `script-agent` reuses existing `scratch/probe-*.ts` scripts or creates new standalone probes for rapid DOM inspection and isolated RCA debugging.
+  - Probes remain the executable testbench; distilled lessons must always be ported into `context_docs/app_gotchas.md`.
+
