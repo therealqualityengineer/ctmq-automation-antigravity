@@ -24,7 +24,7 @@ Add Testcase {JiraTicket}
 
 ## End-to-End Workflow
 
-### Step 1: Fetch Ticket via Atlassian MCP
+### Step 1: Fetch Ticket via Atlassian MCP & Ground in Domain Knowledge
 1. Call `getAccessibleAtlassianResources` once per session to retrieve and cache the `cloudId`.
 2. Call `getJiraIssue` with `cloudId` and `issueIdOrKey: "{JiraTicket}"` using `view: "evidence"` or `view: "full"`.
 3. Extract:
@@ -32,6 +32,7 @@ Add Testcase {JiraTicket}
    - Summary & Description
    - Acceptance Criteria, Definition of Done, and User Persona
    - Existing sub-tasks (to check if `"QA Testing Antigravity"` already exists)
+4. **Domain Grounding**: Read `context_docs/application_knowledge.md` to evaluate the ticket against known entity relationships, roles, routes, and business rules.
 
 ### Step 2: Analyze Requirements & Design Test Cases
 Apply formal QA test engineering techniques:
@@ -69,6 +70,10 @@ Structure test cases into three primary categories:
 ### Step 4: Persist Local Knowledge Artifact (`test-plans/{JiraTicket}.md`)
 1. Save the identical test plan locally under `test-plans/{JiraTicket}.md`.
 2. This establishes local repository knowledge so `script-agent` can author automation specs offline without re-querying Jira, ensuring Git traceability alongside code changes.
+
+### Step 5: Update Application Knowledge Blueprint
+1. If the ticket introduces new business rules, entity lifecycles, permissions, or routes, append/update them into `context_docs/application_knowledge.md`.
+2. This ensures subsequent tickets benefit from the cumulative domain learning.
 
 ---
 
