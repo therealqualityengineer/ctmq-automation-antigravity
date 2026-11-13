@@ -132,6 +132,8 @@ Only after tests pass successfully (or after explicit user resolution):
    - Add a comment or update description with automation summary:
      - Automated test cases count vs. manual count.
      - Spec file path, test execution pass status, and PR/branch reference.
+4. **Auto-Update Code Corpus (`.context/code-corpus.json`)**:
+   - Execute `npm run build:corpus` to immediately sync all newly created or updated Page Objects, methods, and test scenarios into the repository's AST code corpus.
 
 ---
 
