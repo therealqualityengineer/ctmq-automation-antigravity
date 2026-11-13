@@ -19,10 +19,11 @@ This living register records practical DOM quirks, timing workarounds, locator p
 ---
 
 ## 2. Table Loading & Async Data Rows
-- **Symptom / Quirk**: Tables (e.g. Temps, Clients, Status Options) render an initial empty state or skeleton loader before `tbody tr` rows are rendered via API fetch.
+- **Symptom / Quirk**: Tables (e.g. Temps, Clients, Status Options, Certifications, Specialties) render an initial empty state or skeleton loader before `tbody tr` rows are rendered via API fetch. Additionally, querying `tableHeaders.allInnerTexts()` immediately upon page load can return an empty array (`[]`) before the table component mounts its `<thead>`.
 - **Solution**:
   - Avoid raw `expect(page.locator('tbody tr')).toHaveCount(N)` immediately after page load.
   - Wait for network idle or wait for the skeleton/loading spinner to detach: `await expect(page.locator('.loading-indicator')).toHaveCount(0)`.
+  - Always enforce web-first assertion on table and first header before evaluating column headers: `await expect(pageObject.table).toBeVisible()` and `await expect(pageObject.tableHeaders.first()).toBeVisible()`.
   - Alternatively, use `await page.locator('tbody tr').first().waitFor({ state: 'visible' })` before evaluating row counts or cell text.
 - **Reference Probes**:
   - [scratch/probe-tbody-loading.ts](file:///Users/arunramalingam/Documents/GitHub/ctmq-automation-antigravity/scratch/probe-tbody-loading.ts)
