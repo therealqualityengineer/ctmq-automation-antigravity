@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-13T02:31:57.794Z",
+    "generatedAt": "2026-11-13T05:35:32.465Z",
     "generator": "AST Symbol Chunker v1.0",
-    "totalFilesScanned": 44,
-    "totalChunks": 685,
+    "totalFilesScanned": 45,
+    "totalChunks": 700,
     "stats": {
       "pageObjects": 19,
       "methods": 345,
-      "tests": 321,
-      "filesProcessed": 44
+      "tests": 336,
+      "filesProcessed": 45
     }
   },
   "chunks": [
@@ -5555,6 +5555,232 @@
       ],
       "locatorsUsed": [],
       "code": "test('TC-18 - Non-regression: Existing search, pagination, and edit workflows', async ({ authenticatedUserManagerPage, page }) => {\n    await expect(authenticatedUserManagerPage.pageHeading).toBeVisible();\n    await expect(authenticatedUserManagerPage.searchInput).toBeVisible();\n    await expect(authenticatedUserManagerPage.userTable).toBeVisible();\n\n    await authenticatedUserManagerPage.searchUser(addUserData.existingUsers.adminUsername);\n    const matchedRow = authenticatedUserManagerPage.getUserRowByUsername(addUserData.existingUsers.adminUsername);\n    await expect(matchedRow).toBeVisible();\n\n    await authenticatedUserManagerPage.clearSearch();\n    await expect(authenticatedUserManagerPage.userTable).toBeVisible();\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-01_-_Verify_presence_and_labeling_of_mapping_co",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-01 - Verify presence and labeling of mapping columns in both Admin tables",
+      "startLine": 10,
+      "endLine": 29,
+      "fixtures": [
+        "authenticatedCertificationsPage",
+        "authenticatedSpecialtiesPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-01 - Verify presence and labeling of mapping columns in both Admin tables', async ({\n    authenticatedCertificationsPage,\n    authenticatedSpecialtiesPage,\n  }) => {\n    // 1. Verify Certifications table column headers\n    await authenticatedCertificationsPage.gotoCertifications();\n    await expect(authenticatedCertificationsPage.table).toBeVisible();\n    await expect(authenticatedCertificationsPage.tableHeaders.first()).toBeVisible();\n    const certHeaders = await authenticatedCertificationsPage.tableHeaders.allInnerTexts();\n    const normalizedCertHeaders = certHeaders.map((h) => h.trim().toUpperCase());\n    expect(normalizedCertHeaders).toContain('MAPPED SPECIALTIES');\n\n    // 2. Verify Specialties table column headers\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await expect(authenticatedSpecialtiesPage.table).toBeVisible();\n    await expect(authenticatedSpecialtiesPage.tableHeaders.first()).toBeVisible();\n    const specHeaders = await authenticatedSpecialtiesPage.tableHeaders.allInnerTexts();\n    const normalizedSpecHeaders = specHeaders.map((h) => h.trim().toUpperCase());\n    expect(normalizedSpecHeaders).toContain('CERTIFICATION MAPPING');\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-02_-_Verify_reciprocal_mapping_reflection_on_Sp",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-02 - Verify reciprocal mapping reflection on Specialties table when mapping via Certification creation",
+      "startLine": 35,
+      "endLine": 54,
+      "fixtures": [
+        "authenticatedCertificationsPage",
+        "authenticatedSpecialtiesPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-02 - Verify reciprocal mapping reflection on Specialties table when mapping via Certification creation', async ({\n    authenticatedCertificationsPage,\n    authenticatedSpecialtiesPage,\n  }) => {\n    const testCert = data.generators.generateCertName('TC02-CERT');\n    const targetSpecialty = data.baseEntities.cardiology;\n\n    // 1. Create Certification mapped to Cardiology\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(testCert, [targetSpecialty], data.status.active);\n\n    // Verify mapped specialty in Certifications table\n    const mappedSpecialties = await authenticatedCertificationsPage.getMappedSpecialtiesFor(testCert);\n    expect(mappedSpecialties).toContain(targetSpecialty);\n\n    // 2. Navigate to Specialties table and verify Cardiology displays the new certification\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    const certMapping = await authenticatedSpecialtiesPage.getCertificationMappingFor(targetSpecialty);\n    expect(certMapping).toContain(testCert);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-03_-_Verify_reciprocal_mapping_reflection_on_Ce",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-03 - Verify reciprocal mapping reflection on Certifications table when mapping via Specialty creation",
+      "startLine": 56,
+      "endLine": 75,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-03 - Verify reciprocal mapping reflection on Certifications table when mapping via Specialty creation', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const testSpec = data.generators.generateSpecName('TC03-SPEC');\n    const targetCert = data.baseEntities.bls;\n\n    // 1. Create Specialty mapped to BLS\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(testSpec, [targetCert], data.status.active);\n\n    // Verify mapped certification in Specialties table\n    const certMapping = await authenticatedSpecialtiesPage.getCertificationMappingFor(testSpec);\n    expect(certMapping).toContain(targetCert);\n\n    // 2. Navigate to Certifications table and verify BLS displays the new specialty\n    await authenticatedCertificationsPage.gotoCertifications();\n    const mappedSpecs = await authenticatedCertificationsPage.getMappedSpecialtiesFor(targetCert);\n    expect(mappedSpecs).toContain(testSpec);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-04_-_Verify_multi-mapping__Many-to-Many__displa",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-04 - Verify multi-mapping (Many-to-Many) display on Specialties view",
+      "startLine": 81,
+      "endLine": 103,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-04 - Verify multi-mapping (Many-to-Many) display on Specialties view', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const testSpec = data.generators.generateSpecName('TC04-MULTI-SPEC');\n    const certA = data.generators.generateCertName('TC04-CERTA');\n    const certB = data.generators.generateCertName('TC04-CERTB');\n\n    // 1. Create unique target specialty first\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(testSpec, [], data.status.active);\n\n    // 2. Create two certifications both mapped to this specialty\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(certA, [testSpec], data.status.active);\n    await authenticatedCertificationsPage.createCertification(certB, [testSpec], data.status.active);\n\n    // 3. Inspect Specialties view: specialty should list both certifications\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    const mapping = await authenticatedSpecialtiesPage.getCertificationMappingFor(testSpec);\n    expect(mapping).toContain(certA);\n    expect(mapping).toContain(certB);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-05_-_Verify_multi-mapping__Many-to-Many__displa",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-05 - Verify multi-mapping (Many-to-Many) display on Certifications view",
+      "startLine": 105,
+      "endLine": 126,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-05 - Verify multi-mapping (Many-to-Many) display on Certifications view', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const spec1 = data.generators.generateSpecName('TC05-SPEC1');\n    const spec2 = data.generators.generateSpecName('TC05-SPEC2');\n    const testCert = data.generators.generateCertName('TC05-MULTI-CERT');\n\n    // 1. Create two target specialties\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(spec1, [], data.status.active);\n    await authenticatedSpecialtiesPage.createSpecialty(spec2, [], data.status.active);\n\n    // 2. Create certification mapped to both specialties\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(testCert, [spec1, spec2], data.status.active);\n\n    // 3. Inspect Certifications view: certification should list both specialties\n    const mappedSpecs = await authenticatedCertificationsPage.getMappedSpecialtiesFor(testCert);\n    expect(mappedSpecs).toContain(spec1);\n    expect(mappedSpecs).toContain(spec2);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-06_-_Verify_bidirectional_synchronization_when_",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-06 - Verify bidirectional synchronization when updating / editing Certification mappings",
+      "startLine": 132,
+      "endLine": 167,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-06 - Verify bidirectional synchronization when updating / editing Certification mappings', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const specOrig = data.generators.generateSpecName('TC06-ORIG');\n    const specNew = data.generators.generateSpecName('TC06-NEW');\n    const testCert = data.generators.generateCertName('TC06-CERT');\n\n    // 1. Create specialties\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(specOrig, [], data.status.active);\n    await authenticatedSpecialtiesPage.createSpecialty(specNew, [], data.status.active);\n\n    // 2. Create certification mapped initially to specOrig\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(testCert, [specOrig], data.status.active);\n\n    // 3. Edit certification: deselect specOrig and select specNew\n    await authenticatedCertificationsPage.openEditCertModal(testCert);\n    await authenticatedCertificationsPage.deselectSpecialty(specOrig);\n    await authenticatedCertificationsPage.selectSpecialty(specNew);\n    await authenticatedCertificationsPage.saveEditChanges();\n\n    // Verify Certifications view reflects updated mapping\n    const updatedCertMapping = await authenticatedCertificationsPage.getMappedSpecialtiesFor(testCert);\n    expect(updatedCertMapping).toContain(specNew);\n    expect(updatedCertMapping).not.toContain(specOrig);\n\n    // 4. Verify Specialties view: specNew has testCert, specOrig does not\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    const newSpecMapping = await authenticatedSpecialtiesPage.getCertificationMappingFor(specNew);\n    expect(newSpecMapping).toContain(testCert);\n\n    const origSpecMapping = await authenticatedSpecialtiesPage.getCertificationMappingFor(specOrig);\n    expect(origSpecMapping).not.toContain(testCert);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-07_-_Verify_bidirectional_synchronization_when_",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-07 - Verify bidirectional synchronization when updating / editing Specialty mappings",
+      "startLine": 169,
+      "endLine": 204,
+      "fixtures": [
+        "authenticatedCertificationsPage",
+        "authenticatedSpecialtiesPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-07 - Verify bidirectional synchronization when updating / editing Specialty mappings', async ({\n    authenticatedCertificationsPage,\n    authenticatedSpecialtiesPage,\n  }) => {\n    const certOrig = data.generators.generateCertName('TC07-CERT-ORIG');\n    const certNew = data.generators.generateCertName('TC07-CERT-NEW');\n    const testSpec = data.generators.generateSpecName('TC07-SPEC');\n\n    // 1. Create certifications\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(certOrig, [], data.status.active);\n    await authenticatedCertificationsPage.createCertification(certNew, [], data.status.active);\n\n    // 2. Create specialty mapped initially to certOrig\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(testSpec, [certOrig], data.status.active);\n\n    // 3. Edit specialty: deselect certOrig and select certNew\n    await authenticatedSpecialtiesPage.openEditSpecialtyModal(testSpec);\n    await authenticatedSpecialtiesPage.deselectCertification(certOrig);\n    await authenticatedSpecialtiesPage.selectCertification(certNew);\n    await authenticatedSpecialtiesPage.saveEditChanges();\n\n    // Verify Specialties view reflects updated mapping\n    const updatedSpecMapping = await authenticatedSpecialtiesPage.getCertificationMappingFor(testSpec);\n    expect(updatedSpecMapping).toContain(certNew);\n    expect(updatedSpecMapping).not.toContain(certOrig);\n\n    // 4. Verify Certifications view: certNew has testSpec, certOrig does not\n    await authenticatedCertificationsPage.gotoCertifications();\n    const newCertMapping = await authenticatedCertificationsPage.getMappedSpecialtiesFor(certNew);\n    expect(newCertMapping).toContain(testSpec);\n\n    const origCertMapping = await authenticatedCertificationsPage.getMappedSpecialtiesFor(certOrig);\n    expect(origCertMapping).not.toContain(testSpec);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-08_-_Verify_unmapped_records_display_fallback_p",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-08 - Verify unmapped records display fallback placeholder hyphen (\"-\")",
+      "startLine": 210,
+      "endLine": 228,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-08 - Verify unmapped records display fallback placeholder hyphen (\"-\")', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const unmappedSpec = data.generators.generateSpecName('TC08-UNMAPPED-SPEC');\n    const unmappedCert = data.generators.generateCertName('TC08-UNMAPPED-CERT');\n\n    // 1. Create standalone unmapped specialty\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(unmappedSpec, [], data.status.active);\n    const specMapping = await authenticatedSpecialtiesPage.getCertificationMappingFor(unmappedSpec);\n    expect(specMapping).toBe(data.fallbackPlaceholder);\n\n    // 2. Create standalone unmapped certification\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(unmappedCert, [], data.status.active);\n    const certMapping = await authenticatedCertificationsPage.getMappedSpecialtiesFor(unmappedCert);\n    expect(certMapping).toBe(data.fallbackPlaceholder);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-09_-_Verify_dissociation_unmapping_resets_recip",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-09 - Verify dissociation/unmapping resets reciprocal view to fallback hyphen (\"-\")",
+      "startLine": 230,
+      "endLine": 258,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-09 - Verify dissociation/unmapping resets reciprocal view to fallback hyphen (\"-\")', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const soloSpec = data.generators.generateSpecName('TC09-SOLO-SPEC');\n    const soloCert = data.generators.generateCertName('TC09-SOLO-CERT');\n\n    // 1. Create specialty and mapped certification\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(soloSpec, [], data.status.active);\n\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(soloCert, [soloSpec], data.status.active);\n\n    // Verify initial mapping on Specialties table\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    expect(await authenticatedSpecialtiesPage.getCertificationMappingFor(soloSpec)).toContain(soloCert);\n\n    // 2. Edit certification and unmap the specialty\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.openEditCertModal(soloCert);\n    await authenticatedCertificationsPage.deselectSpecialty(soloSpec);\n    await authenticatedCertificationsPage.saveEditChanges();\n\n    // 3. Verify reciprocal view resets cleanly to hyphen '-'\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    const updatedMapping = await authenticatedSpecialtiesPage.getCertificationMappingFor(soloSpec);\n    expect(updatedMapping).toBe(data.fallbackPlaceholder);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-10_-_Verify_mapping_persistence_across_browser_",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-10 - Verify mapping persistence across browser reload and re-navigation",
+      "startLine": 264,
+      "endLine": 286,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-10 - Verify mapping persistence across browser reload and re-navigation', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const persistSpec = data.generators.generateSpecName('TC10-PERSIST-SPEC');\n    const persistCert = data.generators.generateCertName('TC10-PERSIST-CERT');\n\n    // 1. Create mapping\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(persistSpec, [], data.status.active);\n\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(persistCert, [persistSpec], data.status.active);\n\n    // 2. Hard reload on Certifications page and verify persistence\n    await authenticatedCertificationsPage.reloadPage();\n    expect(await authenticatedCertificationsPage.getMappedSpecialtiesFor(persistCert)).toContain(persistSpec);\n\n    // 3. Re-navigate to Specialties page, reload, and verify persistence\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.reloadPage();\n    expect(await authenticatedSpecialtiesPage.getCertificationMappingFor(persistSpec)).toContain(persistCert);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-11_-_Verify_inactive_Specialty_Certification_ma",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-11 - Verify inactive Specialty/Certification mapping handling in data tables",
+      "startLine": 288,
+      "endLine": 312,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-11 - Verify inactive Specialty/Certification mapping handling in data tables', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const inactiveSpec = data.generators.generateSpecName('TC11-INACTIVE-SPEC');\n    const inactiveCert = data.generators.generateCertName('TC11-INACTIVE-CERT');\n\n    // 1. Create specialty\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(inactiveSpec, [], data.status.active);\n\n    // 2. Create certification mapped to specialty with Inactive status\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(inactiveCert, [inactiveSpec], data.status.inactive);\n\n    // Verify Certifications view displays Inactive pill and mapped specialty\n    const statusPill = await authenticatedCertificationsPage.getStatusPillFor(inactiveCert);\n    await expect(statusPill).toHaveText(data.status.inactive);\n    expect(await authenticatedCertificationsPage.getMappedSpecialtiesFor(inactiveCert)).toContain(inactiveSpec);\n\n    // 3. Verify Specialties table displays mapped certification without error\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    const mapping = await authenticatedSpecialtiesPage.getCertificationMappingFor(inactiveSpec);\n    expect(mapping).toContain(inactiveCert);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-12_-_Verify_unauthenticated_access_protection_f",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-12 - Verify unauthenticated access protection for Admin mapping pages",
+      "startLine": 318,
+      "endLine": 330,
+      "fixtures": [
+        "page",
+        "specialtiesPage",
+        "certificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-12 - Verify unauthenticated access protection for Admin mapping pages', async ({\n    page,\n    specialtiesPage,\n    certificationsPage,\n  }) => {\n    // 1. Attempt unauthenticated navigation to /admin/certifications\n    await certificationsPage.gotoCertifications();\n    await expect(page).toHaveURL(new RegExp(data.routes.login));\n\n    // 2. Attempt unauthenticated navigation to /admin/specialties\n    await specialtiesPage.gotoSpecialties();\n    await expect(page).toHaveURL(new RegExp(data.routes.login));\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-13_-_Verify_UI_handling_of_long_entity_names_in",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-13 - Verify UI handling of long entity names in mapping columns",
+      "startLine": 336,
+      "endLine": 357,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-13 - Verify UI handling of long entity names in mapping columns', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const longCert = data.generators.generateLongName('TC13-LONG-CERT');\n    const testSpec = data.generators.generateSpecName('TC13-BOUND-SPEC');\n\n    // 1. Create specialty\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(testSpec, [], data.status.active);\n\n    // 2. Create certification with long name mapped to specialty\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(longCert, [testSpec], data.status.active);\n\n    // 3. Inspect Specialties view row and verify mapping cell renders without overflow failure\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    const mappingLoc = await authenticatedSpecialtiesPage.getCertificationMappingLocatorFor(testSpec);\n    await expect(mappingLoc).toBeVisible();\n    const mappingText = await mappingLoc.innerText();\n    expect(mappingText).toContain(longCert);\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-14_-_Verify_search_and_filtering_compatibility_",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-14 - Verify search and filtering compatibility with mapped values",
+      "startLine": 359,
+      "endLine": 386,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-14 - Verify search and filtering compatibility with mapped values', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const searchCert = data.generators.generateCertName('TC14-SEARCH-CERT');\n    const searchSpec = data.generators.generateSpecName('TC14-SEARCH-SPEC');\n\n    // 1. Create specialty\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(searchSpec, [], data.status.active);\n\n    // 2. Create certification mapped to specialty\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(searchCert, [searchSpec], data.status.active);\n\n    // 3. On Certifications page, search by mapped specialty name\n    await authenticatedCertificationsPage.search(searchSpec);\n    const certRow = authenticatedCertificationsPage.getCertRow(searchCert);\n    await expect(certRow).toBeVisible();\n    await authenticatedCertificationsPage.clearSearch();\n\n    // 4. On Specialties page, search by mapped certification name\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.search(searchCert);\n    const specRow = authenticatedSpecialtiesPage.getSpecialtyRow(searchSpec);\n    await expect(specRow).toBeVisible();\n    await authenticatedSpecialtiesPage.clearSearch();\n  })"
+    },
+    {
+      "id": "tests/adminBidirectionalMapping.spec.ts#TC-15_-_Verify_rapid_sequential_mapping_updates_ma",
+      "file": "tests/adminBidirectionalMapping.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-72 - Admin General Settings Certification and Specialty Bidirectional Mapping",
+      "name": "TC-15 - Verify rapid sequential mapping updates maintain state consistency",
+      "startLine": 388,
+      "endLine": 423,
+      "fixtures": [
+        "authenticatedSpecialtiesPage",
+        "authenticatedCertificationsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-15 - Verify rapid sequential mapping updates maintain state consistency', async ({\n    authenticatedSpecialtiesPage,\n    authenticatedCertificationsPage,\n  }) => {\n    const rapidSpec1 = data.generators.generateSpecName('TC15-RAPID-SPEC1');\n    const rapidSpec2 = data.generators.generateSpecName('TC15-RAPID-SPEC2');\n    const rapidCert = data.generators.generateCertName('TC15-RAPID-CERT');\n\n    // 1. Create two specialties\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    await authenticatedSpecialtiesPage.createSpecialty(rapidSpec1, [], data.status.active);\n    await authenticatedSpecialtiesPage.createSpecialty(rapidSpec2, [], data.status.active);\n\n    // 2. Create cert mapped to rapidSpec1\n    await authenticatedCertificationsPage.gotoCertifications();\n    await authenticatedCertificationsPage.createCertification(rapidCert, [rapidSpec1], data.status.active);\n\n    // 3. Edit cert: add rapidSpec2\n    await authenticatedCertificationsPage.openEditCertModal(rapidCert);\n    await authenticatedCertificationsPage.selectSpecialty(rapidSpec2);\n    await authenticatedCertificationsPage.saveEditChanges();\n\n    // 4. Edit cert again: remove rapidSpec1\n    await authenticatedCertificationsPage.openEditCertModal(rapidCert);\n    await authenticatedCertificationsPage.deselectSpecialty(rapidSpec1);\n    await authenticatedCertificationsPage.saveEditChanges();\n\n    // 5. Final state verification across both pages\n    const finalCertMapping = await authenticatedCertificationsPage.getMappedSpecialtiesFor(rapidCert);\n    expect(finalCertMapping).toContain(rapidSpec2);\n    expect(finalCertMapping).not.toContain(rapidSpec1);\n\n    await authenticatedSpecialtiesPage.gotoSpecialties();\n    expect(await authenticatedSpecialtiesPage.getCertificationMappingFor(rapidSpec2)).toContain(rapidCert);\n    expect(await authenticatedSpecialtiesPage.getCertificationMappingFor(rapidSpec1)).not.toContain(rapidCert);\n  })"
     },
     {
       "id": "tests/adminGeneralSettings.spec.ts#TC-01_-_Verify_General_Settings_card_container_lay",

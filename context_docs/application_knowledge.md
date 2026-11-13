@@ -49,6 +49,11 @@ CTMQ is a healthcare staffing and facility management platform managing temps (h
 ### C. Admin Master Configurations (Status Options, Certifications, Specialties)
 - **Status Options**: Can be tagged specifically for `Client` or `Temp`. Creating a duplicate status code/name within the same target type is blocked with a validation toast/error dialog.
 - **Deletions / Cascades**: An admin option (e.g., Specialty or Certification) that is actively associated with existing Temps cannot be hard-deleted; it triggers a dependency warning or is soft-deactivated.
+- **Certifications & Specialties Bidirectional Mapping**:
+  - Certifications (`/admin/certifications`) and Specialties (`/admin/specialties`) maintain a Many-to-Many bidirectional correlation.
+  - Mapped specialties configured on a certification record must immediately reflect under `MAPPED SPECIALTIES` in `/admin/certifications` and reciprocally under `CERTIFICATION MAPPING` in `/admin/specialties`.
+  - When no mapping exists, both tables display a fallback hyphen (`-`).
+  - Association and dissociation (unmapping) operations on either view must remain synchronized across both configuration tables and backend persistence.
 
 ---
 
