@@ -77,14 +77,15 @@ To ensure agents build compound intelligence between Ticket #1 and Ticket #100:
 - **Probe Workbench (`scratch/`)**:
   - `script-agent` reuses existing `scratch/probe-*.ts` scripts or creates new standalone probes for rapid DOM inspection and isolated RCA debugging.
   - Probes remain the executable testbench; distilled lessons must always be ported into `context_docs/app_gotchas.md`.
-- **Code Corpus Auto-Sync (`.context/code-corpus.json`)**:
+- **Code Corpus Retrieval & Auto-Sync (`.context/code-corpus.json`)**:
+  - `script-agent` must query the code corpus in Phase 2 via `npm run corpus:query -- "<feature keywords>"` to retrieve reusable methods, locators, and existing test scenarios before inspecting files or writing code.
   - `script-agent` must execute `npm run build:corpus` upon completing test authoring and verification to keep the repository's AST code catalog synchronized with all newly created Page Objects, methods, and specs.
 
 ## 8. Transparent Execution & Milestone Updates
 To give clear visibility into ongoing work without forcing the user to expand collapsed tool pills:
 - **High-Level Milestone Check-ins**: When executing complex or multi-phase tasks (e.g. `Write test {JiraTicket}`), agents should emit concise stage updates into the chat between major phases:
   - 📋 *Phase 1: Ingesting Jira ticket requirements & acceptance criteria*
-  - 🔍 *Phase 2: Checking Code Corpus for reusable Page Objects & existing specs*
+  - 🔍 *Phase 2: Querying Code Corpus (`npm run corpus:query`) for reusable Page Objects & deduplication*
   - 🛠️ *Phase 3: Authoring/updating Page Objects, fixtures, and specs*
   - 🧪 *Phase 4: Running Playwright test suite and verifying passes*
   - 🔄 *Phase 5: Auto-updating Code Corpus & Gotchas knowledge base*
