@@ -8,7 +8,8 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "report": "playwright show-report",
-    "build:corpus": "node scripts/context-engine/ast-chunker.js"
+    "build:corpus": "node scripts/context-engine/ast-chunker.js",
+    "corpus:query": "node scripts/context-engine/query-corpus.js"
   },
   "keywords": [
     "playwright",
