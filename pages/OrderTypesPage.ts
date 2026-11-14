@@ -8,6 +8,7 @@ export class OrderTypesPage extends BasePage {
   readonly adminSubNav: Locator;
 
   // Page Header & Controls
+  readonly heading: Locator;
   readonly addOrderTypeButton: Locator;
   readonly addOrderTypeButtonContainer: Locator;
   readonly categoryTabsNav: Locator;
@@ -49,6 +50,7 @@ export class OrderTypesPage extends BasePage {
     this.adminSubNav = page.locator('div.bg-slate-100').first();
 
     // Page Controls & Sub-tabs
+    this.heading = page.getByRole('heading', { name: 'Order Types', exact: true });
     this.addOrderTypeButton = page.getByRole('button', { name: /Add Order Type/i });
     this.addOrderTypeButtonContainer = page.locator('div.flex.justify-center').first();
     this.categoryTabsNav = page.getByRole('navigation', { name: 'Order Type Category Tabs' });
@@ -96,6 +98,10 @@ export class OrderTypesPage extends BasePage {
   async gotoOrderTypes(): Promise<void> {
     await this.navigate('/admin/order-types');
     await this.waitForPageLoaded();
+  }
+
+  async getHeadingText(): Promise<string> {
+    return (await this.heading.textContent())?.trim() || '';
   }
 
   async isAdminTabActive(): Promise<boolean> {

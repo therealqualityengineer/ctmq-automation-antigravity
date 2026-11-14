@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-13T05:35:32.465Z",
+    "generatedAt": "2026-11-13T18:45:20.234Z",
     "generator": "AST Symbol Chunker v1.0",
-    "totalFilesScanned": 45,
-    "totalChunks": 700,
+    "totalFilesScanned": 46,
+    "totalChunks": 722,
     "stats": {
       "pageObjects": 19,
-      "methods": 345,
-      "tests": 336,
-      "filesProcessed": 45
+      "methods": 355,
+      "tests": 348,
+      "filesProcessed": 46
     }
   },
   "chunks": [
@@ -651,7 +651,7 @@
       "parent": null,
       "name": "BasePage",
       "startLine": 3,
-      "endLine": 102,
+      "endLine": 129,
       "locatorsDefined": [],
       "signature": "class BasePage",
       "code": "export abstract class BasePage {\n  readonly page: Page;\n\n  constructor(page: Page) {\n    this.page = page;\n  }\n\n  async navigate(path: string = ''): Promise<void> {\n    await this.page.goto(path, { waitUntil: 'domcontentloaded' });\n  }\n\n  async waitForPageLoaded(): Promise<void> {\n    await this.page.waitForLoadState('domcontentloaded');\n  }\n\n  async getTitle(): Promise<string> {\n    return await ..."
@@ -857,6 +857,77 @@
       "signature": "async clearApiMocks()",
       "locatorsUsed": [],
       "code": "async clearApiMocks(): Promise<void> {\n    await this.page.unrouteAll();\n  }"
+    },
+    {
+      "id": "pages/BasePage.ts#BasePage.getElementTagName",
+      "file": "pages/BasePage.ts",
+      "kind": "method",
+      "parent": "BasePage",
+      "name": "getElementTagName",
+      "startLine": 103,
+      "endLine": 105,
+      "signature": "async getElementTagName(locator: Locator)",
+      "locatorsUsed": [
+        "locator.evaluate((el: HTMLElement) => el.tagName)"
+      ],
+      "code": "async getElementTagName(locator: Locator): Promise<string> {\n    return await locator.evaluate((el: HTMLElement) => el.tagName);\n  }"
+    },
+    {
+      "id": "pages/BasePage.ts#BasePage.getElementClassName",
+      "file": "pages/BasePage.ts",
+      "kind": "method",
+      "parent": "BasePage",
+      "name": "getElementClassName",
+      "startLine": 107,
+      "endLine": 109,
+      "signature": "async getElementClassName(locator: Locator)",
+      "locatorsUsed": [
+        "locator.getAttribute('class')"
+      ],
+      "code": "async getElementClassName(locator: Locator): Promise<string> {\n    return (await locator.getAttribute('class')) || '';\n  }"
+    },
+    {
+      "id": "pages/BasePage.ts#BasePage.getElementComputedStyles",
+      "file": "pages/BasePage.ts",
+      "kind": "method",
+      "parent": "BasePage",
+      "name": "getElementComputedStyles",
+      "startLine": 111,
+      "endLine": 120,
+      "signature": "async getElementComputedStyles(locator: Locator, properties: string[])",
+      "locatorsUsed": [
+        "locator.evaluate((el: HTMLElement, props: string[]) => {\n      const style = window.getComputedStyle(el);\n      const res: Record<string, string> = {};\n      for (const prop of props) {\n        res[prop] = style.getPropertyValue(prop);\n      }\n      return res;\n    }, properties)"
+      ],
+      "code": "async getElementComputedStyles(locator: Locator, properties: string[]): Promise<Record<string, string>> {\n    return await locator.evaluate((el: HTMLElement, props: string[]) => {\n      const style = window.getComputedStyle(el);\n      const res: Record<string, string> = {};\n      for (const prop of props) {\n        res[prop] = style.getPropertyValue(prop);\n      }\n      return res;\n    }, properties);\n  }"
+    },
+    {
+      "id": "pages/BasePage.ts#BasePage.getElementBoundingBox",
+      "file": "pages/BasePage.ts",
+      "kind": "method",
+      "parent": "BasePage",
+      "name": "getElementBoundingBox",
+      "startLine": 122,
+      "endLine": 124,
+      "signature": "async getElementBoundingBox(locator: Locator)",
+      "locatorsUsed": [
+        "locator.boundingBox()"
+      ],
+      "code": "async getElementBoundingBox(locator: Locator): Promise<{ x: number; y: number; width: number; height: number } | null> {\n    return await locator.boundingBox();\n  }"
+    },
+    {
+      "id": "pages/BasePage.ts#BasePage.getHeadingCount",
+      "file": "pages/BasePage.ts",
+      "kind": "method",
+      "parent": "BasePage",
+      "name": "getHeadingCount",
+      "startLine": 126,
+      "endLine": 128,
+      "signature": "async getHeadingCount(level: number = 1)",
+      "locatorsUsed": [
+        "this.page.locator(`h${level}`).count()",
+        "this.page.locator(`h${level}`)"
+      ],
+      "code": "async getHeadingCount(level: number = 1): Promise<number> {\n    return await this.page.locator(`h${level}`).count();\n  }"
     },
     {
       "id": "pages/BaseTempFormPage.ts#BaseTempFormPage",
@@ -1162,7 +1233,7 @@
       "parent": null,
       "name": "CertificationsPage",
       "startLine": 4,
-      "endLine": 293,
+      "endLine": 297,
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
@@ -1217,13 +1288,25 @@
       "code": "async gotoCertifications(): Promise<void> {\n    await this.navigate('/admin/certifications');\n    await this.waitForPageLoaded();\n  }"
     },
     {
+      "id": "pages/CertificationsPage.ts#CertificationsPage.getHeadingText",
+      "file": "pages/CertificationsPage.ts",
+      "kind": "method",
+      "parent": "CertificationsPage",
+      "name": "getHeadingText",
+      "startLine": 90,
+      "endLine": 92,
+      "signature": "async getHeadingText()",
+      "locatorsUsed": [],
+      "code": "async getHeadingText(): Promise<string> {\n    return (await this.heading.textContent())?.trim() || '';\n  }"
+    },
+    {
       "id": "pages/CertificationsPage.ts#CertificationsPage.isAdminTabActive",
       "file": "pages/CertificationsPage.ts",
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "isAdminTabActive",
-      "startLine": 90,
-      "endLine": 94,
+      "startLine": 94,
+      "endLine": 98,
       "signature": "async isAdminTabActive()",
       "locatorsUsed": [],
       "code": "async isAdminTabActive(): Promise<boolean> {\n    const ariaCurrent = await this.adminLink.getAttribute('aria-current');\n    const className = await this.adminLink.getAttribute('class');\n    return ariaCurrent === 'page' || (className ? className.includes('border-blue-900') : false);\n  }"
@@ -1234,8 +1317,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "isAddCertButtonCentered",
-      "startLine": 96,
-      "endLine": 99,
+      "startLine": 100,
+      "endLine": 103,
       "signature": "async isAddCertButtonCentered()",
       "locatorsUsed": [],
       "code": "async isAddCertButtonCentered(): Promise<boolean> {\n    const containerClasses = await this.addCertButtonContainer.getAttribute('class');\n    return Boolean(containerClasses?.includes('justify-center'));\n  }"
@@ -1246,8 +1329,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "search",
-      "startLine": 101,
-      "endLine": 108,
+      "startLine": 105,
+      "endLine": 112,
       "signature": "async search(query: string)",
       "locatorsUsed": [],
       "code": "async search(query: string): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'GET'\n    );\n    await this.searchInput.fill(query);\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -1258,8 +1341,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "clearSearch",
-      "startLine": 110,
-      "endLine": 117,
+      "startLine": 114,
+      "endLine": 121,
       "signature": "async clearSearch()",
       "locatorsUsed": [],
       "code": "async clearSearch(): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'GET'\n    );\n    await this.searchInput.fill('');\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -1270,8 +1353,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "openAddCertModal",
-      "startLine": 119,
-      "endLine": 122,
+      "startLine": 123,
+      "endLine": 126,
       "signature": "async openAddCertModal()",
       "locatorsUsed": [],
       "code": "async openAddCertModal(): Promise<void> {\n    await this.addCertButton.click();\n    await this.modalDialog.waitFor({ state: 'visible' });\n  }"
@@ -1282,8 +1365,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "closeDropdownIfOpen",
-      "startLine": 124,
-      "endLine": 129,
+      "startLine": 128,
+      "endLine": 133,
       "signature": "async closeDropdownIfOpen()",
       "locatorsUsed": [],
       "code": "async closeDropdownIfOpen(): Promise<void> {\n    const isExpanded = await this.specialtiesDropdownButton.getAttribute('aria-expanded');\n    if (isExpanded === 'true') {\n      await this.toggleSpecialtiesDropdown();\n    }\n  }"
@@ -1294,8 +1377,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "closeModalViaCloseButton",
-      "startLine": 131,
-      "endLine": 135,
+      "startLine": 135,
+      "endLine": 139,
       "signature": "async closeModalViaCloseButton()",
       "locatorsUsed": [],
       "code": "async closeModalViaCloseButton(): Promise<void> {\n    await this.closeDropdownIfOpen();\n    await this.modalCloseButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -1306,8 +1389,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "closeModalViaCancel",
-      "startLine": 137,
-      "endLine": 141,
+      "startLine": 141,
+      "endLine": 145,
       "signature": "async closeModalViaCancel()",
       "locatorsUsed": [],
       "code": "async closeModalViaCancel(): Promise<void> {\n    await this.closeDropdownIfOpen();\n    await this.modalCancelButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -1318,8 +1401,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "fillCertName",
-      "startLine": 143,
-      "endLine": 145,
+      "startLine": 147,
+      "endLine": 149,
       "signature": "async fillCertName(name: string)",
       "locatorsUsed": [],
       "code": "async fillCertName(name: string): Promise<void> {\n    await this.certNameInput.fill(name);\n  }"
@@ -1330,8 +1413,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "toggleSpecialtiesDropdown",
-      "startLine": 147,
-      "endLine": 149,
+      "startLine": 151,
+      "endLine": 153,
       "signature": "async toggleSpecialtiesDropdown()",
       "locatorsUsed": [],
       "code": "async toggleSpecialtiesDropdown(): Promise<void> {\n    await this.specialtiesDropdownButton.click();\n  }"
@@ -1342,8 +1425,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "getSpecialtyCheckbox",
-      "startLine": 151,
-      "endLine": 155,
+      "startLine": 155,
+      "endLine": 159,
       "signature": "getSpecialtyCheckbox(specialtyName: string)",
       "locatorsUsed": [
         "this.modalDialog\n      .locator('label', { hasText: new RegExp(`^\\\\s*${specialtyName}\\\\s*$`) })\n      .locator('input[type=\"checkbox\"]')",
@@ -1357,8 +1440,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "selectSpecialty",
-      "startLine": 157,
-      "endLine": 166,
+      "startLine": 161,
+      "endLine": 170,
       "signature": "async selectSpecialty(specialtyName: string)",
       "locatorsUsed": [],
       "code": "async selectSpecialty(specialtyName: string): Promise<void> {\n    const isExpanded = await this.specialtiesDropdownButton.getAttribute('aria-expanded');\n    if (isExpanded !== 'true') {\n      await this.toggleSpecialtiesDropdown();\n    }\n    const checkbox = this.getSpecialtyCheckbox(specialtyName);\n    if (!(await checkbox.isChecked())) {\n      await checkbox.check();\n    }\n  }"
@@ -1369,8 +1452,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "deselectSpecialty",
-      "startLine": 168,
-      "endLine": 177,
+      "startLine": 172,
+      "endLine": 181,
       "signature": "async deselectSpecialty(specialtyName: string)",
       "locatorsUsed": [],
       "code": "async deselectSpecialty(specialtyName: string): Promise<void> {\n    const isExpanded = await this.specialtiesDropdownButton.getAttribute('aria-expanded');\n    if (isExpanded !== 'true') {\n      await this.toggleSpecialtiesDropdown();\n    }\n    const checkbox = this.getSpecialtyCheckbox(specialtyName);\n    if (await checkbox.isChecked()) {\n      await checkbox.uncheck();\n    }\n  }"
@@ -1381,8 +1464,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "selectStatus",
-      "startLine": 179,
-      "endLine": 181,
+      "startLine": 183,
+      "endLine": 185,
       "signature": "async selectStatus(status: 'Active' | 'Inactive')",
       "locatorsUsed": [],
       "code": "async selectStatus(status: 'Active' | 'Inactive'): Promise<void> {\n    await this.statusSelect.selectOption(status);\n  }"
@@ -1393,8 +1476,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "saveModal",
-      "startLine": 183,
-      "endLine": 185,
+      "startLine": 187,
+      "endLine": 189,
       "signature": "async saveModal()",
       "locatorsUsed": [],
       "code": "async saveModal(): Promise<void> {\n    await this.modalSaveButton.click();\n  }"
@@ -1405,8 +1488,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "createCertification",
-      "startLine": 187,
-      "endLine": 216,
+      "startLine": 191,
+      "endLine": 220,
       "signature": "async createCertification(name: string, specialties: string[] = [], status: 'Active' | 'Inactive' = 'Active')",
       "locatorsUsed": [],
       "code": "async createCertification(\n    name: string,\n    specialties: string[] = [],\n    status: 'Active' | 'Inactive' = 'Active'\n  ): Promise<void> {\n    await this.openAddCertModal();\n    await this.fillCertName(name);\n\n    if (specialties.length > 0) {\n      await this.toggleSpecialtiesDropdown();\n      for (const spec of specialties) {\n        await this.selectSpecialty(spec);\n      }\n      await this.toggleSpecialtiesDropdown();\n    }\n\n    if (status !== 'Active') {\n      await this.selectStatus(status);\n    }\n\n    const postPromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'POST'\n    );\n    const getPromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'GET'\n    );\n    await this.saveModal();\n    await Promise.all([postPromise, getPromise]);\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -1417,8 +1500,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "openEditCertModal",
-      "startLine": 218,
-      "endLine": 226,
+      "startLine": 222,
+      "endLine": 230,
       "signature": "async openEditCertModal(name: string)",
       "locatorsUsed": [
         "row.locator('td').first().click()",
@@ -1433,8 +1516,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "saveEditChanges",
-      "startLine": 228,
-      "endLine": 238,
+      "startLine": 232,
+      "endLine": 242,
       "signature": "async saveEditChanges()",
       "locatorsUsed": [],
       "code": "async saveEditChanges(): Promise<void> {\n    await this.closeDropdownIfOpen();\n    const putPromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'PUT'\n    );\n    const getPromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/certifications') && resp.request().method() === 'GET'\n    );\n    await this.saveChangesButton.click();\n    await Promise.all([putPromise, getPromise]);\n  }"
@@ -1445,8 +1528,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "clearAllSpecialties",
-      "startLine": 240,
-      "endLine": 253,
+      "startLine": 244,
+      "endLine": 257,
       "signature": "async clearAllSpecialties()",
       "locatorsUsed": [
         "this.modalDialog.locator('div.absolute.z-50 input[type=\"checkbox\"]').first()",
@@ -1461,8 +1544,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "getCertRow",
-      "startLine": 255,
-      "endLine": 257,
+      "startLine": 259,
+      "endLine": 261,
       "signature": "getCertRow(name: string)",
       "locatorsUsed": [],
       "code": "getCertRow(name: string): Locator {\n    return this.tableRows.filter({ hasText: name }).first();\n  }"
@@ -1473,8 +1556,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "getMappedSpecialtiesLocatorFor",
-      "startLine": 259,
-      "endLine": 266,
+      "startLine": 263,
+      "endLine": 270,
       "signature": "async getMappedSpecialtiesLocatorFor(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(1)",
@@ -1488,8 +1571,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "getMappedSpecialtiesFor",
-      "startLine": 268,
-      "endLine": 271,
+      "startLine": 272,
+      "endLine": 275,
       "signature": "async getMappedSpecialtiesFor(name: string)",
       "locatorsUsed": [],
       "code": "async getMappedSpecialtiesFor(name: string): Promise<string> {\n    const loc = await this.getMappedSpecialtiesLocatorFor(name);\n    return (await loc.innerText()).trim();\n  }"
@@ -1500,8 +1583,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "getStatusPillFor",
-      "startLine": 273,
-      "endLine": 280,
+      "startLine": 277,
+      "endLine": 284,
       "signature": "async getStatusPillFor(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(2).locator('span')",
@@ -1516,8 +1599,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "reloadPage",
-      "startLine": 282,
-      "endLine": 284,
+      "startLine": 286,
+      "endLine": 288,
       "signature": "async reloadPage()",
       "locatorsUsed": [],
       "code": "async reloadPage(): Promise<void> {\n    await this.page.reload({ waitUntil: 'domcontentloaded' });\n  }"
@@ -1528,8 +1611,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "goBack",
-      "startLine": 286,
-      "endLine": 288,
+      "startLine": 290,
+      "endLine": 292,
       "signature": "async goBack()",
       "locatorsUsed": [],
       "code": "async goBack(): Promise<void> {\n    await this.page.goBack({ waitUntil: 'domcontentloaded' });\n  }"
@@ -1540,8 +1623,8 @@
       "kind": "method",
       "parent": "CertificationsPage",
       "name": "goForward",
-      "startLine": 290,
-      "endLine": 292,
+      "startLine": 294,
+      "endLine": 296,
       "signature": "async goForward()",
       "locatorsUsed": [],
       "code": "async goForward(): Promise<void> {\n    await this.page.goForward({ waitUntil: 'domcontentloaded' });\n  }"
@@ -2676,13 +2759,14 @@
       "parent": null,
       "name": "OrderTypesPage",
       "startLine": 4,
-      "endLine": 283,
+      "endLine": 289,
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
         "page.getByRole('link', { name: 'Admin', exact: true })",
         "page.locator('div.bg-slate-100').first()",
         "page.locator('div.bg-slate-100')",
+        "page.getByRole('heading', { name: 'Order Types', exact: true })",
         "page.getByRole('button', { name: /Add Order Type/i })",
         "page.locator('div.flex.justify-center').first()",
         "page.locator('div.flex.justify-center')",
@@ -2734,7 +2818,7 @@
         "this.modalDialog.locator('text=/already exists|conflict/i')"
       ],
       "signature": "class OrderTypesPage",
-      "code": "export class OrderTypesPage extends BasePage {\n  // AppShell & Navigation\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n\n  // Page Header & Controls\n  readonly addOrderTypeButton: Locator;\n  readonly addOrderTypeButtonContainer: Locator;\n  readonly categoryTabsNav: Locator;\n  readonly perDiemTab: Locator;\n  readonly longTermTab: Locator;\n  readonly..."
+      "code": "export class OrderTypesPage extends BasePage {\n  // AppShell & Navigation\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n\n  // Page Header & Controls\n  readonly heading: Locator;\n  readonly addOrderTypeButton: Locator;\n  readonly addOrderTypeButtonContainer: Locator;\n  readonly categoryTabsNav: Locator;\n  readonly perDiemTab: Locator;\n  readonly lon..."
     },
     {
       "id": "pages/OrderTypesPage.ts#OrderTypesPage.gotoOrderTypes",
@@ -2742,11 +2826,23 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "gotoOrderTypes",
-      "startLine": 96,
-      "endLine": 99,
+      "startLine": 98,
+      "endLine": 101,
       "signature": "async gotoOrderTypes()",
       "locatorsUsed": [],
       "code": "async gotoOrderTypes(): Promise<void> {\n    await this.navigate('/admin/order-types');\n    await this.waitForPageLoaded();\n  }"
+    },
+    {
+      "id": "pages/OrderTypesPage.ts#OrderTypesPage.getHeadingText",
+      "file": "pages/OrderTypesPage.ts",
+      "kind": "method",
+      "parent": "OrderTypesPage",
+      "name": "getHeadingText",
+      "startLine": 103,
+      "endLine": 105,
+      "signature": "async getHeadingText()",
+      "locatorsUsed": [],
+      "code": "async getHeadingText(): Promise<string> {\n    return (await this.heading.textContent())?.trim() || '';\n  }"
     },
     {
       "id": "pages/OrderTypesPage.ts#OrderTypesPage.isAdminTabActive",
@@ -2754,8 +2850,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "isAdminTabActive",
-      "startLine": 101,
-      "endLine": 105,
+      "startLine": 107,
+      "endLine": 111,
       "signature": "async isAdminTabActive()",
       "locatorsUsed": [],
       "code": "async isAdminTabActive(): Promise<boolean> {\n    const ariaCurrent = await this.adminLink.getAttribute('aria-current');\n    const className = await this.adminLink.getAttribute('class');\n    return ariaCurrent === 'page' || (className ? className.includes('border-blue-900') : false);\n  }"
@@ -2766,8 +2862,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "isAddOrderTypeButtonCentered",
-      "startLine": 107,
-      "endLine": 110,
+      "startLine": 113,
+      "endLine": 116,
       "signature": "async isAddOrderTypeButtonCentered()",
       "locatorsUsed": [],
       "code": "async isAddOrderTypeButtonCentered(): Promise<boolean> {\n    const containerClasses = await this.addOrderTypeButtonContainer.getAttribute('class');\n    return Boolean(containerClasses?.includes('justify-center'));\n  }"
@@ -2778,8 +2874,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "isPerDiemTabActive",
-      "startLine": 112,
-      "endLine": 115,
+      "startLine": 118,
+      "endLine": 121,
       "signature": "async isPerDiemTabActive()",
       "locatorsUsed": [],
       "code": "async isPerDiemTabActive(): Promise<boolean> {\n    const className = (await this.perDiemTab.getAttribute('class')) || '';\n    return className.includes('border-blue-600') || className.includes('text-blue-600');\n  }"
@@ -2790,8 +2886,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "isLongTermTabActive",
-      "startLine": 117,
-      "endLine": 120,
+      "startLine": 123,
+      "endLine": 126,
       "signature": "async isLongTermTabActive()",
       "locatorsUsed": [],
       "code": "async isLongTermTabActive(): Promise<boolean> {\n    const className = (await this.longTermTab.getAttribute('class')) || '';\n    return className.includes('border-blue-600') || className.includes('text-blue-600');\n  }"
@@ -2802,8 +2898,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "clickPerDiemTab",
-      "startLine": 122,
-      "endLine": 128,
+      "startLine": 128,
+      "endLine": 134,
       "signature": "async clickPerDiemTab()",
       "locatorsUsed": [],
       "code": "async clickPerDiemTab(): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/order-types') && resp.request().method() === 'GET'\n    ).catch(() => null);\n    await this.perDiemTab.click();\n    await responsePromise;\n  }"
@@ -2814,8 +2910,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "clickLongTermTab",
-      "startLine": 130,
-      "endLine": 136,
+      "startLine": 136,
+      "endLine": 142,
       "signature": "async clickLongTermTab()",
       "locatorsUsed": [],
       "code": "async clickLongTermTab(): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/order-types') && resp.request().method() === 'GET'\n    ).catch(() => null);\n    await this.longTermTab.click();\n    await responsePromise;\n  }"
@@ -2826,8 +2922,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "search",
-      "startLine": 138,
-      "endLine": 145,
+      "startLine": 144,
+      "endLine": 151,
       "signature": "async search(query: string)",
       "locatorsUsed": [],
       "code": "async search(query: string): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/order-types') && resp.request().method() === 'GET'\n    ).catch(() => null);\n    await this.searchInput.fill(query);\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -2838,8 +2934,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "clearSearch",
-      "startLine": 147,
-      "endLine": 154,
+      "startLine": 153,
+      "endLine": 160,
       "signature": "async clearSearch()",
       "locatorsUsed": [],
       "code": "async clearSearch(): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/order-types') && resp.request().method() === 'GET'\n    ).catch(() => null);\n    await this.searchInput.fill('');\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -2850,8 +2946,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "openAddOrderTypeModal",
-      "startLine": 156,
-      "endLine": 159,
+      "startLine": 162,
+      "endLine": 165,
       "signature": "async openAddOrderTypeModal()",
       "locatorsUsed": [],
       "code": "async openAddOrderTypeModal(): Promise<void> {\n    await this.addOrderTypeButton.click();\n    await this.modalDialog.waitFor({ state: 'visible' });\n  }"
@@ -2862,8 +2958,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "closeModalViaCloseButton",
-      "startLine": 161,
-      "endLine": 164,
+      "startLine": 167,
+      "endLine": 170,
       "signature": "async closeModalViaCloseButton()",
       "locatorsUsed": [],
       "code": "async closeModalViaCloseButton(): Promise<void> {\n    await this.modalCloseButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -2874,8 +2970,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "closeModalViaCancel",
-      "startLine": 166,
-      "endLine": 169,
+      "startLine": 172,
+      "endLine": 175,
       "signature": "async closeModalViaCancel()",
       "locatorsUsed": [],
       "code": "async closeModalViaCancel(): Promise<void> {\n    await this.modalCancelButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -2886,8 +2982,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "fillOrderTypeName",
-      "startLine": 171,
-      "endLine": 173,
+      "startLine": 177,
+      "endLine": 179,
       "signature": "async fillOrderTypeName(name: string)",
       "locatorsUsed": [],
       "code": "async fillOrderTypeName(name: string): Promise<void> {\n    await this.nameInput.fill(name);\n  }"
@@ -2898,8 +2994,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "selectShiftOrderTypeDefault",
-      "startLine": 175,
-      "endLine": 177,
+      "startLine": 181,
+      "endLine": 183,
       "signature": "async selectShiftOrderTypeDefault(optionText: string)",
       "locatorsUsed": [],
       "code": "async selectShiftOrderTypeDefault(optionText: string): Promise<void> {\n    await this.shiftOrderTypeDefaultSelect.selectOption({ label: optionText });\n  }"
@@ -2910,8 +3006,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "selectStatus",
-      "startLine": 179,
-      "endLine": 181,
+      "startLine": 185,
+      "endLine": 187,
       "signature": "async selectStatus(status: 'Active' | 'Hidden')",
       "locatorsUsed": [],
       "code": "async selectStatus(status: 'Active' | 'Hidden'): Promise<void> {\n    await this.statusSelect.selectOption(status);\n  }"
@@ -2922,8 +3018,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "selectDefault",
-      "startLine": 183,
-      "endLine": 187,
+      "startLine": 189,
+      "endLine": 193,
       "signature": "async selectDefault(choice: 'Yes' | 'No')",
       "locatorsUsed": [],
       "code": "async selectDefault(choice: 'Yes' | 'No'): Promise<void> {\n    if (await this.defaultSelect.isVisible()) {\n      await this.defaultSelect.selectOption(choice);\n    }\n  }"
@@ -2934,8 +3030,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "saveModal",
-      "startLine": 189,
-      "endLine": 191,
+      "startLine": 195,
+      "endLine": 197,
       "signature": "async saveModal()",
       "locatorsUsed": [],
       "code": "async saveModal(): Promise<void> {\n    await this.modalSaveButton.click();\n  }"
@@ -2946,8 +3042,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "openEditOrderTypeModal",
-      "startLine": 193,
-      "endLine": 198,
+      "startLine": 199,
+      "endLine": 204,
       "signature": "async openEditOrderTypeModal(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(1).click()",
@@ -2962,8 +3058,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "openEditOrderTypeModalByRow",
-      "startLine": 200,
-      "endLine": 208,
+      "startLine": 206,
+      "endLine": 214,
       "signature": "async openEditOrderTypeModalByRow(rowIndex: number = 0)",
       "locatorsUsed": [
         "(await row.locator('td').nth(1).innerText()).trim()",
@@ -2980,8 +3076,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "updateOrderType",
-      "startLine": 210,
-      "endLine": 227,
+      "startLine": 216,
+      "endLine": 233,
       "signature": "async updateOrderType(data: {\n    status?: 'Active' | 'Hidden';\n    isDefault?: 'Yes' | 'No' | boolean;\n    shiftOrderTypeDefault?: string;\n  })",
       "locatorsUsed": [],
       "code": "async updateOrderType(data: {\n    status?: 'Active' | 'Hidden';\n    isDefault?: 'Yes' | 'No' | boolean;\n    shiftOrderTypeDefault?: string;\n  }): Promise<void> {\n    if (data.status) {\n      await this.selectStatus(data.status);\n    }\n    if (data.isDefault !== undefined) {\n      const choice = typeof data.isDefault === 'boolean' ? (data.isDefault ? 'Yes' : 'No') : data.isDefault;\n      await this.selectDefault(choice);\n    }\n    if (data.shiftOrderTypeDefault && (await this.shiftOrderTypeDefaultSelect.isVisible())) {\n      await this.selectShiftOrderTypeDefault(data.shiftOrderTypeDefault);\n    }\n    await this.saveModal();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -2992,8 +3088,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "createOrderType",
-      "startLine": 229,
-      "endLine": 251,
+      "startLine": 235,
+      "endLine": 257,
       "signature": "async createOrderType(data: {\n    name: string;\n    status?: 'Active' | 'Hidden';\n    isDefault?: 'Yes' | 'No';\n    shiftOrderTypeDefault?: string;\n  })",
       "locatorsUsed": [],
       "code": "async createOrderType(data: {\n    name: string;\n    status?: 'Active' | 'Hidden';\n    isDefault?: 'Yes' | 'No';\n    shiftOrderTypeDefault?: string;\n  }): Promise<void> {\n    await this.openAddOrderTypeModal();\n    await this.fillOrderTypeName(data.name);\n\n    if (data.shiftOrderTypeDefault && (await this.shiftOrderTypeDefaultSelect.isVisible())) {\n      await this.selectShiftOrderTypeDefault(data.shiftOrderTypeDefault);\n    }\n\n    if (data.status) {\n      await this.selectStatus(data.status);\n    }\n\n    if (data.isDefault) {\n      await this.selectDefault(data.isDefault);\n    }\n\n    await this.saveModal();\n  }"
@@ -3004,8 +3100,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "getOrderTypeRow",
-      "startLine": 253,
-      "endLine": 255,
+      "startLine": 259,
+      "endLine": 261,
       "signature": "getOrderTypeRow(name: string)",
       "locatorsUsed": [],
       "code": "getOrderTypeRow(name: string): Locator {\n    return this.tableRows.filter({ hasText: name }).first();\n  }"
@@ -3016,8 +3112,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "getStatusPillFor",
-      "startLine": 257,
-      "endLine": 260,
+      "startLine": 263,
+      "endLine": 266,
       "signature": "async getStatusPillFor(name: string)",
       "locatorsUsed": [
         "row.locator('span, td').filter({ hasText: /^(Active|Hidden)$/i }).first()",
@@ -3032,8 +3128,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "getDefaultIndicatorFor",
-      "startLine": 262,
-      "endLine": 265,
+      "startLine": 268,
+      "endLine": 271,
       "signature": "async getDefaultIndicatorFor(name: string)",
       "locatorsUsed": [
         "row.locator('span, td').filter({ hasText: /^(Yes|No)$/i }).first()",
@@ -3048,8 +3144,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "getShiftOrderTypeDefaultFor",
-      "startLine": 267,
-      "endLine": 270,
+      "startLine": 273,
+      "endLine": 276,
       "signature": "async getShiftOrderTypeDefaultFor(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(2)",
@@ -3063,8 +3159,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "reloadPage",
-      "startLine": 272,
-      "endLine": 274,
+      "startLine": 278,
+      "endLine": 280,
       "signature": "async reloadPage()",
       "locatorsUsed": [],
       "code": "async reloadPage(): Promise<void> {\n    await this.page.reload({ waitUntil: 'domcontentloaded' });\n  }"
@@ -3075,8 +3171,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "goBack",
-      "startLine": 276,
-      "endLine": 278,
+      "startLine": 282,
+      "endLine": 284,
       "signature": "async goBack()",
       "locatorsUsed": [],
       "code": "async goBack(): Promise<void> {\n    await this.page.goBack({ waitUntil: 'domcontentloaded' });\n  }"
@@ -3087,8 +3183,8 @@
       "kind": "method",
       "parent": "OrderTypesPage",
       "name": "goForward",
-      "startLine": 280,
-      "endLine": 282,
+      "startLine": 286,
+      "endLine": 288,
       "signature": "async goForward()",
       "locatorsUsed": [],
       "code": "async goForward(): Promise<void> {\n    await this.page.goForward({ waitUntil: 'domcontentloaded' });\n  }"
@@ -3100,7 +3196,7 @@
       "parent": null,
       "name": "ShiftsPage",
       "startLine": 16,
-      "endLine": 237,
+      "endLine": 241,
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
@@ -3108,10 +3204,7 @@
         "page.locator('div.bg-slate-100, nav').filter({ hasText: 'User Manager' }).first()",
         "page.locator('div.bg-slate-100, nav').filter({ hasText: 'User Manager' })",
         "page.locator('div.bg-slate-100, nav')",
-        "page.getByRole('heading', { name: /Shifts/i }).or(page.locator('main')).first()",
-        "page.getByRole('heading', { name: /Shifts/i }).or(page.locator('main'))",
-        "page.getByRole('heading', { name: /Shifts/i })",
-        "page.locator('main')",
+        "page.getByRole('heading', { name: 'Shifts', exact: true })",
         "page.getByRole('button', { name: 'Add Shift Option', exact: true })",
         "this.addShiftButton.locator('..')",
         "page.getByPlaceholder('Search by shift name')",
@@ -3173,13 +3266,25 @@
       "code": "async gotoShifts(): Promise<void> {\n    await this.navigate('/admin/shifts');\n    await this.waitForPageLoaded();\n  }"
     },
     {
+      "id": "pages/ShiftsPage.ts#ShiftsPage.getHeadingText",
+      "file": "pages/ShiftsPage.ts",
+      "kind": "method",
+      "parent": "ShiftsPage",
+      "name": "getHeadingText",
+      "startLine": 96,
+      "endLine": 98,
+      "signature": "async getHeadingText()",
+      "locatorsUsed": [],
+      "code": "async getHeadingText(): Promise<string> {\n    return (await this.heading.textContent())?.trim() || '';\n  }"
+    },
+    {
       "id": "pages/ShiftsPage.ts#ShiftsPage.isAdminTabActive",
       "file": "pages/ShiftsPage.ts",
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "isAdminTabActive",
-      "startLine": 96,
-      "endLine": 100,
+      "startLine": 100,
+      "endLine": 104,
       "signature": "async isAdminTabActive()",
       "locatorsUsed": [],
       "code": "async isAdminTabActive(): Promise<boolean> {\n    const ariaCurrent = await this.adminLink.getAttribute('aria-current');\n    const className = await this.adminLink.getAttribute('class');\n    return ariaCurrent === 'page' || (className ? className.includes('border-blue-900') : false);\n  }"
@@ -3190,8 +3295,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "isAddShiftButtonCentered",
-      "startLine": 102,
-      "endLine": 105,
+      "startLine": 106,
+      "endLine": 109,
       "signature": "async isAddShiftButtonCentered()",
       "locatorsUsed": [],
       "code": "async isAddShiftButtonCentered(): Promise<boolean> {\n    const containerClasses = await this.addShiftButtonContainer.getAttribute('class');\n    return Boolean(containerClasses?.includes('justify-center') || containerClasses?.includes('text-center') || containerClasses?.includes('mx-auto'));\n  }"
@@ -3202,8 +3307,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "search",
-      "startLine": 107,
-      "endLine": 114,
+      "startLine": 111,
+      "endLine": 118,
       "signature": "async search(query: string)",
       "locatorsUsed": [],
       "code": "async search(query: string): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/shifts') && resp.request().method() === 'GET'\n    ).catch(() => null);\n    await this.searchInput.fill(query);\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -3214,8 +3319,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "clearSearch",
-      "startLine": 116,
-      "endLine": 123,
+      "startLine": 120,
+      "endLine": 127,
       "signature": "async clearSearch()",
       "locatorsUsed": [],
       "code": "async clearSearch(): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/shifts') && resp.request().method() === 'GET'\n    ).catch(() => null);\n    await this.searchInput.fill('');\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -3226,8 +3331,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "openAddShiftModal",
-      "startLine": 125,
-      "endLine": 128,
+      "startLine": 129,
+      "endLine": 132,
       "signature": "async openAddShiftModal()",
       "locatorsUsed": [],
       "code": "async openAddShiftModal(): Promise<void> {\n    await this.addShiftButton.click();\n    await this.modalDialog.waitFor({ state: 'visible' });\n  }"
@@ -3238,8 +3343,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "closeModalViaCloseButton",
-      "startLine": 130,
-      "endLine": 133,
+      "startLine": 134,
+      "endLine": 137,
       "signature": "async closeModalViaCloseButton()",
       "locatorsUsed": [],
       "code": "async closeModalViaCloseButton(): Promise<void> {\n    await this.modalCloseButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -3250,8 +3355,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "closeModalViaCancel",
-      "startLine": 135,
-      "endLine": 138,
+      "startLine": 139,
+      "endLine": 142,
       "signature": "async closeModalViaCancel()",
       "locatorsUsed": [],
       "code": "async closeModalViaCancel(): Promise<void> {\n    await this.modalCancelButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -3262,8 +3367,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "fillShiftName",
-      "startLine": 140,
-      "endLine": 142,
+      "startLine": 144,
+      "endLine": 146,
       "signature": "async fillShiftName(name: string)",
       "locatorsUsed": [],
       "code": "async fillShiftName(name: string): Promise<void> {\n    await this.shiftNameInput.fill(name);\n  }"
@@ -3274,8 +3379,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "fillStartTime",
-      "startLine": 144,
-      "endLine": 147,
+      "startLine": 148,
+      "endLine": 151,
       "signature": "async fillStartTime(time: string)",
       "locatorsUsed": [],
       "code": "async fillStartTime(time: string): Promise<void> {\n    const time24 = to24HourFormat(time);\n    await this.startTimeInput.fill(time24);\n  }"
@@ -3286,8 +3391,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "fillEndTime",
-      "startLine": 149,
-      "endLine": 152,
+      "startLine": 153,
+      "endLine": 156,
       "signature": "async fillEndTime(time: string)",
       "locatorsUsed": [],
       "code": "async fillEndTime(time: string): Promise<void> {\n    const time24 = to24HourFormat(time);\n    await this.endTimeInput.fill(time24);\n  }"
@@ -3298,8 +3403,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "setDefaultShift",
-      "startLine": 154,
-      "endLine": 156,
+      "startLine": 158,
+      "endLine": 160,
       "signature": "async setDefaultShift(isDefault: boolean)",
       "locatorsUsed": [],
       "code": "async setDefaultShift(isDefault: boolean): Promise<void> {\n    await this.defaultShiftSelect.selectOption(isDefault ? 'true' : 'false');\n  }"
@@ -3310,8 +3415,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "saveModal",
-      "startLine": 158,
-      "endLine": 160,
+      "startLine": 162,
+      "endLine": 164,
       "signature": "async saveModal()",
       "locatorsUsed": [],
       "code": "async saveModal(): Promise<void> {\n    await this.modalSaveButton.click();\n  }"
@@ -3322,8 +3427,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "openEditShiftModal",
-      "startLine": 162,
-      "endLine": 167,
+      "startLine": 166,
+      "endLine": 171,
       "signature": "async openEditShiftModal(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(1).click()",
@@ -3338,8 +3443,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "openEditShiftModalByRow",
-      "startLine": 169,
-      "endLine": 177,
+      "startLine": 173,
+      "endLine": 181,
       "signature": "async openEditShiftModalByRow(rowIndex: number = 0)",
       "locatorsUsed": [
         "(await row.locator('td').nth(1).innerText()).trim()",
@@ -3356,8 +3461,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "updateShift",
-      "startLine": 179,
-      "endLine": 191,
+      "startLine": 183,
+      "endLine": 195,
       "signature": "async updateShift(startTime: string, endTime: string, isDefault?: boolean)",
       "locatorsUsed": [],
       "code": "async updateShift(\n    startTime: string,\n    endTime: string,\n    isDefault?: boolean\n  ): Promise<void> {\n    await this.fillStartTime(startTime);\n    await this.fillEndTime(endTime);\n    if (isDefault !== undefined) {\n      await this.setDefaultShift(isDefault);\n    }\n    await this.saveModal();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -3368,8 +3473,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "createShift",
-      "startLine": 193,
-      "endLine": 205,
+      "startLine": 197,
+      "endLine": 209,
       "signature": "async createShift(name: string, startTime: string, endTime: string, isDefault: boolean = false)",
       "locatorsUsed": [],
       "code": "async createShift(\n    name: string,\n    startTime: string,\n    endTime: string,\n    isDefault: boolean = false\n  ): Promise<void> {\n    await this.openAddShiftModal();\n    await this.fillShiftName(name);\n    await this.fillStartTime(startTime);\n    await this.fillEndTime(endTime);\n    await this.setDefaultShift(isDefault);\n    await this.saveModal();\n  }"
@@ -3380,8 +3485,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "getShiftRow",
-      "startLine": 207,
-      "endLine": 209,
+      "startLine": 211,
+      "endLine": 213,
       "signature": "getShiftRow(name: string)",
       "locatorsUsed": [],
       "code": "getShiftRow(name: string): Locator {\n    return this.tableRows.filter({ hasText: name }).first();\n  }"
@@ -3392,8 +3497,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "getStartTimeFor",
-      "startLine": 211,
-      "endLine": 214,
+      "startLine": 215,
+      "endLine": 218,
       "signature": "async getStartTimeFor(name: string)",
       "locatorsUsed": [
         "(await row.locator('td').nth(2).innerText()).trim()",
@@ -3409,8 +3514,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "getEndTimeFor",
-      "startLine": 216,
-      "endLine": 219,
+      "startLine": 220,
+      "endLine": 223,
       "signature": "async getEndTimeFor(name: string)",
       "locatorsUsed": [
         "(await row.locator('td').nth(3).innerText()).trim()",
@@ -3426,8 +3531,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "getDefaultShiftValueFor",
-      "startLine": 221,
-      "endLine": 224,
+      "startLine": 225,
+      "endLine": 228,
       "signature": "async getDefaultShiftValueFor(name: string)",
       "locatorsUsed": [
         "(await row.locator('td').nth(4).innerText()).trim()",
@@ -3443,8 +3548,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "reloadPage",
-      "startLine": 226,
-      "endLine": 228,
+      "startLine": 230,
+      "endLine": 232,
       "signature": "async reloadPage()",
       "locatorsUsed": [],
       "code": "async reloadPage(): Promise<void> {\n    await this.page.reload({ waitUntil: 'domcontentloaded' });\n  }"
@@ -3455,8 +3560,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "goBack",
-      "startLine": 230,
-      "endLine": 232,
+      "startLine": 234,
+      "endLine": 236,
       "signature": "async goBack()",
       "locatorsUsed": [],
       "code": "async goBack(): Promise<void> {\n    await this.page.goBack({ waitUntil: 'domcontentloaded' });\n  }"
@@ -3467,8 +3572,8 @@
       "kind": "method",
       "parent": "ShiftsPage",
       "name": "goForward",
-      "startLine": 234,
-      "endLine": 236,
+      "startLine": 238,
+      "endLine": 240,
       "signature": "async goForward()",
       "locatorsUsed": [],
       "code": "async goForward(): Promise<void> {\n    await this.page.goForward({ waitUntil: 'domcontentloaded' });\n  }"
@@ -3480,7 +3585,7 @@
       "parent": null,
       "name": "SpecialtiesPage",
       "startLine": 4,
-      "endLine": 293,
+      "endLine": 297,
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
@@ -3535,13 +3640,25 @@
       "code": "async gotoSpecialties(): Promise<void> {\n    await this.navigate('/admin/specialties');\n    await this.waitForPageLoaded();\n  }"
     },
     {
+      "id": "pages/SpecialtiesPage.ts#SpecialtiesPage.getHeadingText",
+      "file": "pages/SpecialtiesPage.ts",
+      "kind": "method",
+      "parent": "SpecialtiesPage",
+      "name": "getHeadingText",
+      "startLine": 90,
+      "endLine": 92,
+      "signature": "async getHeadingText()",
+      "locatorsUsed": [],
+      "code": "async getHeadingText(): Promise<string> {\n    return (await this.heading.textContent())?.trim() || '';\n  }"
+    },
+    {
       "id": "pages/SpecialtiesPage.ts#SpecialtiesPage.isAdminTabActive",
       "file": "pages/SpecialtiesPage.ts",
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "isAdminTabActive",
-      "startLine": 90,
-      "endLine": 94,
+      "startLine": 94,
+      "endLine": 98,
       "signature": "async isAdminTabActive()",
       "locatorsUsed": [],
       "code": "async isAdminTabActive(): Promise<boolean> {\n    const ariaCurrent = await this.adminLink.getAttribute('aria-current');\n    const className = await this.adminLink.getAttribute('class');\n    return ariaCurrent === 'page' || (className ? className.includes('border-blue-900') : false);\n  }"
@@ -3552,8 +3669,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "isAddSpecialtyButtonCentered",
-      "startLine": 96,
-      "endLine": 99,
+      "startLine": 100,
+      "endLine": 103,
       "signature": "async isAddSpecialtyButtonCentered()",
       "locatorsUsed": [],
       "code": "async isAddSpecialtyButtonCentered(): Promise<boolean> {\n    const containerClasses = await this.addSpecialtyButtonContainer.getAttribute('class');\n    return Boolean(containerClasses?.includes('justify-center'));\n  }"
@@ -3564,8 +3681,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "search",
-      "startLine": 101,
-      "endLine": 108,
+      "startLine": 105,
+      "endLine": 112,
       "signature": "async search(query: string)",
       "locatorsUsed": [],
       "code": "async search(query: string): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/specialties') && resp.request().method() === 'GET'\n    );\n    await this.searchInput.fill(query);\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -3576,8 +3693,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "clearSearch",
-      "startLine": 110,
-      "endLine": 117,
+      "startLine": 114,
+      "endLine": 121,
       "signature": "async clearSearch()",
       "locatorsUsed": [],
       "code": "async clearSearch(): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/specialties') && resp.request().method() === 'GET'\n    );\n    await this.searchInput.fill('');\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -3588,8 +3705,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "openAddSpecialtyModal",
-      "startLine": 119,
-      "endLine": 122,
+      "startLine": 123,
+      "endLine": 126,
       "signature": "async openAddSpecialtyModal()",
       "locatorsUsed": [],
       "code": "async openAddSpecialtyModal(): Promise<void> {\n    await this.addSpecialtyButton.click();\n    await this.modalDialog.waitFor({ state: 'visible' });\n  }"
@@ -3600,8 +3717,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "closeDropdownIfOpen",
-      "startLine": 124,
-      "endLine": 129,
+      "startLine": 128,
+      "endLine": 133,
       "signature": "async closeDropdownIfOpen()",
       "locatorsUsed": [],
       "code": "async closeDropdownIfOpen(): Promise<void> {\n    const isExpanded = await this.certMappingDropdownButton.getAttribute('aria-expanded');\n    if (isExpanded === 'true') {\n      await this.toggleCertificationDropdown();\n    }\n  }"
@@ -3612,8 +3729,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "closeModalViaCloseButton",
-      "startLine": 131,
-      "endLine": 135,
+      "startLine": 135,
+      "endLine": 139,
       "signature": "async closeModalViaCloseButton()",
       "locatorsUsed": [],
       "code": "async closeModalViaCloseButton(): Promise<void> {\n    await this.closeDropdownIfOpen();\n    await this.modalCloseButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -3624,8 +3741,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "closeModalViaCancel",
-      "startLine": 137,
-      "endLine": 141,
+      "startLine": 141,
+      "endLine": 145,
       "signature": "async closeModalViaCancel()",
       "locatorsUsed": [],
       "code": "async closeModalViaCancel(): Promise<void> {\n    await this.closeDropdownIfOpen();\n    await this.modalCancelButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -3636,8 +3753,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "fillSpecialtyName",
-      "startLine": 143,
-      "endLine": 145,
+      "startLine": 147,
+      "endLine": 149,
       "signature": "async fillSpecialtyName(name: string)",
       "locatorsUsed": [],
       "code": "async fillSpecialtyName(name: string): Promise<void> {\n    await this.specialtyNameInput.fill(name);\n  }"
@@ -3648,8 +3765,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "toggleCertificationDropdown",
-      "startLine": 147,
-      "endLine": 149,
+      "startLine": 151,
+      "endLine": 153,
       "signature": "async toggleCertificationDropdown()",
       "locatorsUsed": [],
       "code": "async toggleCertificationDropdown(): Promise<void> {\n    await this.certMappingDropdownButton.click();\n  }"
@@ -3660,8 +3777,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "getCertCheckbox",
-      "startLine": 151,
-      "endLine": 155,
+      "startLine": 155,
+      "endLine": 159,
       "signature": "getCertCheckbox(certName: string)",
       "locatorsUsed": [
         "this.modalDialog\n      .locator('label', { hasText: new RegExp(`^\\\\s*${certName}\\\\s*$`) })\n      .locator('input[type=\"checkbox\"]')",
@@ -3675,8 +3792,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "selectCertification",
-      "startLine": 157,
-      "endLine": 166,
+      "startLine": 161,
+      "endLine": 170,
       "signature": "async selectCertification(certName: string)",
       "locatorsUsed": [],
       "code": "async selectCertification(certName: string): Promise<void> {\n    const isExpanded = await this.certMappingDropdownButton.getAttribute('aria-expanded');\n    if (isExpanded !== 'true') {\n      await this.toggleCertificationDropdown();\n    }\n    const checkbox = this.getCertCheckbox(certName);\n    if (!(await checkbox.isChecked())) {\n      await checkbox.check();\n    }\n  }"
@@ -3687,8 +3804,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "deselectCertification",
-      "startLine": 168,
-      "endLine": 177,
+      "startLine": 172,
+      "endLine": 181,
       "signature": "async deselectCertification(certName: string)",
       "locatorsUsed": [],
       "code": "async deselectCertification(certName: string): Promise<void> {\n    const isExpanded = await this.certMappingDropdownButton.getAttribute('aria-expanded');\n    if (isExpanded !== 'true') {\n      await this.toggleCertificationDropdown();\n    }\n    const checkbox = this.getCertCheckbox(certName);\n    if (await checkbox.isChecked()) {\n      await checkbox.uncheck();\n    }\n  }"
@@ -3699,8 +3816,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "selectStatus",
-      "startLine": 179,
-      "endLine": 181,
+      "startLine": 183,
+      "endLine": 185,
       "signature": "async selectStatus(status: 'Active' | 'Inactive')",
       "locatorsUsed": [],
       "code": "async selectStatus(status: 'Active' | 'Inactive'): Promise<void> {\n    await this.statusSelect.selectOption(status);\n  }"
@@ -3711,8 +3828,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "saveModal",
-      "startLine": 183,
-      "endLine": 185,
+      "startLine": 187,
+      "endLine": 189,
       "signature": "async saveModal()",
       "locatorsUsed": [],
       "code": "async saveModal(): Promise<void> {\n    await this.modalSaveButton.click();\n  }"
@@ -3723,8 +3840,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "createSpecialty",
-      "startLine": 187,
-      "endLine": 216,
+      "startLine": 191,
+      "endLine": 220,
       "signature": "async createSpecialty(name: string, certifications: string[] = [], status: 'Active' | 'Inactive' = 'Active')",
       "locatorsUsed": [],
       "code": "async createSpecialty(\n    name: string,\n    certifications: string[] = [],\n    status: 'Active' | 'Inactive' = 'Active'\n  ): Promise<void> {\n    await this.openAddSpecialtyModal();\n    await this.fillSpecialtyName(name);\n\n    if (certifications.length > 0) {\n      await this.toggleCertificationDropdown();\n      for (const cert of certifications) {\n        await this.selectCertification(cert);\n      }\n      await this.toggleCertificationDropdown();\n    }\n\n    if (status !== 'Active') {\n      await this.selectStatus(status);\n    }\n\n    const postPromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/specialties') && resp.request().method() === 'POST'\n    );\n    const getPromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/specialties') && resp.request().method() === 'GET'\n    );\n    await this.saveModal();\n    await Promise.all([postPromise, getPromise]);\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -3735,8 +3852,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "openEditSpecialtyModal",
-      "startLine": 218,
-      "endLine": 226,
+      "startLine": 222,
+      "endLine": 230,
       "signature": "async openEditSpecialtyModal(name: string)",
       "locatorsUsed": [
         "row.locator('td').first().click()",
@@ -3751,8 +3868,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "saveEditChanges",
-      "startLine": 228,
-      "endLine": 238,
+      "startLine": 232,
+      "endLine": 242,
       "signature": "async saveEditChanges()",
       "locatorsUsed": [],
       "code": "async saveEditChanges(): Promise<void> {\n    await this.closeDropdownIfOpen();\n    const putPromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/specialties') && resp.request().method() === 'PUT'\n    );\n    const getPromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/specialties') && resp.request().method() === 'GET'\n    );\n    await this.saveChangesButton.click();\n    await Promise.all([putPromise, getPromise]);\n  }"
@@ -3763,8 +3880,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "clearAllCertifications",
-      "startLine": 240,
-      "endLine": 253,
+      "startLine": 244,
+      "endLine": 257,
       "signature": "async clearAllCertifications()",
       "locatorsUsed": [
         "this.modalDialog.locator('div.absolute.z-50 input[type=\"checkbox\"]').first()",
@@ -3779,8 +3896,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "getSpecialtyRow",
-      "startLine": 255,
-      "endLine": 257,
+      "startLine": 259,
+      "endLine": 261,
       "signature": "getSpecialtyRow(name: string)",
       "locatorsUsed": [],
       "code": "getSpecialtyRow(name: string): Locator {\n    return this.tableRows.filter({ hasText: name }).first();\n  }"
@@ -3791,8 +3908,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "getCertificationMappingLocatorFor",
-      "startLine": 259,
-      "endLine": 266,
+      "startLine": 263,
+      "endLine": 270,
       "signature": "async getCertificationMappingLocatorFor(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(1)",
@@ -3806,8 +3923,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "getCertificationMappingFor",
-      "startLine": 268,
-      "endLine": 271,
+      "startLine": 272,
+      "endLine": 275,
       "signature": "async getCertificationMappingFor(name: string)",
       "locatorsUsed": [],
       "code": "async getCertificationMappingFor(name: string): Promise<string> {\n    const loc = await this.getCertificationMappingLocatorFor(name);\n    return (await loc.innerText()).trim();\n  }"
@@ -3818,8 +3935,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "getStatusPillFor",
-      "startLine": 273,
-      "endLine": 280,
+      "startLine": 277,
+      "endLine": 284,
       "signature": "async getStatusPillFor(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(2).locator('span')",
@@ -3834,8 +3951,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "reloadPage",
-      "startLine": 282,
-      "endLine": 284,
+      "startLine": 286,
+      "endLine": 288,
       "signature": "async reloadPage()",
       "locatorsUsed": [],
       "code": "async reloadPage(): Promise<void> {\n    await this.page.reload({ waitUntil: 'domcontentloaded' });\n  }"
@@ -3846,8 +3963,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "goBack",
-      "startLine": 286,
-      "endLine": 288,
+      "startLine": 290,
+      "endLine": 292,
       "signature": "async goBack()",
       "locatorsUsed": [],
       "code": "async goBack(): Promise<void> {\n    await this.page.goBack({ waitUntil: 'domcontentloaded' });\n  }"
@@ -3858,8 +3975,8 @@
       "kind": "method",
       "parent": "SpecialtiesPage",
       "name": "goForward",
-      "startLine": 290,
-      "endLine": 292,
+      "startLine": 294,
+      "endLine": 296,
       "signature": "async goForward()",
       "locatorsUsed": [],
       "code": "async goForward(): Promise<void> {\n    await this.page.goForward({ waitUntil: 'domcontentloaded' });\n  }"
@@ -3871,13 +3988,14 @@
       "parent": null,
       "name": "StatusOptionsPage",
       "startLine": 4,
-      "endLine": 287,
+      "endLine": 293,
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
         "page.getByRole('link', { name: 'Admin', exact: true })",
         "page.locator('div.bg-slate-100').first()",
         "page.locator('div.bg-slate-100')",
+        "page.getByRole('heading', { name: 'Status Options', exact: true })",
         "page.getByRole('button', { name: 'Add Status Option', exact: true })",
         "page.locator('div.flex.justify-center').first()",
         "page.locator('div.flex.justify-center')",
@@ -3915,7 +4033,7 @@
         "this.modalDialog.locator('.bg-red-50, [role=\"alert\"]')"
       ],
       "signature": "class StatusOptionsPage",
-      "code": "export class StatusOptionsPage extends BasePage {\n  // AppShell & Navigation\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n\n  // Page Header & Controls\n  readonly addStatusOptionButton: Locator;\n  readonly addStatusOptionButtonContainer: Locator;\n  readonly subTabsContainer: Locator;\n  readonly clientTabButton: Locator;\n  readonly tempTabButton: Lo..."
+      "code": "export class StatusOptionsPage extends BasePage {\n  // AppShell & Navigation\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n\n  // Page Header & Controls\n  readonly heading: Locator;\n  readonly addStatusOptionButton: Locator;\n  readonly addStatusOptionButtonContainer: Locator;\n  readonly subTabsContainer: Locator;\n  readonly clientTabButton: Locator;..."
     },
     {
       "id": "pages/StatusOptionsPage.ts#StatusOptionsPage.gotoStatusOptions",
@@ -3923,11 +4041,23 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "gotoStatusOptions",
-      "startLine": 87,
-      "endLine": 90,
+      "startLine": 89,
+      "endLine": 92,
       "signature": "async gotoStatusOptions()",
       "locatorsUsed": [],
       "code": "async gotoStatusOptions(): Promise<void> {\n    await this.navigate('/admin/status-options');\n    await this.waitForPageLoaded();\n  }"
+    },
+    {
+      "id": "pages/StatusOptionsPage.ts#StatusOptionsPage.getHeadingText",
+      "file": "pages/StatusOptionsPage.ts",
+      "kind": "method",
+      "parent": "StatusOptionsPage",
+      "name": "getHeadingText",
+      "startLine": 94,
+      "endLine": 96,
+      "signature": "async getHeadingText()",
+      "locatorsUsed": [],
+      "code": "async getHeadingText(): Promise<string> {\n    return (await this.heading.textContent())?.trim() || '';\n  }"
     },
     {
       "id": "pages/StatusOptionsPage.ts#StatusOptionsPage.isAdminTabActive",
@@ -3935,8 +4065,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "isAdminTabActive",
-      "startLine": 92,
-      "endLine": 96,
+      "startLine": 98,
+      "endLine": 102,
       "signature": "async isAdminTabActive()",
       "locatorsUsed": [],
       "code": "async isAdminTabActive(): Promise<boolean> {\n    const ariaCurrent = await this.adminLink.getAttribute('aria-current');\n    const className = await this.adminLink.getAttribute('class');\n    return ariaCurrent === 'page' || (className ? className.includes('border-blue-900') : false);\n  }"
@@ -3947,8 +4077,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "isAddStatusOptionButtonCentered",
-      "startLine": 98,
-      "endLine": 101,
+      "startLine": 104,
+      "endLine": 107,
       "signature": "async isAddStatusOptionButtonCentered()",
       "locatorsUsed": [],
       "code": "async isAddStatusOptionButtonCentered(): Promise<boolean> {\n    const containerClasses = await this.addStatusOptionButtonContainer.getAttribute('class');\n    return Boolean(containerClasses?.includes('justify-center'));\n  }"
@@ -3959,8 +4089,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "isClientTabActive",
-      "startLine": 103,
-      "endLine": 106,
+      "startLine": 109,
+      "endLine": 112,
       "signature": "async isClientTabActive()",
       "locatorsUsed": [],
       "code": "async isClientTabActive(): Promise<boolean> {\n    const className = await this.clientTabButton.getAttribute('class');\n    return Boolean(className?.includes('border-blue-600'));\n  }"
@@ -3971,8 +4101,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "isTempTabActive",
-      "startLine": 108,
-      "endLine": 111,
+      "startLine": 114,
+      "endLine": 117,
       "signature": "async isTempTabActive()",
       "locatorsUsed": [],
       "code": "async isTempTabActive(): Promise<boolean> {\n    const className = await this.tempTabButton.getAttribute('class');\n    return Boolean(className?.includes('border-blue-600'));\n  }"
@@ -3983,8 +4113,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "switchToClientTab",
-      "startLine": 113,
-      "endLine": 119,
+      "startLine": 119,
+      "endLine": 125,
       "signature": "async switchToClientTab()",
       "locatorsUsed": [],
       "code": "async switchToClientTab(): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/status-options') && resp.url().includes('entityType=Client')\n    );\n    await this.clientTabButton.click();\n    await responsePromise;\n  }"
@@ -3995,8 +4125,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "switchToTempTab",
-      "startLine": 121,
-      "endLine": 127,
+      "startLine": 127,
+      "endLine": 133,
       "signature": "async switchToTempTab()",
       "locatorsUsed": [],
       "code": "async switchToTempTab(): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/status-options') && resp.url().includes('entityType=Temp')\n    );\n    await this.tempTabButton.click();\n    await responsePromise;\n  }"
@@ -4007,8 +4137,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "search",
-      "startLine": 129,
-      "endLine": 136,
+      "startLine": 135,
+      "endLine": 142,
       "signature": "async search(query: string)",
       "locatorsUsed": [],
       "code": "async search(query: string): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/status-options') && resp.request().method() === 'GET'\n    );\n    await this.searchInput.fill(query);\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -4019,8 +4149,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "clearSearch",
-      "startLine": 138,
-      "endLine": 145,
+      "startLine": 144,
+      "endLine": 151,
       "signature": "async clearSearch()",
       "locatorsUsed": [],
       "code": "async clearSearch(): Promise<void> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/admin/status-options') && resp.request().method() === 'GET'\n    );\n    await this.searchInput.fill('');\n    await this.searchButton.click();\n    await responsePromise;\n  }"
@@ -4031,8 +4161,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "openAddStatusOptionModal",
-      "startLine": 147,
-      "endLine": 150,
+      "startLine": 153,
+      "endLine": 156,
       "signature": "async openAddStatusOptionModal()",
       "locatorsUsed": [],
       "code": "async openAddStatusOptionModal(): Promise<void> {\n    await this.addStatusOptionButton.click();\n    await this.modalDialog.waitFor({ state: 'visible' });\n  }"
@@ -4043,8 +4173,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "closeModalViaCloseButton",
-      "startLine": 152,
-      "endLine": 155,
+      "startLine": 158,
+      "endLine": 161,
       "signature": "async closeModalViaCloseButton()",
       "locatorsUsed": [],
       "code": "async closeModalViaCloseButton(): Promise<void> {\n    await this.modalCloseButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -4055,8 +4185,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "closeModalViaCancel",
-      "startLine": 157,
-      "endLine": 160,
+      "startLine": 163,
+      "endLine": 166,
       "signature": "async closeModalViaCancel()",
       "locatorsUsed": [],
       "code": "async closeModalViaCancel(): Promise<void> {\n    await this.modalCancelButton.click();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -4067,8 +4197,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "fillStatusName",
-      "startLine": 162,
-      "endLine": 164,
+      "startLine": 168,
+      "endLine": 170,
       "signature": "async fillStatusName(name: string)",
       "locatorsUsed": [],
       "code": "async fillStatusName(name: string): Promise<void> {\n    await this.statusNameInput.fill(name);\n  }"
@@ -4079,8 +4209,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "fillStatusDescription",
-      "startLine": 166,
-      "endLine": 168,
+      "startLine": 172,
+      "endLine": 174,
       "signature": "async fillStatusDescription(description: string)",
       "locatorsUsed": [],
       "code": "async fillStatusDescription(description: string): Promise<void> {\n    await this.statusDescriptionInput.fill(description);\n  }"
@@ -4091,8 +4221,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "fillDescription",
-      "startLine": 170,
-      "endLine": 172,
+      "startLine": 176,
+      "endLine": 178,
       "signature": "async fillDescription(description: string)",
       "locatorsUsed": [],
       "code": "async fillDescription(description: string): Promise<void> {\n    await this.fillStatusDescription(description);\n  }"
@@ -4103,8 +4233,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "selectIsActive",
-      "startLine": 174,
-      "endLine": 177,
+      "startLine": 180,
+      "endLine": 183,
       "signature": "async selectIsActive(status: 'Active' | 'Inactive')",
       "locatorsUsed": [],
       "code": "async selectIsActive(status: 'Active' | 'Inactive'): Promise<void> {\n    const value = status === 'Active' ? 'true' : 'false';\n    await this.statusIsActiveSelect.selectOption(value);\n  }"
@@ -4115,8 +4245,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "saveModal",
-      "startLine": 179,
-      "endLine": 181,
+      "startLine": 185,
+      "endLine": 187,
       "signature": "async saveModal()",
       "locatorsUsed": [],
       "code": "async saveModal(): Promise<void> {\n    await this.modalSaveButton.click();\n  }"
@@ -4127,8 +4257,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "openEditStatusOptionModal",
-      "startLine": 183,
-      "endLine": 188,
+      "startLine": 189,
+      "endLine": 194,
       "signature": "async openEditStatusOptionModal(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(1).click()",
@@ -4143,8 +4273,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "openEditStatusOptionModalByRow",
-      "startLine": 190,
-      "endLine": 198,
+      "startLine": 196,
+      "endLine": 204,
       "signature": "async openEditStatusOptionModalByRow(rowIndex: number = 0)",
       "locatorsUsed": [
         "(await row.locator('td').nth(1).innerText()).trim()",
@@ -4161,8 +4291,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "fillDisplayOrder",
-      "startLine": 200,
-      "endLine": 202,
+      "startLine": 206,
+      "endLine": 208,
       "signature": "async fillDisplayOrder(order: number | string)",
       "locatorsUsed": [],
       "code": "async fillDisplayOrder(order: number | string): Promise<void> {\n    await this.statusDisplayOrderInput.fill(order.toString());\n  }"
@@ -4173,8 +4303,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "updateStatusOption",
-      "startLine": 204,
-      "endLine": 221,
+      "startLine": 210,
+      "endLine": 227,
       "signature": "async updateStatusOption(data: {\n    description?: string;\n    isActive?: 'Active' | 'Inactive' | boolean;\n    displayOrder?: number | string;\n  })",
       "locatorsUsed": [],
       "code": "async updateStatusOption(data: {\n    description?: string;\n    isActive?: 'Active' | 'Inactive' | boolean;\n    displayOrder?: number | string;\n  }): Promise<void> {\n    if (data.description !== undefined) {\n      await this.fillStatusDescription(data.description);\n    }\n    if (data.isActive !== undefined) {\n      const activeChoice = typeof data.isActive === 'boolean' ? (data.isActive ? 'Active' : 'Inactive') : data.isActive;\n      await this.selectIsActive(activeChoice);\n    }\n    if (data.displayOrder !== undefined) {\n      await this.fillDisplayOrder(data.displayOrder);\n    }\n    await this.saveModal();\n    await this.modalDialog.waitFor({ state: 'hidden' });\n  }"
@@ -4185,8 +4315,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "createStatusOption",
-      "startLine": 223,
-      "endLine": 240,
+      "startLine": 229,
+      "endLine": 246,
       "signature": "async createStatusOption(name: string, description: string = '', status: 'Active' | 'Inactive' = 'Active')",
       "locatorsUsed": [],
       "code": "async createStatusOption(\n    name: string,\n    description: string = '',\n    status: 'Active' | 'Inactive' = 'Active'\n  ): Promise<void> {\n    await this.openAddStatusOptionModal();\n    await this.fillStatusName(name);\n\n    if (description) {\n      await this.fillStatusDescription(description);\n    }\n\n    if (status !== 'Active') {\n      await this.selectIsActive(status);\n    }\n\n    await this.saveModal();\n  }"
@@ -4197,8 +4327,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "getStatusOptionRow",
-      "startLine": 242,
-      "endLine": 244,
+      "startLine": 248,
+      "endLine": 250,
       "signature": "getStatusOptionRow(name: string)",
       "locatorsUsed": [],
       "code": "getStatusOptionRow(name: string): Locator {\n    return this.tableRows.filter({ hasText: name }).first();\n  }"
@@ -4209,8 +4339,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "getStatusDescriptionFor",
-      "startLine": 246,
-      "endLine": 250,
+      "startLine": 252,
+      "endLine": 256,
       "signature": "async getStatusDescriptionFor(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(2)",
@@ -4224,8 +4354,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "getCurrentlyActiveFor",
-      "startLine": 252,
-      "endLine": 256,
+      "startLine": 258,
+      "endLine": 262,
       "signature": "async getCurrentlyActiveFor(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(3)",
@@ -4239,8 +4369,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "getStatusPillFor",
-      "startLine": 258,
-      "endLine": 261,
+      "startLine": 264,
+      "endLine": 267,
       "signature": "getStatusPillFor(name: string)",
       "locatorsUsed": [
         "row.locator('td').nth(3).locator('span').first()",
@@ -4256,8 +4386,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "getPaginationInfo",
-      "startLine": 263,
-      "endLine": 274,
+      "startLine": 269,
+      "endLine": 280,
       "signature": "async getPaginationInfo()",
       "locatorsUsed": [],
       "code": "async getPaginationInfo(): Promise<{ currentPage: number; totalPages: number; totalRecords: number }> {\n    const text = await this.paginationText.innerText();\n    const match = text.match(/Page\\s+(\\d+)\\s+of\\s+(\\d+)\\s+\\((\\d+)\\s+total\\)/i);\n    if (!match) {\n      throw new Error(`Unexpected pagination text format: \"${text}\"`);\n    }\n    return {\n      currentPage: parseInt(match[1], 10),\n      totalPages: parseInt(match[2], 10),\n      totalRecords: parseInt(match[3], 10),\n    };\n  }"
@@ -4268,8 +4398,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "reloadPage",
-      "startLine": 276,
-      "endLine": 278,
+      "startLine": 282,
+      "endLine": 284,
       "signature": "async reloadPage()",
       "locatorsUsed": [],
       "code": "async reloadPage(): Promise<void> {\n    await this.page.reload({ waitUntil: 'domcontentloaded' });\n  }"
@@ -4280,8 +4410,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "goBack",
-      "startLine": 280,
-      "endLine": 282,
+      "startLine": 286,
+      "endLine": 288,
       "signature": "async goBack()",
       "locatorsUsed": [],
       "code": "async goBack(): Promise<void> {\n    await this.page.goBack({ waitUntil: 'domcontentloaded' });\n  }"
@@ -4292,8 +4422,8 @@
       "kind": "method",
       "parent": "StatusOptionsPage",
       "name": "goForward",
-      "startLine": 284,
-      "endLine": 286,
+      "startLine": 290,
+      "endLine": 292,
       "signature": "async goForward()",
       "locatorsUsed": [],
       "code": "async goForward(): Promise<void> {\n    await this.page.goForward({ waitUntil: 'domcontentloaded' });\n  }"
@@ -6355,6 +6485,182 @@
       ],
       "locatorsUsed": [],
       "code": "test('TC-10 - Verify responsive layout across viewports', async ({ authenticatedAdminPage }) => {\n    // Desktop Viewport\n    await authenticatedAdminPage.setViewport(adminNavData.viewports.desktop.width, adminNavData.viewports.desktop.height);\n    await expect(authenticatedAdminPage.adminLink).toBeVisible();\n    await expect(authenticatedAdminPage.adminSubNav).toBeVisible();\n\n    // Tablet Viewport\n    await authenticatedAdminPage.setViewport(adminNavData.viewports.tablet.width, adminNavData.viewports.tablet.height);\n    await expect(authenticatedAdminPage.adminLink).toBeVisible();\n    await expect(authenticatedAdminPage.adminSubNav).toBeVisible();\n\n    // Mobile Viewport\n    await authenticatedAdminPage.setViewport(adminNavData.viewports.mobile.width, adminNavData.viewports.mobile.height);\n    await expect(authenticatedAdminPage.adminSubNav).toBeVisible();\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-01_-_Verify_presence_and_text_content_of_page_h",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-01 - Verify presence and text content of page heading on Shifts page",
+      "startLine": 5,
+      "endLine": 14,
+      "fixtures": [
+        "authenticatedShiftsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-01 - Verify presence and text content of page heading on Shifts page', async ({\n    authenticatedShiftsPage,\n  }) => {\n    await expect(authenticatedShiftsPage.heading).toBeVisible();\n    const headingText = await authenticatedShiftsPage.getHeadingText();\n    expect(headingText).toBe(adminHeadingsData.headings.shifts);\n\n    const tagName = await authenticatedShiftsPage.getElementTagName(authenticatedShiftsPage.heading);\n    expect(tagName).toBe(adminHeadingsData.typography.expectedTag);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-02_-_Verify_presence_and_text_content_of_page_h",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-02 - Verify presence and text content of page heading on Order Types page",
+      "startLine": 16,
+      "endLine": 25,
+      "fixtures": [
+        "authenticatedOrderTypesPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-02 - Verify presence and text content of page heading on Order Types page', async ({\n    authenticatedOrderTypesPage,\n  }) => {\n    await expect(authenticatedOrderTypesPage.heading).toBeVisible();\n    const headingText = await authenticatedOrderTypesPage.getHeadingText();\n    expect(headingText).toBe(adminHeadingsData.headings.orderTypes);\n\n    const tagName = await authenticatedOrderTypesPage.getElementTagName(authenticatedOrderTypesPage.heading);\n    expect(tagName).toBe(adminHeadingsData.typography.expectedTag);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-03_-_Verify_presence_and_text_content_of_page_h",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-03 - Verify presence and text content of page heading on Status Options page",
+      "startLine": 27,
+      "endLine": 36,
+      "fixtures": [
+        "authenticatedStatusOptionsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-03 - Verify presence and text content of page heading on Status Options page', async ({\n    authenticatedStatusOptionsPage,\n  }) => {\n    await expect(authenticatedStatusOptionsPage.heading).toBeVisible();\n    const headingText = await authenticatedStatusOptionsPage.getHeadingText();\n    expect(headingText).toBe(adminHeadingsData.headings.statusOptions);\n\n    const tagName = await authenticatedStatusOptionsPage.getElementTagName(authenticatedStatusOptionsPage.heading);\n    expect(tagName).toBe(adminHeadingsData.typography.expectedTag);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-04_-_Verify_typography__font_size__font_weight_",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-04 - Verify typography, font size, font weight, and styling consistency with reference admin pages",
+      "startLine": 38,
+      "endLine": 95,
+      "fixtures": [
+        "authenticatedShiftsPage",
+        "specialtiesPage",
+        "certificationsPage",
+        "orderTypesPage",
+        "statusOptionsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-04 - Verify typography, font size, font weight, and styling consistency with reference admin pages', async ({\n    authenticatedShiftsPage,\n    specialtiesPage,\n    certificationsPage,\n    orderTypesPage,\n    statusOptionsPage,\n  }) => {\n    // 1. Reference page: Specialties\n    await specialtiesPage.gotoSpecialties();\n    await expect(specialtiesPage.heading).toBeVisible();\n    const specialtiesClass = await specialtiesPage.getElementClassName(specialtiesPage.heading);\n    expect(specialtiesClass).toContain(adminHeadingsData.typography.cssClass);\n\n    // 2. Reference page: Certifications\n    await certificationsPage.gotoCertifications();\n    await expect(certificationsPage.heading).toBeVisible();\n    const certificationsClass = await certificationsPage.getElementClassName(certificationsPage.heading);\n    expect(certificationsClass).toContain(adminHeadingsData.typography.cssClass);\n\n    // 3. Target page: Shifts\n    await authenticatedShiftsPage.gotoShifts();\n    await expect(authenticatedShiftsPage.heading).toBeVisible();\n    const shiftsClass = await authenticatedShiftsPage.getElementClassName(authenticatedShiftsPage.heading);\n    expect(shiftsClass).toContain(adminHeadingsData.typography.cssClass);\n\n    const shiftsComputed = await authenticatedShiftsPage.getElementComputedStyles(authenticatedShiftsPage.heading, [\n      'font-size',\n      'font-weight',\n    ]);\n    expect(shiftsComputed['font-size']).toBe(adminHeadingsData.typography.fontSize);\n    expect(shiftsComputed['font-weight']).toBe(adminHeadingsData.typography.fontWeight);\n\n    // 4. Target page: Order Types\n    await orderTypesPage.gotoOrderTypes();\n    await expect(orderTypesPage.heading).toBeVisible();\n    const orderTypesClass = await orderTypesPage.getElementClassName(orderTypesPage.heading);\n    expect(orderTypesClass).toContain(adminHeadingsData.typography.cssClass);\n\n    const orderTypesComputed = await orderTypesPage.getElementComputedStyles(orderTypesPage.heading, [\n      'font-size',\n      'font-weight',\n    ]);\n    expect(orderTypesComputed['font-size']).toBe(adminHeadingsData.typography.fontSize);\n    expect(orderTypesComputed['font-weight']).toBe(adminHeadingsData.typography.fontWeight);\n\n    // 5. Target page: Status Options\n    await statusOptionsPage.gotoStatusOptions();\n    await expect(statusOptionsPage.heading).toBeVisible();\n    const statusOptionsClass = await statusOptionsPage.getElementClassName(statusOptionsPage.heading);\n    expect(statusOptionsClass).toContain(adminHeadingsData.typography.cssClass);\n\n    const statusOptionsComputed = await statusOptionsPage.getElementComputedStyles(statusOptionsPage.heading, [\n      'font-size',\n      'font-weight',\n    ]);\n    expect(statusOptionsComputed['font-size']).toBe(adminHeadingsData.typography.fontSize);\n    expect(statusOptionsComputed['font-weight']).toBe(adminHeadingsData.typography.fontWeight);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-05_-_Verify_structural_layout_and_placement_abo",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-05 - Verify structural layout and placement above action controls and search filter",
+      "startLine": 97,
+      "endLine": 109,
+      "fixtures": [
+        "authenticatedShiftsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-05 - Verify structural layout and placement above action controls and search filter', async ({\n    authenticatedShiftsPage,\n  }) => {\n    await expect(authenticatedShiftsPage.heading).toBeVisible();\n    await expect(authenticatedShiftsPage.searchInput).toBeVisible();\n\n    const headingBox = await authenticatedShiftsPage.getElementBoundingBox(authenticatedShiftsPage.heading);\n    const searchBox = await authenticatedShiftsPage.getElementBoundingBox(authenticatedShiftsPage.searchInput);\n\n    expect(headingBox).not.toBeNull();\n    expect(searchBox).not.toBeNull();\n    expect(headingBox!.y).toBeLessThan(searchBox!.y);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-06_-_Verify_page_heading_persistence_across_cat",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-06 - Verify page heading persistence across category tab switching on Order Types page",
+      "startLine": 111,
+      "endLine": 126,
+      "fixtures": [
+        "authenticatedOrderTypesPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-06 - Verify page heading persistence across category tab switching on Order Types page', async ({\n    authenticatedOrderTypesPage,\n  }) => {\n    await expect(authenticatedOrderTypesPage.heading).toBeVisible();\n    expect(await authenticatedOrderTypesPage.getHeadingText()).toBe(adminHeadingsData.headings.orderTypes);\n\n    // Switch to Long Term tab\n    await authenticatedOrderTypesPage.clickLongTermTab();\n    await expect(authenticatedOrderTypesPage.heading).toBeVisible();\n    expect(await authenticatedOrderTypesPage.getHeadingText()).toBe(adminHeadingsData.headings.orderTypes);\n\n    // Switch back to Per Diem tab\n    await authenticatedOrderTypesPage.clickPerDiemTab();\n    await expect(authenticatedOrderTypesPage.heading).toBeVisible();\n    expect(await authenticatedOrderTypesPage.getHeadingText()).toBe(adminHeadingsData.headings.orderTypes);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-07_-_Verify_page_heading_persistence_across_ent",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-07 - Verify page heading persistence across entity tab switching on Status Options page",
+      "startLine": 128,
+      "endLine": 143,
+      "fixtures": [
+        "authenticatedStatusOptionsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-07 - Verify page heading persistence across entity tab switching on Status Options page', async ({\n    authenticatedStatusOptionsPage,\n  }) => {\n    await expect(authenticatedStatusOptionsPage.heading).toBeVisible();\n    expect(await authenticatedStatusOptionsPage.getHeadingText()).toBe(adminHeadingsData.headings.statusOptions);\n\n    // Switch to Temp tab\n    await authenticatedStatusOptionsPage.switchToTempTab();\n    await expect(authenticatedStatusOptionsPage.heading).toBeVisible();\n    expect(await authenticatedStatusOptionsPage.getHeadingText()).toBe(adminHeadingsData.headings.statusOptions);\n\n    // Switch back to Client tab\n    await authenticatedStatusOptionsPage.switchToClientTab();\n    await expect(authenticatedStatusOptionsPage.heading).toBeVisible();\n    expect(await authenticatedStatusOptionsPage.getHeadingText()).toBe(adminHeadingsData.headings.statusOptions);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-08_-_Verify_page_heading_persistence_across_bro",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-08 - Verify page heading persistence across browser reload and re-navigation",
+      "startLine": 145,
+      "endLine": 154,
+      "fixtures": [
+        "authenticatedShiftsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-08 - Verify page heading persistence across browser reload and re-navigation', async ({\n    authenticatedShiftsPage,\n  }) => {\n    await authenticatedShiftsPage.gotoShifts();\n    await expect(authenticatedShiftsPage.heading).toBeVisible();\n\n    await authenticatedShiftsPage.page.reload({ waitUntil: 'domcontentloaded' });\n    await expect(authenticatedShiftsPage.heading).toBeVisible();\n    expect(await authenticatedShiftsPage.getHeadingText()).toBe(adminHeadingsData.headings.shifts);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-09_-_Verify_unauthenticated_access_redirection_",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-09 - Verify unauthenticated access redirection and heading non-disclosure",
+      "startLine": 156,
+      "endLine": 178,
+      "fixtures": [
+        "shiftsPage",
+        "orderTypesPage",
+        "statusOptionsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-09 - Verify unauthenticated access redirection and heading non-disclosure', async ({\n    shiftsPage,\n    orderTypesPage,\n    statusOptionsPage,\n  }) => {\n    // Shifts unauthenticated\n    await shiftsPage.navigate(adminHeadingsData.routes.shifts);\n    await shiftsPage.page.waitForURL(new RegExp(adminHeadingsData.routes.login));\n    expect(shiftsPage.page.url()).toContain(adminHeadingsData.routes.login);\n    await expect(shiftsPage.heading).toHaveCount(0);\n\n    // Order Types unauthenticated\n    await orderTypesPage.navigate(adminHeadingsData.routes.orderTypes);\n    await orderTypesPage.page.waitForURL(new RegExp(adminHeadingsData.routes.login));\n    expect(orderTypesPage.page.url()).toContain(adminHeadingsData.routes.login);\n    await expect(orderTypesPage.heading).toHaveCount(0);\n\n    // Status Options unauthenticated\n    await statusOptionsPage.navigate(adminHeadingsData.routes.statusOptions);\n    await statusOptionsPage.page.waitForURL(new RegExp(adminHeadingsData.routes.login));\n    expect(statusOptionsPage.page.url()).toContain(adminHeadingsData.routes.login);\n    await expect(statusOptionsPage.heading).toHaveCount(0);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-10_-_Verify_non-admin_role___unauthenticated_se",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-10 - Verify non-admin role / unauthenticated session cannot access target headings",
+      "startLine": 180,
+      "endLine": 188,
+      "fixtures": [
+        "shiftsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-10 - Verify non-admin role / unauthenticated session cannot access target headings', async ({\n    shiftsPage,\n  }) => {\n    await shiftsPage.navigate(adminHeadingsData.routes.shifts);\n    await expect(shiftsPage.page).toHaveURL(new RegExp(adminHeadingsData.routes.login));\n\n    const h1Count = await shiftsPage.getHeadingCount(1);\n    expect(h1Count).toBe(0);\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-11_-_Verify_responsive_layout_and_heading_posit",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-11 - Verify responsive layout and heading positioning across viewports",
+      "startLine": 190,
+      "endLine": 213,
+      "fixtures": [
+        "authenticatedShiftsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-11 - Verify responsive layout and heading positioning across viewports', async ({\n    authenticatedShiftsPage,\n  }) => {\n    // Mobile viewport\n    await authenticatedShiftsPage.setViewport(\n      adminHeadingsData.viewports.mobile.width,\n      adminHeadingsData.viewports.mobile.height\n    );\n    await expect(authenticatedShiftsPage.heading).toBeVisible();\n\n    // Tablet viewport\n    await authenticatedShiftsPage.setViewport(\n      adminHeadingsData.viewports.tablet.width,\n      adminHeadingsData.viewports.tablet.height\n    );\n    await expect(authenticatedShiftsPage.heading).toBeVisible();\n\n    // Desktop viewport\n    await authenticatedShiftsPage.setViewport(\n      adminHeadingsData.viewports.desktop.width,\n      adminHeadingsData.viewports.desktop.height\n    );\n    await expect(authenticatedShiftsPage.heading).toBeVisible();\n  })"
+    },
+    {
+      "id": "tests/adminPageHeadings.spec.ts#TC-12_-_Verify_single_primary_semantic_landmark__h",
+      "file": "tests/adminPageHeadings.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-74 - [Admin] Page Headings on Shifts, Order Types, and Status Options",
+      "name": "TC-12 - Verify single primary semantic landmark (h1) per page for accessibility",
+      "startLine": 215,
+      "endLine": 237,
+      "fixtures": [
+        "authenticatedShiftsPage",
+        "orderTypesPage",
+        "statusOptionsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-12 - Verify single primary semantic landmark (h1) per page for accessibility', async ({\n    authenticatedShiftsPage,\n    orderTypesPage,\n    statusOptionsPage,\n  }) => {\n    // Shifts page exactly one h1\n    await authenticatedShiftsPage.gotoShifts();\n    await expect(authenticatedShiftsPage.heading).toBeVisible();\n    const shiftsH1Count = await authenticatedShiftsPage.getHeadingCount(1);\n    expect(shiftsH1Count).toBe(1);\n\n    // Order Types page exactly one h1\n    await orderTypesPage.gotoOrderTypes();\n    await expect(orderTypesPage.heading).toBeVisible();\n    const orderTypesH1Count = await orderTypesPage.getHeadingCount(1);\n    expect(orderTypesH1Count).toBe(1);\n\n    // Status Options page exactly one h1\n    await statusOptionsPage.gotoStatusOptions();\n    await expect(statusOptionsPage.heading).toBeVisible();\n    const statusOptionsH1Count = await statusOptionsPage.getHeadingCount(1);\n    expect(statusOptionsH1Count).toBe(1);\n  })"
     },
     {
       "id": "tests/certifications.spec.ts#TC-01_-_Verify_navigation_to_Certifications_page_f",

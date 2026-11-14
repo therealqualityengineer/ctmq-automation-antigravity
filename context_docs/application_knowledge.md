@@ -46,9 +46,12 @@ CTMQ is a healthcare staffing and facility management platform managing temps (h
 - **Required Fields**: Facility Name, Billing Address, Primary Contact Name, Phone, and Email.
 - **Client Status**: `Lead` $\rightarrow$ `Active Contract` $\rightarrow$ `On Hold` $\rightarrow$ `Terminated`. Only `Active Contract` clients can request shifts.
 
-### C. Admin Master Configurations (Status Options, Certifications, Specialties)
+### C. Admin Master Configurations (Status Options, Certifications, Specialties, Shifts, Order Types)
 - **Status Options**: Can be tagged specifically for `Client` or `Temp`. Creating a duplicate status code/name within the same target type is blocked with a validation toast/error dialog.
 - **Deletions / Cascades**: An admin option (e.g., Specialty or Certification) that is actively associated with existing Temps cannot be hard-deleted; it triggers a dependency warning or is soft-deactivated.
+- **Page Heading & Typography Standard**:
+  - All Admin General Settings configuration views (`/admin/shifts`, `/admin/order-types`, `/admin/status-options`, `/admin/specialties`, `/admin/certifications`) must render a single semantic primary heading (`<h1>` with `text-xl font-semibold text-slate-900`) identifying the active configuration module.
+  - Headings must persist across sub-tab navigation (e.g., entity tabs in Status Options, category tabs in Order Types) and maintain responsive alignment without collision with Add action buttons or filter search inputs.
 - **Certifications & Specialties Bidirectional Mapping**:
   - Certifications (`/admin/certifications`) and Specialties (`/admin/specialties`) maintain a Many-to-Many bidirectional correlation.
   - Mapped specialties configured on a certification record must immediately reflect under `MAPPED SPECIALTIES` in `/admin/certifications` and reciprocally under `CERTIFICATION MAPPING` in `/admin/specialties`.

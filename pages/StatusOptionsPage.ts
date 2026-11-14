@@ -8,6 +8,7 @@ export class StatusOptionsPage extends BasePage {
   readonly adminSubNav: Locator;
 
   // Page Header & Controls
+  readonly heading: Locator;
   readonly addStatusOptionButton: Locator;
   readonly addStatusOptionButtonContainer: Locator;
   readonly subTabsContainer: Locator;
@@ -48,6 +49,7 @@ export class StatusOptionsPage extends BasePage {
     this.adminSubNav = page.locator('div.bg-slate-100').first();
 
     // Page Level Controls
+    this.heading = page.getByRole('heading', { name: 'Status Options', exact: true });
     this.addStatusOptionButton = page.getByRole('button', { name: 'Add Status Option', exact: true });
     this.addStatusOptionButtonContainer = page.locator('div.flex.justify-center').first();
 
@@ -87,6 +89,10 @@ export class StatusOptionsPage extends BasePage {
   async gotoStatusOptions(): Promise<void> {
     await this.navigate('/admin/status-options');
     await this.waitForPageLoaded();
+  }
+
+  async getHeadingText(): Promise<string> {
+    return (await this.heading.textContent())?.trim() || '';
   }
 
   async isAdminTabActive(): Promise<boolean> {
