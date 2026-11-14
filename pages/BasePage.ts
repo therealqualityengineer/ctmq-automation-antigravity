@@ -99,4 +99,31 @@ export abstract class BasePage {
   async clearApiMocks(): Promise<void> {
     await this.page.unrouteAll();
   }
+
+  async getElementTagName(locator: Locator): Promise<string> {
+    return await locator.evaluate((el: HTMLElement) => el.tagName);
+  }
+
+  async getElementClassName(locator: Locator): Promise<string> {
+    return (await locator.getAttribute('class')) || '';
+  }
+
+  async getElementComputedStyles(locator: Locator, properties: string[]): Promise<Record<string, string>> {
+    return await locator.evaluate((el: HTMLElement, props: string[]) => {
+      const style = window.getComputedStyle(el);
+      const res: Record<string, string> = {};
+      for (const prop of props) {
+        res[prop] = style.getPropertyValue(prop);
+      }
+      return res;
+    }, properties);
+  }
+
+  async getElementBoundingBox(locator: Locator): Promise<{ x: number; y: number; width: number; height: number } | null> {
+    return await locator.boundingBox();
+  }
+
+  async getHeadingCount(level: number = 1): Promise<number> {
+    return await this.page.locator(`h${level}`).count();
+  }
 }

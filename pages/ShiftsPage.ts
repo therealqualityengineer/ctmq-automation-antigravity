@@ -58,7 +58,7 @@ export class ShiftsPage extends BasePage {
     this.adminSubNav = page.locator('div.bg-slate-100, nav').filter({ hasText: 'User Manager' }).first();
 
     // Page Level
-    this.heading = page.getByRole('heading', { name: /Shifts/i }).or(page.locator('main')).first();
+    this.heading = page.getByRole('heading', { name: 'Shifts', exact: true });
     this.addShiftButton = page.getByRole('button', { name: 'Add Shift Option', exact: true });
     this.addShiftButtonContainer = this.addShiftButton.locator('..');
     this.searchInput = page.getByPlaceholder('Search by shift name');
@@ -91,6 +91,10 @@ export class ShiftsPage extends BasePage {
   async gotoShifts(): Promise<void> {
     await this.navigate('/admin/shifts');
     await this.waitForPageLoaded();
+  }
+
+  async getHeadingText(): Promise<string> {
+    return (await this.heading.textContent())?.trim() || '';
   }
 
   async isAdminTabActive(): Promise<boolean> {

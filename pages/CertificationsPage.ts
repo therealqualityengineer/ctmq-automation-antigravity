@@ -87,6 +87,10 @@ export class CertificationsPage extends BasePage {
     await this.waitForPageLoaded();
   }
 
+  async getHeadingText(): Promise<string> {
+    return (await this.heading.textContent())?.trim() || '';
+  }
+
   async isAdminTabActive(): Promise<boolean> {
     const ariaCurrent = await this.adminLink.getAttribute('aria-current');
     const className = await this.adminLink.getAttribute('class');

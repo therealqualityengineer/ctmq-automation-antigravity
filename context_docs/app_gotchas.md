@@ -66,7 +66,19 @@ This living register records practical DOM quirks, timing workarounds, locator p
 
 ---
 
-## 6. How to Add New Learnings Here
+## 6. Fixture Chaining & Multi-Page Test Navigation
+- **Symptom / Quirk**: Injecting multiple authenticated page fixtures (e.g., `authenticatedSpecialtiesPage`, `authenticatedShiftsPage`, `authenticatedOrderTypesPage`) into the same test function causes Playwright fixture initialization chaining on the shared `page` instance. The test begins on whichever route was initialized last (e.g., `/admin/status-options`), causing locators belonging to previously initialized fixtures to timeout or fail with `element not found`.
+- **Solution**:
+  - In cross-page comparison or multi-page verification tests, inject a single primary authenticated fixture (e.g., `authenticatedShiftsPage`) to establish the authenticated session, and pass unauthenticated Page Objects (e.g., `specialtiesPage`, `certificationsPage`, `orderTypesPage`, `statusOptionsPage`).
+  - Sequentially navigate to each page (`await pageObj.gotoXYZ()`), wait explicitly for key landmarks (`await expect(pageObj.heading).toBeVisible()`), and then execute assertions.
+  - Additionally, avoid calling unawaited `locator.count()` during page transitions because `count()` resolves immediately without auto-waiting; always enforce web-first assertion (e.g., `await expect(pageObj.heading).toBeVisible()`) prior to counting semantic elements.
+- **Reference Probes**:
+  - [scratch/probe-admin-headings.ts](file:///Users/arunramalingam/Documents/GitHub/ctmq-automation-antigravity/scratch/probe-admin-headings.ts)
+  - [scratch/probe-admin-headings-layout.ts](file:///Users/arunramalingam/Documents/GitHub/ctmq-automation-antigravity/scratch/probe-admin-headings-layout.ts)
+
+---
+
+## 7. How to Add New Learnings Here
 When you complete RCA on a failed test or discover an application quirk:
 1. Provide a clear **Symptom / Quirk** description.
 2. Provide the verified **Solution / Workaround** implemented in Page Objects or fixtures.
