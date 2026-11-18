@@ -219,9 +219,12 @@ Evaluate the input argument `{Branch Name/Ticket number}`:
        `https://github.com/therealqualityengineer/ctmq-automation-antigravity/compare/main...<branch-name>?expand=1`
      - Output the formatted PR title and description so the user can easily copy/paste or submit it.
 
-#### Step 6: Link to Jira Sub-task (Optional)
-If a Jira ticket is linked and Atlassian MCP is active:
-1. Post a comment on the `"QA Testing Antigravity"` sub-task with the PR link and commit SHA to maintain complete traceability.
+#### Step 6: Link to Jira Sub-task & Emit Live Telemetry
+1. Emit telemetry for branch creation (`BRANCH:branch-create`) or PR creation (`SHIP:raise-pr`) so the **QA-SDLC Live Dashboard** (`http://127.0.0.1:5174`) updates in real time:
+   ```bash
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent git-agent --stage SHIP --step raise-pr --status passed --message "Committed changes and raised Pull Request"
+   ```
+2. If a Jira ticket is linked and Atlassian MCP is active, post a comment on the `"QA Testing Antigravity"` sub-task with the PR link and commit SHA to maintain complete traceability.
 
 ---
 

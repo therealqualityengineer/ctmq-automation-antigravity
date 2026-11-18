@@ -9,7 +9,10 @@
     "test:ui": "playwright test --ui",
     "report": "playwright show-report",
     "build:corpus": "node scripts/context-engine/ast-chunker.js",
-    "corpus:query": "node scripts/context-engine/query-corpus.js"
+    "corpus:query": "node scripts/context-engine/query-corpus.js",
+    "dashboard": "node scripts/dashboard/server.js",
+    "telemetry:emit": "node scripts/telemetry/emit.js",
+    "telemetry:seed": "node scripts/telemetry/seed-history.js"
   },
   "keywords": [
     "playwright",

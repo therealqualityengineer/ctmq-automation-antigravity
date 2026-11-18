@@ -167,8 +167,12 @@ flowchart TD
        ```
      - Verify that the parent ticket is now in status category `done`.
 
-### Step 7: Output Final Summary & Audit Report
-Present a clear, structured Markdown report to the user:
+### Step 7: Emit Live Telemetry & Output Final Summary Report
+1. Emit `SHIP:jira-close` telemetry so the **QA-SDLC Live Dashboard** (`http://127.0.0.1:5174`) marks the ticket workflow as `Completed`:
+   ```bash
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent jira-agent --stage SHIP --step jira-close --status passed --message "Completed QA Testing Antigravity sub-task, audited siblings, and closed {JiraTicket}"
+   ```
+2. Present a clear, structured Markdown report to the user:
 
 ```markdown
 ## Jira Ticket Lifecycle Summary: {JiraTicket}

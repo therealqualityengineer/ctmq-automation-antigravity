@@ -234,3 +234,30 @@ export const profileData = {
   },
 };
 ```
+
+---
+
+## Live Dashboard Telemetry Hooks (`http://127.0.0.1:5174`)
+During `Write test {JiraTicket}`, emit stage events via `npm run telemetry:emit` so the **QA-SDLC Live Dashboard** updates in real time:
+1. **After Step 2 (`corpus:query`)**:
+   ```bash
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent script-agent --stage BUILD --step corpus-query --status passed --reused <count> --message "Queried code-corpus.json and checked deduplication"
+   ```
+2. **After Step 4 (`code-author`)**:
+   ```bash
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent script-agent --stage BUILD --step code-author --status passed --artifact "tests/<spec>.spec.ts" --message "Authored Page Objects and Playwright spec"
+   ```
+3. **During Step 5 (`VERIFY` & RCA)**:
+   - `utils/telemetryReporter.ts` automatically streams `playwright-run` telemetry when `npx playwright test` executes.
+   - If 100% of tests pass on the first run, emit `rca-heal` as `skipped`:
+     ```bash
+     npm run telemetry:emit -- --ticket {JiraTicket} --agent script-agent --stage VERIFY --step rca-heal --status skipped --reason "Skipped: 100% first-run pass rate"
+     ```
+   - If an RCA loop occurs and repairs a test, emit `rca-heal` as `repaired`:
+     ```bash
+     npm run telemetry:emit -- --ticket {JiraTicket} --agent script-agent --stage VERIFY --step rca-heal --status repaired --rcaAttempt 1 --message "Diagnosed and fixed failure via probe"
+     ```
+4. **After Corpus Rebuild (`build:corpus`)**:
+   ```bash
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent script-agent --stage VERIFY --step corpus-sync --status passed --artifact ".context/code-corpus.json" --message "Synchronized AST code corpus and app_gotchas.md"
+   ```

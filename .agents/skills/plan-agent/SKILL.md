@@ -71,9 +71,13 @@ Structure test cases into three primary categories:
 1. Save the identical test plan locally under `test-plans/{JiraTicket}.md`.
 2. This establishes local repository knowledge so `script-agent` can author automation specs offline without re-querying Jira, ensuring Git traceability alongside code changes.
 
-### Step 5: Update Application Knowledge Blueprint
+### Step 5: Update Application Knowledge Blueprint & Emit Live Telemetry
 1. If the ticket introduces new business rules, entity lifecycles, permissions, or routes, append/update them into `context_docs/application_knowledge.md`.
-2. This ensures subsequent tickets benefit from the cumulative domain learning.
+2. Emit `DEFINE` stage telemetry so the **QA-SDLC Live Dashboard** (`http://127.0.0.1:5174`) reflects test design completion:
+   ```bash
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent plan-agent --stage DEFINE --step subtask-sync --status passed --message "Updated QA Testing Antigravity sub-task & saved test-plans/{JiraTicket}.md"
+   ```
+3. This ensures subsequent tickets benefit from cumulative domain learning and real-time velocity tracking.
 
 ---
 

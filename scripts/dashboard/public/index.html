@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA-SDLC Live — CTMQ Agentic Automation Observatory</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- TOP NAVIGATION BAR (Matches AI-SDLC Live Header) -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+        <span class="brand-title">QA-SDLC Live</span>
+      </div>
+
+      <!-- Main View Tabs -->
+      <nav class="main-tabs" role="tablist">
+        <button class="tab-btn active" data-tab="live-flow">Live Flow</button>
+        <button class="tab-btn" data-tab="evaluation">Evaluation</button>
+        <button class="tab-btn" data-tab="readiness">Readiness</button>
+      </nav>
+
+      <!-- Ticket & Branch Selectors -->
+      <div class="context-selectors">
+        <select id="ticketSelector" class="pill-select" title="Select Jira Ticket"></select>
+        <span class="branch-connector">⑂</span>
+        <div id="branchBadge" class="pill-badge branch-pill" title="Active Git Branch">CTMQ-75-Testing</div>
+        <button id="refreshBtn" class="icon-btn" title="Refresh Telemetry Snapshot">↻</button>
+        <div id="modeBadge" class="pill-badge snapshot-pill">⑂ snapshot</div>
+        <div class="pill-badge approach-pill">Auto • AST-CORPUS</div>
+        <button id="simulateBtn" class="simulate-btn" title="Replay live step-by-step agent execution">
+          ▶ Simulate Live Run
+        </button>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div id="globalStatusChip" class="status-chip completed">
+        <span class="status-dot"></span>
+        <span id="globalStatusText">Completed</span>
+      </div>
+      <div class="header-metrics">
+        <div class="metric-row">
+          <span class="m-label">PLAN &amp; BRANCH</span>
+          <span class="m-val" id="hdrPlanTime">02:48</span>
+        </div>
+        <div class="metric-row">
+          <span class="m-label">SCRIPT &amp; CORPUS</span>
+          <span class="m-val" id="hdrScriptTime">04:48</span>
+        </div>
+        <div class="metric-row">
+          <span class="m-label">PLAYWRIGHT &amp; RCA</span>
+          <span class="m-val" id="hdrVerifyTime">03:12</span>
+        </div>
+        <div class="metric-row highlight">
+          <span class="m-label">TOTAL AGENT TIME</span>
+          <span class="m-val" id="hdrTotalTime">11:36</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================= -->
+  <!-- TAB 1: LIVE FLOW                                                        -->
+  <!-- ======================================================================= -->
+  <main id="tab-live-flow" class="tab-panel active">
+    <div class="subbar">
+      <div class="subbar-left">
+        <span id="recordedStateLabel" class="recorded-state-text">RECORDED STATE • COMPLETED</span>
+        <span class="port-guard-badge" title="CTMQ App runs on :5173 | QA-SDLC Dashboard runs on :5174">
+          🛡️ App: 127.0.0.1:5173 • Dashboard: 127.0.0.1:5174
+        </span>
+      </div>
+      <div class="subbar-right">
+        <div class="subview-toggle">
+          <button class="subview-btn active" data-flowview="flow">Flow</button>
+          <button class="subview-btn" data-flowview="sequence">Sequence</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-grid">
+      <!-- LEFT COLUMN: Delivery Flow + Strategy Decision + Agent Handoffs -->
+      <div class="live-left-col">
+        <!-- Delivery Flow Card -->
+        <section class="card delivery-flow-card">
+          <div class="card-header-row">
+            <h2 class="card-title">Delivery flow</h2>
+            <span id="ticketSubtitle" class="ticket-subtitle"></span>
+          </div>
+
+          <!-- FLOW DIAGRAM VIEW -->
+          <div id="flowCanvasView" class="flow-canvas">
+            <div class="orchestrator-row">
+              <div class="human-trigger-pill">→ User Trigger Prompt</div>
+              <div id="orchestratorNode" class="orchestrator-box">
+                <div class="orch-icon">⚡</div>
+                <div class="orch-body">
+                  <div class="orch-title-row">
+                    <span class="orch-name">qa-sdlc-orchestrator</span>
+                    <span class="orch-tag">ANTIGRAVITY</span>
+                    <span id="orchStateBadge" class="orch-state-badge">Completed</span>
+                  </div>
+                  <div id="orchSubtext" class="orch-subtext">
+                    ↓ coordinating plan-agent → git-agent → script-agent → jira-agent
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5 SWIMLANE COLUMNS -->
+            <div id="swimlanesContainer" class="swimlanes-grid"></div>
+          </div>
+
+          <!-- SEQUENCE VIEW (Alternative toggle) -->
+          <div id="sequenceCanvasView" class="sequence-canvas hidden"></div>
+        </section>
+
+        <!-- Strategy & Corpus Reusability Decision Bar -->
+        <section class="card strategy-bar-card">
+          <div class="strategy-bar">
+            <span class="strategy-title">Strategy decision</span>
+            <span id="strategyRecommended" class="strategy-pill purple"></span>
+            <span id="strategyChosen" class="strategy-pill green"></span>
+            <span id="strategyGotcha" class="strategy-pill amber"></span>
+          </div>
+        </section>
+
+        <!-- Agent Handoffs Timeline & RCA Loop Trace -->
+        <section class="card handoffs-card">
+          <div class="card-header-row">
+            <h2 class="card-title">Agent handoffs</h2>
+            <span id="handoffSummaryRight" class="handoff-meta">By agent (4 agents)</span>
+          </div>
+          <div id="handoffTimelineBar" class="handoff-bar"></div>
+          <div id="handoffLegend" class="handoff-legend"></div>
+          <div id="rcaTraceList" class="rca-trace-list"></div>
+        </section>
+      </div>
+
+      <!-- RIGHT SIDEBAR: Live Events + Artifacts -->
+      <div class="live-right-col">
+        <section class="card events-card">
+          <div class="card-header-row">
+            <h2 class="card-title">Live events</h2>
+            <span id="eventsCountBadge" class="subtle-count">0 events</span>
+          </div>
+          <div id="liveEventsList" class="events-list"></div>
+        </section>
+
+        <section class="card artifacts-card">
+          <div class="card-header-row">
+            <h2 class="card-title">Artifacts</h2>
+            <span id="artifactsCountBadge" class="subtle-count">0 files</span>
+          </div>
+          <div id="artifactsList" class="artifacts-list"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TAB 2: EVALUATION (Productivity, Velocity Trend & Quality Intelligence) -->
+  <!-- ======================================================================= -->
+  <main id="tab-evaluation" class="tab-panel">
+    <!-- SECTION 1: Ticket-by-Ticket Agent Velocity & Learning Evaluation -->
+    <div class="section-heading-row">
+      <span class="section-num">1</span>
+      <div>
+        <h2 class="section-title">Agent Velocity &amp; Continuous Learning Evaluation</h2>
+        <p class="section-desc">Ticket-by-ticket total completion time, per-test efficiency, and whether the agent is getting faster or lagging</p>
+      </div>
+      <div id="velocityStatusBanner" class="velocity-health-badge improving">
+        ● AGENT VELOCITY: IMPROVING
+      </div>
+    </div>
+
+    <!-- 5 KPI Scorecard Strip -->
+    <div id="learningKpiGrid" class="kpi-strip-grid"></div>
+
+    <!-- Two-Column Charts: Ticket-by-Ticket Completion Time + Efficiency & Learning Curve -->
+    <div class="eval-two-col">
+      <section class="card eval-card">
+        <div class="card-header-row">
+          <div>
+            <h3 class="card-title">Ticket-by-Ticket Total Agent Completion Time</h3>
+            <p class="card-subtitle">Minutes per ticket broken down by agent stage • Click any ticket bar to inspect its Live Flow</p>
+          </div>
+          <span id="velocityDeltaBadge" class="speedup-badge">⚡ 59% Faster vs CTMQ-46</span>
+        </div>
+        <div id="ticketVelocityChart" class="ticket-velocity-chart"></div>
+      </section>
+
+      <section class="card eval-card">
+        <div class="card-header-row">
+          <div>
+            <h3 class="card-title">Agent Improvement vs. Lag Diagnostic Matrix</h3>
+            <p class="card-subtitle">Normalized min/test, First-Pass Zero-RCA accuracy, and AST Corpus DRY reuse rate across tickets</p>
+          </div>
+        </div>
+        <div id="learningDiagnosticTable" class="diagnostic-table-wrap"></div>
+      </section>
+    </div>
+
+    <!-- SECTION 2: Productivity (Matches Screenshot #1) -->
+    <div class="section-heading-row">
+      <span class="section-num">2</span>
+      <div>
+        <h2 class="section-title">Productivity</h2>
+        <p class="section-desc">Delivery speed and where agent time goes on the selected ticket (<span id="evalSelectedTicketLabel">CTMQ-75</span>)</p>
+      </div>
+    </div>
+
+    <div class="eval-two-col">
+      <!-- Delivery Duration Comparison -->
+      <section class="card eval-card">
+        <div class="card-header-row">
+          <div>
+            <h3 class="card-title">Delivery Duration Comparison</h3>
+            <p class="card-subtitle">End-to-end QA planning, scripting, verification &amp; PR</p>
+          </div>
+          <span id="evalSpeedupBadge" class="speedup-badge">⚡ 20.7x Faster Delivery</span>
+        </div>
+        <div id="durationComparisonBars" class="comparison-bars"></div>
+        <div id="productivityMiniCards" class="mini-kpi-row"></div>
+      </section>
+
+      <!-- Stage Duration by Approach -->
+      <section class="card eval-card">
+        <div class="card-header-row">
+          <div>
+            <h3 class="card-title">Stage Duration Breakdown</h3>
+            <p class="card-subtitle">Minutes per QA-SDLC stage • Comparing Early Baseline (CTMQ-46) vs Selected Ticket</p>
+          </div>
+        </div>
+        <div id="stageBreakdownChart" class="stage-chart-wrap"></div>
+      </section>
+    </div>
+
+    <!-- SECTION 3: Governance, Quality & Test Intelligence (Matches Screenshot #1) -->
+    <div class="section-heading-row">
+      <span class="section-num">3</span>
+      <div>
+        <h2 class="section-title">Governance, Quality &amp; Test Intelligence</h2>
+        <p class="section-desc">Self-healing RCA intelligence, Playwright suite coverage, and GEMINI.md architecture guardrails</p>
+      </div>
+    </div>
+
+    <div class="eval-three-col">
+      <section class="card eval-card">
+        <h3 class="card-title">Self-Healing &amp; RCA Intelligence</h3>
+        <p class="card-subtitle">First-run pass rate vs probe-assisted auto-repaired tests</p>
+        <div id="rcaDonutContainer" class="donut-widget"></div>
+      </section>
+
+      <section class="card eval-card">
+        <div class="card-header-row">
+          <div>
+            <h3 class="card-title">Playwright Test Intelligence</h3>
+            <p class="card-subtitle">From "QA Testing Antigravity" sub-task &amp; Playwright Reporter</p>
+          </div>
+        </div>
+        <div id="playwrightIntelligenceContainer"></div>
+      </section>
+
+      <section class="card eval-card">
+        <h3 class="card-title">Quality Gates &amp; Architecture Guardrails</h3>
+        <p class="card-subtitle">Live audit of GEMINI.md rules across repository</p>
+        <div id="qualityGatesTableContainer"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- TAB 3: READINESS (Compound Knowledge, AST Code Corpus & Gotchas Bank)   -->
+  <!-- ======================================================================= -->
+  <main id="tab-readiness" class="tab-panel">
+    <div class="section-heading-row">
+      <span class="section-num">1</span>
+      <div>
+        <h2 class="section-title">Compound Intelligence &amp; AST Code Corpus Readiness</h2>
+        <p class="section-desc">Live inventory of .context/code-corpus.json, context_docs/application_knowledge.md, and context_docs/app_gotchas.md</p>
+      </div>
+    </div>
+
+    <div id="readinessSummaryCards" class="kpi-strip-grid"></div>
+
+    <div class="eval-two-col">
+      <section class="card eval-card">
+        <div class="card-header-row">
+          <div>
+            <h3 class="card-title">Indexed Page Objects in AST Code Corpus</h3>
+            <p class="card-subtitle">Reusable classes, locators, and action methods available via <code>npm run corpus:query</code></p>
+          </div>
+        </div>
+        <div id="corpusPageObjectsTable" class="diagnostic-table-wrap"></div>
+      </section>
+
+      <section class="card eval-card">
+        <div class="card-header-row">
+          <div>
+            <h3 class="card-title">Active DOM &amp; Timing Gotchas Memory Bank</h3>
+            <p class="card-subtitle">Distilled lessons in <code>context_docs/app_gotchas.md</code> preventing repeat RCA failures</p>
+          </div>
+        </div>
+        <div id="gotchasMemoryList" class="gotchas-list"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- STEP EVIDENCE MODAL -->
+  <div id="stepModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle" class="modal-title">Step Telemetry Evidence</h3>
+        <button id="modalCloseBtn" class="icon-btn">✕</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
