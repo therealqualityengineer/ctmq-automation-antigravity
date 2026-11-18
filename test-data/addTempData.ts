@@ -8,7 +8,7 @@ export interface TempPayload {
   state: string;
   zip: string;
   county: string;
-  status: 'Active' | 'Inactive';
+  status: 'Active' | 'Inactive' | string;
   certification?: string;
   specialty?: string;
   dateOfBirth: string;

@@ -105,6 +105,31 @@ export class TempDetailPage extends BaseTempFormPage {
     return await response.json();
   }
 
+  async createTempRawViaApi(payload: Partial<TempPayload> & Record<string, any>): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.post('/api/temps', { data: payload });
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    return { status: response.status(), body };
+  }
+
+  async updateTempRawViaApi(
+    id: number | string,
+    payload: Partial<TempPayload> & Record<string, any>
+  ): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.put(`/api/temps/${id}`, { data: payload });
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    return { status: response.status(), body };
+  }
+
   async clickDelete(): Promise<void> {
     await this.deleteButton.click();
   }

@@ -47,7 +47,12 @@ CTMQ is a healthcare staffing and facility management platform managing temps (h
 - **Client Status**: `Lead` $\rightarrow$ `Active Contract` $\rightarrow$ `On Hold` $\rightarrow$ `Terminated`. Only `Active Contract` clients can request shifts.
 
 ### C. Admin Master Configurations (Status Options, Certifications, Specialties, Shifts, Order Types)
-- **Status Options**: Can be tagged specifically for `Client` or `Temp`. Creating a duplicate status code/name within the same target type is blocked with a validation toast/error dialog.
+- **Status Options**: Can be tagged specifically for `Client` or `Temp`. Creating a duplicate status code/name within the same target type is blocked with a validation toast/error dialog. Baseline `Active` and `Inactive` status options are seeded for both `Temp` and `Client`.
+- **Dynamic Status Dropdowns & Validation (Temp & Client)**:
+  - Temp and Client create/edit pages dynamically populate their Status dropdowns from active Admin Status Options (`GET /api/admin/status-options?entityType=<Temp|Client>&status=Active` or `isActive=true`), ordered by `DisplayOrder`, then `Name`.
+  - Default initial selection on creation is `"Active"` when present in active options.
+  - Inactive status options (`IsActive == false`) are excluded from create/edit dropdowns; however, existing records retaining a previously assigned (now inactivated) status continue to display that status in view/edit without data loss.
+  - Backend `POST`/`PUT` endpoints for Temps and Clients dynamically validate submitted `Status` against active `status_options` for the matching `entityType`, returning `400 Bad Request` for unrecognized, inactive, or cross-entity statuses while preserving unchanged status on updates.
 - **Deletions / Cascades**: An admin option (e.g., Specialty or Certification) that is actively associated with existing Temps cannot be hard-deleted; it triggers a dependency warning or is soft-deactivated.
 - **Page Heading & Typography Standard**:
   - All Admin General Settings configuration views (`/admin/shifts`, `/admin/order-types`, `/admin/status-options`, `/admin/specialties`, `/admin/certifications`) must render a single semantic primary heading (`<h1>` with `text-xl font-semibold text-slate-900`) identifying the active configuration module.

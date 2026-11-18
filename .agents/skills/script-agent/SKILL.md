@@ -44,8 +44,12 @@ Evaluate the returned AST chunks:
    - Review the listed test scenarios and fixtures returned by `corpus:query`.
    - If a scenario (e.g., duplicate email checks, required field validations, unauthenticated redirect) is already automated by previous tickets, **do not write a duplicate test**. Flag it as already covered, link to the existing spec, or augment the existing test only if new assertions are needed.
 2. **Page Objects & Reusable Methods**:
-   - Inspect which Page Object classes already exist and what methods/signatures are available (`async createCertification(...)`, `async getMappedSpecialtiesFor(...)`).
+   - Inspect which Page Object classes already exist and what properties and methods/signatures (`[Lstart-end]`) are returned by `corpus:query`.
    - Identify which existing methods can be called directly in the new spec vs. what truly needs to be created new.
+   - **Strict Surgical Read Rule (No Full-File Reads)**:
+     - **Never** call `read_file` without `StartLine` and `EndLine` (`#L1-end`) on Page Objects, Specs, `customFixtures.ts`, or `test-data/` files that are already returned by `corpus:query`.
+     - Use the complete property list, method signatures, and `[Lstart-end]` line ranges emitted by `corpus:query` directly.
+     - When you need to inspect a specific method or read the bottom of a Page Object / Test Data file to prepare an `edit_file` target, **always pass a narrow `StartLine` and `EndLine` window** (e.g., 15–25 lines such as `StartLine: 275, EndLine: 293`).
 3. **Automatable vs. Non-Automatable (Manual)**:
    - UI interactions, form validations, API responses, state changes $\rightarrow$ Automatable.
    - Hardware interaction, third-party SMS/authenticator apps, CAPTCHA $\rightarrow$ Manual.

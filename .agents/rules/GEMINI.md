@@ -78,8 +78,9 @@ To ensure agents build compound intelligence between Ticket #1 and Ticket #100:
   - `script-agent` reuses existing `scratch/probe-*.ts` scripts or creates new standalone probes for rapid DOM inspection and isolated RCA debugging.
   - Probes remain the executable testbench; distilled lessons must always be ported into `context_docs/app_gotchas.md`.
 - **Code Corpus Retrieval & Auto-Sync (`.context/code-corpus.json`)**:
-  - `script-agent` must query the code corpus in Phase 2 via `npm run corpus:query -- "<feature keywords>"` to retrieve reusable methods, locators, and existing test scenarios before inspecting files or writing code.
-  - `script-agent` must execute `npm run build:corpus` upon completing test authoring and verification to keep the repository's AST code catalog synchronized with all newly created Page Objects, methods, and specs.
+  - `script-agent` must query the code corpus in Phase 2 via `npm run corpus:query -- "<feature keywords>"` to retrieve reusable methods, locators, test-data exports, and existing test scenarios before inspecting files or writing code.
+  - **No Full-File Reads (`#L1-end`) After Corpus Query**: Because `corpus:query` outputs every matched Page Object's full property list, method signatures with `[Lstart-end]` line ranges, test-data keys, and fixture names, `script-agent` must **never** read entire Page Objects, Specs, or `customFixtures.ts` from line 1 to end. When inspecting a specific method or preparing an `edit_file` block, always pass targeted `StartLine` and `EndLine` bounds (e.g. a 15–25 line slice).
+  - `script-agent` must execute `npm run build:corpus` upon completing test authoring and verification to keep the repository's AST code catalog synchronized with all newly created Page Objects, methods, test-data, and specs.
 
 ## 8. Transparent Execution & Milestone Updates
 To give clear visibility into ongoing work without forcing the user to expand collapsed tool pills:

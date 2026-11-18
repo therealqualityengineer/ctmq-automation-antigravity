@@ -195,6 +195,50 @@ export class ClientDetailPage extends BasePage {
     return await this.getSelectOptionTexts(this.countySelect);
   }
 
+  async getStatusOptionTexts(): Promise<string[]> {
+    await this.page.waitForLoadState('networkidle').catch(() => {});
+    await this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 }).catch(() => {});
+    return await this.getSelectOptionTexts(this.statusSelect);
+  }
+
+  async getSelectedStatus(): Promise<string> {
+    await this.page.waitForLoadState('networkidle').catch(() => {});
+    return await this.statusSelect.inputValue();
+  }
+
+  async selectStatus(status: string): Promise<void> {
+    await this.statusSelect.selectOption(status);
+  }
+
+  async fillAddress(address: string): Promise<void> {
+    await this.addressInput.fill(address);
+  }
+
+  async createClientRawViaApi(payload: Partial<ClientPayload> & Record<string, any>): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.post('/api/clients', { data: payload });
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    return { status: response.status(), body };
+  }
+
+  async updateClientRawViaApi(
+    id: number | string,
+    payload: Partial<ClientPayload> & Record<string, any>
+  ): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.put(`/api/clients/${id}`, { data: payload });
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    return { status: response.status(), body };
+  }
+
   async clickDelete(): Promise<void> {
     await this.deleteButton.click();
   }

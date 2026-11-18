@@ -78,7 +78,19 @@ This living register records practical DOM quirks, timing workarounds, locator p
 
 ---
 
-## 7. How to Add New Learnings Here
+## 7. Dynamic Status Options & Temp/Client Status Length Constraint (`CTMQ-75`)
+- **Symptom / Quirk**:
+  1. While `/api/admin/status-options` allows status option names up to 100 characters, the backend `Temp` and `Client` create/update DTOs enforce `[MaxLength(16)]` on the `Status` field. Submitting a status string longer than 16 characters to `POST`/`PUT /api/temps` or `/api/clients` triggers a `400` ASP.NET model validation error (`The field Status must be a string or array type with a maximum length of '16'.`) prior to reaching the controller's dynamic `status_options` validation.
+  2. On `/temp/new`, `/temp/:id`, `/client/new`, and `/client/:id`, `#status` `<option>` elements are populated asynchronously via `GET /api/admin/status-options?entityType={Temp|Client}&status=Active&pageSize=500`. When viewing or editing a record whose assigned status was later inactivated (`isActive: false`), the UI dynamically appends the record's existing status option to `#status` so the value is preserved.
+- **Solution**:
+  - Keep custom status option names used in Temp/Client E2E and API validation tests `<= 16` characters (via `statusOptionsData.dynamicDropdowns.generateShortStatus(prefix)`).
+  - Wait for `networkidle` and first `<option>` attachment inside `BaseTempFormPage.getStatusOptionTexts()` / `getSelectedStatus()` and `ClientDetailPage.getStatusOptionTexts()` / `getSelectedStatus()` before reading option texts or selected values.
+- **Reference Probe**:
+  - [scratch/probe-dynamic-status-options.ts](file:///Users/arunramalingam/Documents/GitHub/ctmq-automation-antigravity/scratch/probe-dynamic-status-options.ts)
+
+---
+
+## 8. How to Add New Learnings Here
 When you complete RCA on a failed test or discover an application quirk:
 1. Provide a clear **Symptom / Quirk** description.
 2. Provide the verified **Solution / Workaround** implemented in Page Objects or fixtures.

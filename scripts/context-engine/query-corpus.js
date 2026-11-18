@@ -42,6 +42,7 @@ function scoreChunk(chunk, tokens) {
     chunk.signature || '',
     chunk.parent || '',
     chunk.file || '',
+    Array.isArray(chunk.properties) ? chunk.properties.join(' ') : '',
     Array.isArray(chunk.locatorsDefined) ? chunk.locatorsDefined.join(' ') : '',
     Array.isArray(chunk.locatorsUsed) ? chunk.locatorsUsed.join(' ') : '',
     Array.isArray(chunk.fixtures) ? chunk.fixtures.join(' ') : '',
@@ -83,7 +84,7 @@ function queryCorpus() {
   const { query, kind, limit } = parseArgs();
 
   if (!query) {
-    console.error('❌ Error: Please provide a search query.\nUsage: npm run corpus:query -- "<query>" [--kind class|method|test] [--limit <n>]');
+    console.error('❌ Error: Please provide a search query.\nUsage: npm run corpus:query -- "<query>" [--kind class|method|data|test] [--limit <n>]');
     process.exit(1);
   }
 
@@ -117,25 +118,39 @@ function queryCorpus() {
   // Group by kind for clear agent comprehension
   const classes = scored.filter(s => s.chunk.kind === 'class');
   const methods = scored.filter(s => s.chunk.kind === 'method');
+  const dataExports = scored.filter(s => s.chunk.kind === 'data');
   const tests = scored.filter(s => s.chunk.kind === 'test');
 
   if (classes.length > 0) {
-    console.log('\n📦 PAGE OBJECT CLASSES:');
+    console.log('\n📦 PAGE OBJECT CLASSES (Full AST Outline — Use StartLine/EndLine for targeted reads):');
     classes.forEach(({ chunk }) => {
-      console.log(`  • ${chunk.name} (${chunk.file}:${chunk.startLine}-${chunk.endLine})`);
-      if (chunk.locatorsDefined && chunk.locatorsDefined.length > 0) {
-        console.log(`    Locators Defined: ${chunk.locatorsDefined.slice(0, 3).join(', ')}${chunk.locatorsDefined.length > 3 ? '...' : ''}`);
+      console.log(`  • ${chunk.signature} (${chunk.file}:${chunk.startLine}-${chunk.endLine})`);
+      if (chunk.properties && chunk.properties.length > 0) {
+        console.log(`    Properties (${chunk.properties.length}): ${chunk.properties.join(', ')}`);
+      }
+      if (chunk.methodsSummary && chunk.methodsSummary.length > 0) {
+        const formattedMethods = chunk.methodsSummary
+          .map(m => `${m.signature} [L${m.startLine}-${m.endLine}]`)
+          .join('; ');
+        console.log(`    All Methods (${chunk.methodsSummary.length}): ${formattedMethods}`);
       }
     });
   }
 
   if (methods.length > 0) {
-    console.log('\n⚙️ REUSABLE METHODS:');
+    console.log('\n⚙️ MATCHED METHODS (Line-Range Ready):');
     methods.forEach(({ chunk }) => {
-      console.log(`  • [${chunk.parent}] ${chunk.signature} (${chunk.file}:${chunk.startLine})`);
+      console.log(`  • [${chunk.parent}] ${chunk.signature} (${chunk.file}:${chunk.startLine}-${chunk.endLine})`);
       if (chunk.locatorsUsed && chunk.locatorsUsed.length > 0) {
         console.log(`    Locators: ${chunk.locatorsUsed.join(', ')}`);
       }
+    });
+  }
+
+  if (dataExports.length > 0) {
+    console.log('\n🗂️ TEST DATA EXPORTS (Line-Range Ready):');
+    dataExports.forEach(({ chunk }) => {
+      console.log(`  • ${chunk.signature} (${chunk.file}:${chunk.startLine}-${chunk.endLine})`);
     });
   }
 
@@ -143,11 +158,12 @@ function queryCorpus() {
     console.log('\n🧪 EXISTING TEST SCENARIOS (Deduplication Check):');
     tests.forEach(({ chunk }) => {
       console.log(`  • [${chunk.parent}] "${chunk.name}"`);
-      console.log(`    File: ${chunk.file}:${chunk.startLine} | Fixtures: ${chunk.fixtures?.join(', ') || 'none'}`);
+      console.log(`    File: ${chunk.file}:${chunk.startLine}-${chunk.endLine} | Fixtures: ${chunk.fixtures?.join(', ') || 'none'}`);
     });
   }
 
-  console.log(`\n${'='.repeat(70)}\n`);
+  console.log(`\n💡 TIP: Do NOT read full files (#L1-end). Pass StartLine & EndLine from [Lstart-end] above when calling read_file.`);
+  console.log(`${'='.repeat(70)}\n`);
 }
 
 if (require.main === module) {
