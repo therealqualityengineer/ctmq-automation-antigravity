@@ -290,4 +290,78 @@ export class StatusOptionsPage extends BasePage {
   async goForward(): Promise<void> {
     await this.page.goForward({ waitUntil: 'domcontentloaded' });
   }
+
+  async getStatusOptionsViaApi(params: {
+    entityType?: 'Temp' | 'Client';
+    status?: string;
+    isActive?: boolean;
+    pageSize?: number;
+  }): Promise<{ status: number; body: any }> {
+    const query = new URLSearchParams();
+    if (params.entityType !== undefined) query.set('entityType', params.entityType);
+    if (params.status !== undefined) query.set('status', params.status);
+    if (params.isActive !== undefined) query.set('isActive', String(params.isActive));
+    if (params.pageSize !== undefined) query.set('pageSize', String(params.pageSize));
+    const response = await this.page.request.get(`/api/admin/status-options?${query.toString()}`);
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    return { status: response.status(), body };
+  }
+
+  async createStatusOptionViaApi(payload: {
+    entityType: 'Temp' | 'Client';
+    name: string;
+    description?: string;
+    isActive?: boolean;
+    displayOrder?: number;
+  }): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.post('/api/admin/status-options', {
+      data: {
+        entityType: payload.entityType,
+        name: payload.name,
+        description: payload.description ?? '',
+        isActive: payload.isActive ?? true,
+        displayOrder: payload.displayOrder ?? 10,
+      },
+    });
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    return { status: response.status(), body };
+  }
+
+  async updateStatusOptionViaApi(
+    id: number | string,
+    payload: {
+      entityType: 'Temp' | 'Client';
+      name: string;
+      description?: string;
+      isActive: boolean;
+      displayOrder?: number;
+    }
+  ): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.put(`/api/admin/status-options/${id}`, {
+      data: {
+        entityType: payload.entityType,
+        name: payload.name,
+        description: payload.description ?? '',
+        isActive: payload.isActive,
+        displayOrder: payload.displayOrder ?? 10,
+      },
+    });
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    return { status: response.status(), body };
+  }
 }

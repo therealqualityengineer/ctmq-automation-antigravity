@@ -63,4 +63,40 @@ export const statusOptionsData = {
     desktopStandard: { width: 1280, height: 800 },
     laptop: { width: 1024, height: 768 },
   },
+  dynamicDropdowns: {
+    baselineStatuses: ['Active', 'Inactive'],
+    defaultStatus: 'Active',
+    invalidStatusName: 'BadStatus99',
+    invalidStatusErrorPattern: /is invalid or inactive\. Please select a valid active status\./i,
+    updatedTempAddress: '789 Preserved Status Way',
+    updatedClientAddress: '890 Preserved Client Blvd',
+    generateShortStatus: (prefix: string): string => {
+      const rand = Math.floor(1000 + Math.random() * 9000);
+      const timePart = String(Date.now()).slice(-3);
+      return `${prefix}-${ timePart }${ rand }`.slice(0, 15);
+    },
+    fallbackMockPayload: {
+      items: [
+        {
+          id: 901,
+          entityType: 'Temp',
+          name: 'Standby',
+          description: 'Fallback active option 1',
+          isActive: true,
+          displayOrder: 1,
+        },
+        {
+          id: 902,
+          entityType: 'Temp',
+          name: 'OnLeave',
+          description: 'Fallback active option 2',
+          isActive: true,
+          displayOrder: 2,
+        },
+      ],
+      page: 1,
+      pageSize: 500,
+      totalCount: 2,
+    },
+  },
 };

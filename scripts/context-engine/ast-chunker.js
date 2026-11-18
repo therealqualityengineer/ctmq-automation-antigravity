@@ -9,7 +9,8 @@ const OUTPUT_FILE = path.join(OUTPUT_DIR, 'code-corpus.json');
 const TARGET_DIRECTORIES = [
   { dir: 'pages', kind: 'page_object' },
   { dir: 'tests', kind: 'test_spec' },
-  { dir: 'fixtures', kind: 'fixture' }
+  { dir: 'fixtures', kind: 'fixture' },
+  { dir: 'test-data', kind: 'test_data' }
 ];
 
 /**
@@ -37,7 +38,7 @@ function extractLocators(sourceFile, node) {
 }
 
 /**
- * Parses Page Object classes, constructors, and methods
+ * Parses Page Object classes, constructors, properties, and methods
  */
 function parsePageObject(sourceFile, relPath) {
   const chunks = [];
@@ -48,22 +49,30 @@ function parsePageObject(sourceFile, relPath) {
       const classStart = sourceFile.getLineAndCharacterOfPosition(node.getStart(sourceFile)).line + 1;
       const classEnd = sourceFile.getLineAndCharacterOfPosition(node.getEnd()).line + 1;
 
+      // Extract heritage / base class (e.g., extends BasePage)
+      let baseClass = null;
+      if (node.heritageClauses) {
+        for (const clause of node.heritageClauses) {
+          if (clause.token === ts.SyntaxKind.ExtendsKeyword && clause.types.length > 0) {
+            baseClass = clause.types[0].expression.getText(sourceFile);
+          }
+        }
+      }
+
+      // Extract property names (locator fields)
+      const properties = [];
+      node.members.forEach(member => {
+        if (ts.isPropertyDeclaration(member) && member.name) {
+          properties.push(member.name.getText(sourceFile));
+        }
+      });
+
       // Extract constructor and locators catalog
       const constructorNode = node.members.find(m => ts.isConstructorDeclaration(m));
       const locators = constructorNode ? extractLocators(sourceFile, constructorNode) : [];
 
-      chunks.push({
-        id: `${relPath}#${className}`,
-        file: relPath,
-        kind: 'class',
-        parent: null,
-        name: className,
-        startLine: classStart,
-        endLine: classEnd,
-        locatorsDefined: locators,
-        signature: `class ${className}`,
-        code: node.getText(sourceFile).slice(0, 400) + '...' // summary preview
-      });
+      const methodsSummary = [];
+      const methodChunks = [];
 
       // Extract each method as an independent chunk
       node.members.forEach(member => {
@@ -78,7 +87,14 @@ function parsePageObject(sourceFile, relPath) {
           const isAsync = member.modifiers?.some(m => m.kind === ts.SyntaxKind.AsyncKeyword);
           const sig = `${isAsync ? 'async ' : ''}${methodName}(${params})`;
 
-          chunks.push({
+          methodsSummary.push({
+            name: methodName,
+            signature: sig,
+            startLine: methodStart,
+            endLine: methodEnd
+          });
+
+          methodChunks.push({
             id: `${relPath}#${className}.${methodName}`,
             file: relPath,
             kind: 'method',
@@ -89,6 +105,87 @@ function parsePageObject(sourceFile, relPath) {
             signature: sig,
             locatorsUsed: methodLocators,
             code: member.getText(sourceFile)
+          });
+        }
+      });
+
+      chunks.push({
+        id: `${relPath}#${className}`,
+        file: relPath,
+        kind: 'class',
+        parent: baseClass,
+        name: className,
+        startLine: classStart,
+        endLine: classEnd,
+        properties,
+        locatorsDefined: locators,
+        methodsSummary,
+        signature: `class ${className}${baseClass ? ` extends ${baseClass}` : ''}`,
+        code: node.getText(sourceFile).slice(0, 400) + '...'
+      });
+
+      chunks.push(...methodChunks);
+    }
+
+    ts.forEachChild(node, visit);
+  }
+
+  visit(sourceFile);
+  return chunks;
+}
+
+/**
+ * Parses test-data files for exported interfaces, types, and data objects
+ */
+function parseTestData(sourceFile, relPath) {
+  const chunks = [];
+
+  function visit(node) {
+    if (ts.isInterfaceDeclaration(node) && node.name) {
+      const name = node.name.text;
+      const startLine = sourceFile.getLineAndCharacterOfPosition(node.getStart(sourceFile)).line + 1;
+      const endLine = sourceFile.getLineAndCharacterOfPosition(node.getEnd()).line + 1;
+      const fields = node.members
+        .filter(m => ts.isPropertySignature(m) && m.name)
+        .map(m => m.name.getText(sourceFile));
+
+      chunks.push({
+        id: `${relPath}#${name}`,
+        file: relPath,
+        kind: 'data',
+        parent: 'interface',
+        name,
+        startLine,
+        endLine,
+        properties: fields,
+        signature: `interface ${name} { ${fields.join(', ')} }`,
+        code: node.getText(sourceFile)
+      });
+    } else if (ts.isVariableStatement(node)) {
+      node.declarationList.declarations.forEach(decl => {
+        if (ts.isIdentifier(decl.name) && decl.initializer) {
+          const name = decl.name.text;
+          const startLine = sourceFile.getLineAndCharacterOfPosition(node.getStart(sourceFile)).line + 1;
+          const endLine = sourceFile.getLineAndCharacterOfPosition(node.getEnd()).line + 1;
+          const keys = [];
+          if (ts.isObjectLiteralExpression(decl.initializer)) {
+            decl.initializer.properties.forEach(prop => {
+              if (prop.name) {
+                keys.push(prop.name.getText(sourceFile));
+              }
+            });
+          }
+          chunks.push({
+            id: `${relPath}#${name}`,
+            file: relPath,
+            kind: 'data',
+            parent: 'const',
+            name,
+            startLine,
+            endLine,
+            properties: keys,
+            signature: `const ${name} (${keys.join(', ')})`,
+            code: node.getText(sourceFile).slice(0, 400)
           });
         }
       });
@@ -171,6 +268,7 @@ function buildCodeCorpus() {
     pageObjects: 0,
     methods: 0,
     tests: 0,
+    testData: 0,
     filesProcessed: 0
   };
 
@@ -199,8 +297,9 @@ function buildCodeCorpus() {
         fileChunks = parsePageObject(sourceFile, relPath);
       } else if (kind === 'test_spec') {
         fileChunks = parseTestSpec(sourceFile, relPath);
+      } else if (kind === 'test_data') {
+        fileChunks = parseTestData(sourceFile, relPath);
       } else {
-        // Fallback for fixtures or utils
         fileChunks = parsePageObject(sourceFile, relPath);
       }
 
@@ -208,6 +307,7 @@ function buildCodeCorpus() {
         if (chunk.kind === 'class') stats.pageObjects++;
         if (chunk.kind === 'method') stats.methods++;
         if (chunk.kind === 'test') stats.tests++;
+        if (chunk.kind === 'data') stats.testData++;
       });
 
       allChunks.push(...fileChunks);
@@ -221,7 +321,7 @@ function buildCodeCorpus() {
   const corpus = {
     metadata: {
       generatedAt: new Date().toISOString(),
-      generator: 'AST Symbol Chunker v1.0',
+      generator: 'AST Symbol Chunker v1.1',
       totalFilesScanned: stats.filesProcessed,
       totalChunks: allChunks.length,
       stats
@@ -236,6 +336,7 @@ function buildCodeCorpus() {
   console.log(`   - Files Processed: ${stats.filesProcessed}`);
   console.log(`   - Page Object Classes: ${stats.pageObjects}`);
   console.log(`   - Page Methods: ${stats.methods}`);
+  console.log(`   - Test Data Exports: ${stats.testData}`);
   console.log(`   - Test Scenarios: ${stats.tests}`);
   console.log(`   - Total Chunks: ${allChunks.length}`);
 

@@ -1,14 +1,15 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-13T18:45:20.234Z",
-    "generator": "AST Symbol Chunker v1.0",
-    "totalFilesScanned": 46,
-    "totalChunks": 722,
+    "generatedAt": "2026-11-18T02:34:39.177Z",
+    "generator": "AST Symbol Chunker v1.1",
+    "totalFilesScanned": 72,
+    "totalChunks": 793,
     "stats": {
       "pageObjects": 19,
-      "methods": 355,
-      "tests": 348,
-      "filesProcessed": 46
+      "methods": 370,
+      "tests": 360,
+      "testData": 44,
+      "filesProcessed": 72
     }
   },
   "chunks": [
@@ -16,10 +17,18 @@
       "id": "pages/AddTempPage.ts#AddTempPage",
       "file": "pages/AddTempPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BaseTempFormPage",
       "name": "AddTempPage",
       "startLine": 4,
       "endLine": 57,
+      "properties": [
+        "pageHeading",
+        "noCountyFoundMessage",
+        "successBanner",
+        "successStatus",
+        "emailDuplicateError",
+        "serverErrorBanner"
+      ],
       "locatorsDefined": [
         "page.getByRole('heading', { name: 'Add Temp', level: 1 })",
         "page.getByText('No county found for this ZIP — please check the ZIP.')",
@@ -31,7 +40,45 @@
         "page.locator('p.text-red-700, [role=\"alert\"]').filter({ hasText: /Internal Server Error|failed|error/i })",
         "page.locator('p.text-red-700, [role=\"alert\"]')"
       ],
-      "signature": "class AddTempPage",
+      "methodsSummary": [
+        {
+          "name": "gotoAddTemp",
+          "signature": "async gotoAddTemp()",
+          "startLine": 22,
+          "endLine": 24
+        },
+        {
+          "name": "saveAndInterceptApiResponse",
+          "signature": "async saveAndInterceptApiResponse()",
+          "startLine": 26,
+          "endLine": 39
+        },
+        {
+          "name": "pressEnterInField",
+          "signature": "async pressEnterInField(locator: Locator)",
+          "startLine": 41,
+          "endLine": 44
+        },
+        {
+          "name": "getEmailErrorText",
+          "signature": "async getEmailErrorText()",
+          "startLine": 46,
+          "endLine": 48
+        },
+        {
+          "name": "getInputValue",
+          "signature": "async getInputValue(locator: Locator)",
+          "startLine": 50,
+          "endLine": 52
+        },
+        {
+          "name": "doubleClickSave",
+          "signature": "async doubleClickSave()",
+          "startLine": 54,
+          "endLine": 56
+        }
+      ],
+      "signature": "class AddTempPage extends BaseTempFormPage",
       "code": "export class AddTempPage extends BaseTempFormPage {\n  readonly pageHeading: Locator;\n  readonly noCountyFoundMessage: Locator;\n  readonly successBanner: Locator;\n  readonly successStatus: Locator;\n  readonly emailDuplicateError: Locator;\n  readonly serverErrorBanner: Locator;\n\n  constructor(page: Page) {\n    super(page);\n    this.pageHeading = page.getByRole('heading', { name: 'Add Temp', level: 1..."
     },
     {
@@ -114,10 +161,26 @@
       "id": "pages/AddUserPage.ts#AddUserPage",
       "file": "pages/AddUserPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "AddUserPage",
       "startLine": 14,
       "endLine": 154,
+      "properties": [
+        "pageHeading",
+        "fullNameInput",
+        "usernameInput",
+        "titleInput",
+        "emailInput",
+        "passwordInput",
+        "confirmPasswordInput",
+        "roleDisplay",
+        "statusSelect",
+        "saveButton",
+        "cancelButton",
+        "usernameInUseError",
+        "emailInUseError",
+        "passwordMismatchError"
+      ],
       "locatorsDefined": [
         "page.getByRole('heading', { name: 'Add User', exact: true })",
         "page.locator('#fullName')",
@@ -135,7 +198,141 @@
         "page.getByText('That email address is already in use.')",
         "page.getByText('Password and Confirm Password must match.')"
       ],
-      "signature": "class AddUserPage",
+      "methodsSummary": [
+        {
+          "name": "gotoAddUser",
+          "signature": "async gotoAddUser()",
+          "startLine": 48,
+          "endLine": 50
+        },
+        {
+          "name": "fillFullName",
+          "signature": "async fillFullName(fullName: string)",
+          "startLine": 52,
+          "endLine": 54
+        },
+        {
+          "name": "fillUsername",
+          "signature": "async fillUsername(username: string)",
+          "startLine": 56,
+          "endLine": 58
+        },
+        {
+          "name": "fillTitle",
+          "signature": "async fillTitle(title: string)",
+          "startLine": 60,
+          "endLine": 62
+        },
+        {
+          "name": "fillEmail",
+          "signature": "async fillEmail(email: string)",
+          "startLine": 64,
+          "endLine": 66
+        },
+        {
+          "name": "fillPassword",
+          "signature": "async fillPassword(password: string)",
+          "startLine": 68,
+          "endLine": 70
+        },
+        {
+          "name": "fillConfirmPassword",
+          "signature": "async fillConfirmPassword(confirmPassword: string)",
+          "startLine": 72,
+          "endLine": 74
+        },
+        {
+          "name": "selectStatus",
+          "signature": "async selectStatus(status: 'active' | 'inactive')",
+          "startLine": 76,
+          "endLine": 78
+        },
+        {
+          "name": "fillForm",
+          "signature": "async fillForm(data: UserFormData)",
+          "startLine": 80,
+          "endLine": 88
+        },
+        {
+          "name": "clickSave",
+          "signature": "async clickSave()",
+          "startLine": 90,
+          "endLine": 92
+        },
+        {
+          "name": "clickSaveRapidly",
+          "signature": "async clickSaveRapidly()",
+          "startLine": 94,
+          "endLine": 96
+        },
+        {
+          "name": "clickCancel",
+          "signature": "async clickCancel()",
+          "startLine": 98,
+          "endLine": 100
+        },
+        {
+          "name": "clearFullName",
+          "signature": "async clearFullName()",
+          "startLine": 102,
+          "endLine": 104
+        },
+        {
+          "name": "clearUsername",
+          "signature": "async clearUsername()",
+          "startLine": 106,
+          "endLine": 108
+        },
+        {
+          "name": "clearTitle",
+          "signature": "async clearTitle()",
+          "startLine": 110,
+          "endLine": 112
+        },
+        {
+          "name": "clearEmail",
+          "signature": "async clearEmail()",
+          "startLine": 114,
+          "endLine": 116
+        },
+        {
+          "name": "clearPassword",
+          "signature": "async clearPassword()",
+          "startLine": 118,
+          "endLine": 120
+        },
+        {
+          "name": "clearConfirmPassword",
+          "signature": "async clearConfirmPassword()",
+          "startLine": 122,
+          "endLine": 124
+        },
+        {
+          "name": "isSaveButtonDisabled",
+          "signature": "async isSaveButtonDisabled()",
+          "startLine": 126,
+          "endLine": 128
+        },
+        {
+          "name": "saveAndInterceptApiResponse",
+          "signature": "async saveAndInterceptApiResponse()",
+          "startLine": 130,
+          "endLine": 145
+        },
+        {
+          "name": "getRoleText",
+          "signature": "async getRoleText()",
+          "startLine": 147,
+          "endLine": 149
+        },
+        {
+          "name": "getSelectedStatus",
+          "signature": "async getSelectedStatus()",
+          "startLine": 151,
+          "endLine": 153
+        }
+      ],
+      "signature": "class AddUserPage extends BasePage",
       "code": "export class AddUserPage extends BasePage {\n  readonly pageHeading: Locator;\n  readonly fullNameInput: Locator;\n  readonly usernameInput: Locator;\n  readonly titleInput: Locator;\n  readonly emailInput: Locator;\n  readonly passwordInput: Locator;\n  readonly confirmPasswordInput: Locator;\n  readonly roleDisplay: Locator;\n  readonly statusSelect: Locator;\n  readonly saveButton: Locator;\n  readonly ca..."
     },
     {
@@ -406,10 +603,30 @@
       "id": "pages/AdminPage.ts#AdminPage",
       "file": "pages/AdminPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "AdminPage",
       "startLine": 4,
       "endLine": 127,
+      "properties": [
+        "primaryNav",
+        "adminLink",
+        "adminSubNav",
+        "userManagerSubTab",
+        "contentArea",
+        "headerLogo",
+        "logoutButton",
+        "userIdentity",
+        "generalSettingsCard",
+        "generalSettingsHeader",
+        "generalSubsectionHeading",
+        "generalSettingItems",
+        "generalSettingLinks",
+        "certificationsLink",
+        "specialtiesLink",
+        "shiftsLink",
+        "orderTypesLink",
+        "statusOptionsLink"
+      ],
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
@@ -435,7 +652,111 @@
         "this.generalSettingsCard.getByRole('link', { name: 'Order Types', exact: true })",
         "this.generalSettingsCard.getByRole('link', { name: 'Status Options', exact: true })"
       ],
-      "signature": "class AdminPage",
+      "methodsSummary": [
+        {
+          "name": "gotoAdmin",
+          "signature": "async gotoAdmin()",
+          "startLine": 50,
+          "endLine": 52
+        },
+        {
+          "name": "gotoAdminUsers",
+          "signature": "async gotoAdminUsers()",
+          "startLine": 54,
+          "endLine": 56
+        },
+        {
+          "name": "gotoAddUser",
+          "signature": "async gotoAddUser()",
+          "startLine": 58,
+          "endLine": 60
+        },
+        {
+          "name": "clickAdminLink",
+          "signature": "async clickAdminLink()",
+          "startLine": 62,
+          "endLine": 64
+        },
+        {
+          "name": "clickUserManagerSubTab",
+          "signature": "async clickUserManagerSubTab()",
+          "startLine": 66,
+          "endLine": 68
+        },
+        {
+          "name": "isAdminTabActive",
+          "signature": "async isAdminTabActive()",
+          "startLine": 70,
+          "endLine": 74
+        },
+        {
+          "name": "isUserManagerSubTabActive",
+          "signature": "async isUserManagerSubTabActive()",
+          "startLine": 76,
+          "endLine": 80
+        },
+        {
+          "name": "reloadPage",
+          "signature": "async reloadPage()",
+          "startLine": 82,
+          "endLine": 84
+        },
+        {
+          "name": "goBack",
+          "signature": "async goBack()",
+          "startLine": 86,
+          "endLine": 88
+        },
+        {
+          "name": "goForward",
+          "signature": "async goForward()",
+          "startLine": 90,
+          "endLine": 92
+        },
+        {
+          "name": "getGeneralSettingLink",
+          "signature": "getGeneralSettingLink(name: string)",
+          "startLine": 95,
+          "endLine": 97
+        },
+        {
+          "name": "clickGeneralSettingLink",
+          "signature": "async clickGeneralSettingLink(name: string)",
+          "startLine": 99,
+          "endLine": 101
+        },
+        {
+          "name": "getGeneralSettingItemTexts",
+          "signature": "async getGeneralSettingItemTexts()",
+          "startLine": 103,
+          "endLine": 105
+        },
+        {
+          "name": "getGeneralSettingsCardBoundingBox",
+          "signature": "async getGeneralSettingsCardBoundingBox()",
+          "startLine": 107,
+          "endLine": 109
+        },
+        {
+          "name": "isGeneralSettingsLeftAligned",
+          "signature": "async isGeneralSettingsLeftAligned()",
+          "startLine": 111,
+          "endLine": 117
+        },
+        {
+          "name": "hoverGeneralSettingLink",
+          "signature": "async hoverGeneralSettingLink(name: string)",
+          "startLine": 119,
+          "endLine": 121
+        },
+        {
+          "name": "getLinkComputedStyle",
+          "signature": "async getLinkComputedStyle(name: string, property: string)",
+          "startLine": 123,
+          "endLine": 126
+        }
+      ],
+      "signature": "class AdminPage extends BasePage",
       "code": "export class AdminPage extends BasePage {\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n  readonly userManagerSubTab: Locator;\n  readonly contentArea: Locator;\n  readonly headerLogo: Locator;\n  readonly logoutButton: Locator;\n  readonly userIdentity: Locator;\n\n  // CTMQ-45: General Settings Card Locators\n  readonly generalSettingsCard: Locator;\n  r..."
     },
     {
@@ -652,7 +973,138 @@
       "name": "BasePage",
       "startLine": 3,
       "endLine": 129,
+      "properties": [
+        "page"
+      ],
       "locatorsDefined": [],
+      "methodsSummary": [
+        {
+          "name": "navigate",
+          "signature": "async navigate(path: string = '')",
+          "startLine": 10,
+          "endLine": 12
+        },
+        {
+          "name": "waitForPageLoaded",
+          "signature": "async waitForPageLoaded()",
+          "startLine": 14,
+          "endLine": 16
+        },
+        {
+          "name": "getTitle",
+          "signature": "async getTitle()",
+          "startLine": 18,
+          "endLine": 20
+        },
+        {
+          "name": "setViewport",
+          "signature": "async setViewport(width: number, height: number)",
+          "startLine": 22,
+          "endLine": 24
+        },
+        {
+          "name": "setViewportSize",
+          "signature": "async setViewportSize(width: number, height: number)",
+          "startLine": 26,
+          "endLine": 28
+        },
+        {
+          "name": "pressTab",
+          "signature": "async pressTab()",
+          "startLine": 30,
+          "endLine": 32
+        },
+        {
+          "name": "isFieldInvalid",
+          "signature": "async isFieldInvalid(locator: Locator)",
+          "startLine": 34,
+          "endLine": 36
+        },
+        {
+          "name": "isFieldValid",
+          "signature": "async isFieldValid(locator: Locator)",
+          "startLine": 38,
+          "endLine": 40
+        },
+        {
+          "name": "isFieldHtmlValid",
+          "signature": "async isFieldHtmlValid(locator: Locator)",
+          "startLine": 42,
+          "endLine": 44
+        },
+        {
+          "name": "getValidationMessage",
+          "signature": "async getValidationMessage(locator: Locator)",
+          "startLine": 46,
+          "endLine": 48
+        },
+        {
+          "name": "getSelectOptionValues",
+          "signature": "async getSelectOptionValues(selectLocator: Locator)",
+          "startLine": 50,
+          "endLine": 56
+        },
+        {
+          "name": "getSelectOptionTexts",
+          "signature": "async getSelectOptionTexts(selectLocator: Locator)",
+          "startLine": 58,
+          "endLine": 62
+        },
+        {
+          "name": "areAllFieldsDisabled",
+          "signature": "async areAllFieldsDisabled(locators: Locator[])",
+          "startLine": 64,
+          "endLine": 70
+        },
+        {
+          "name": "areAllFieldsEnabled",
+          "signature": "async areAllFieldsEnabled(locators: Locator[])",
+          "startLine": 72,
+          "endLine": 78
+        },
+        {
+          "name": "mockApiResponse",
+          "signature": "async mockApiResponse(urlPattern: string | RegExp, status: number, body: object, method?: string)",
+          "startLine": 80,
+          "endLine": 97
+        },
+        {
+          "name": "clearApiMocks",
+          "signature": "async clearApiMocks()",
+          "startLine": 99,
+          "endLine": 101
+        },
+        {
+          "name": "getElementTagName",
+          "signature": "async getElementTagName(locator: Locator)",
+          "startLine": 103,
+          "endLine": 105
+        },
+        {
+          "name": "getElementClassName",
+          "signature": "async getElementClassName(locator: Locator)",
+          "startLine": 107,
+          "endLine": 109
+        },
+        {
+          "name": "getElementComputedStyles",
+          "signature": "async getElementComputedStyles(locator: Locator, properties: string[])",
+          "startLine": 111,
+          "endLine": 120
+        },
+        {
+          "name": "getElementBoundingBox",
+          "signature": "async getElementBoundingBox(locator: Locator)",
+          "startLine": 122,
+          "endLine": 124
+        },
+        {
+          "name": "getHeadingCount",
+          "signature": "async getHeadingCount(level: number = 1)",
+          "startLine": 126,
+          "endLine": 128
+        }
+      ],
       "signature": "class BasePage",
       "code": "export abstract class BasePage {\n  readonly page: Page;\n\n  constructor(page: Page) {\n    this.page = page;\n  }\n\n  async navigate(path: string = ''): Promise<void> {\n    await this.page.goto(path, { waitUntil: 'domcontentloaded' });\n  }\n\n  async waitForPageLoaded(): Promise<void> {\n    await this.page.waitForLoadState('domcontentloaded');\n  }\n\n  async getTitle(): Promise<string> {\n    return await ..."
     },
@@ -933,10 +1385,35 @@
       "id": "pages/BaseTempFormPage.ts#BaseTempFormPage",
       "file": "pages/BaseTempFormPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "BaseTempFormPage",
       "startLine": 5,
-      "endLine": 230,
+      "endLine": 249,
+      "properties": [
+        "leftBox",
+        "rightBox",
+        "firstNameInput",
+        "lastNameInput",
+        "cellPhoneInput",
+        "emailInput",
+        "addressInput",
+        "cityInput",
+        "stateSelect",
+        "zipInput",
+        "countySelect",
+        "statusSelect",
+        "certificationLabel",
+        "certificationSelect",
+        "specialtyLabel",
+        "specialtySelect",
+        "dateOfBirthInput",
+        "genderMaleRadio",
+        "genderFemaleRadio",
+        "genderOtherRadio",
+        "maritalStatusSelect",
+        "saveButton",
+        "cancelButton"
+      ],
       "locatorsDefined": [
         "page.locator('form > div > div').first()",
         "page.locator('form > div > div')",
@@ -963,7 +1440,159 @@
         "page.getByRole('button', { name: 'Save', exact: true })",
         "page.getByRole('button', { name: 'Cancel', exact: true })"
       ],
-      "signature": "class BaseTempFormPage",
+      "methodsSummary": [
+        {
+          "name": "fillForm",
+          "signature": "async fillForm(data: Partial<TempPayload>)",
+          "startLine": 69,
+          "endLine": 99
+        },
+        {
+          "name": "clickSave",
+          "signature": "async clickSave()",
+          "startLine": 101,
+          "endLine": 103
+        },
+        {
+          "name": "clickCancel",
+          "signature": "async clickCancel()",
+          "startLine": 105,
+          "endLine": 107
+        },
+        {
+          "name": "isTwoColumnLayout",
+          "signature": "async isTwoColumnLayout()",
+          "startLine": 109,
+          "endLine": 114
+        },
+        {
+          "name": "isStackedLayout",
+          "signature": "async isStackedLayout()",
+          "startLine": 116,
+          "endLine": 121
+        },
+        {
+          "name": "fillZip",
+          "signature": "async fillZip(zip: string)",
+          "startLine": 123,
+          "endLine": 126
+        },
+        {
+          "name": "clearZip",
+          "signature": "async clearZip()",
+          "startLine": 128,
+          "endLine": 131
+        },
+        {
+          "name": "getSelectedCounty",
+          "signature": "async getSelectedCounty()",
+          "startLine": 133,
+          "endLine": 135
+        },
+        {
+          "name": "getSelectedCountyText",
+          "signature": "async getSelectedCountyText()",
+          "startLine": 137,
+          "endLine": 142
+        },
+        {
+          "name": "isCountyFieldEditable",
+          "signature": "async isCountyFieldEditable()",
+          "startLine": 144,
+          "endLine": 152
+        },
+        {
+          "name": "getStateOptionValues",
+          "signature": "async getStateOptionValues()",
+          "startLine": 154,
+          "endLine": 157
+        },
+        {
+          "name": "getCountyOptionTexts",
+          "signature": "async getCountyOptionTexts()",
+          "startLine": 159,
+          "endLine": 161
+        },
+        {
+          "name": "selectCertification",
+          "signature": "async selectCertification(valueOrLabel: string)",
+          "startLine": 163,
+          "endLine": 169
+        },
+        {
+          "name": "selectSpecialty",
+          "signature": "async selectSpecialty(valueOrLabel: string)",
+          "startLine": 171,
+          "endLine": 177
+        },
+        {
+          "name": "getCertificationOptionTexts",
+          "signature": "async getCertificationOptionTexts()",
+          "startLine": 179,
+          "endLine": 182
+        },
+        {
+          "name": "getSpecialtyOptionTexts",
+          "signature": "async getSpecialtyOptionTexts()",
+          "startLine": 184,
+          "endLine": 186
+        },
+        {
+          "name": "getSelectedCertification",
+          "signature": "async getSelectedCertification()",
+          "startLine": 188,
+          "endLine": 190
+        },
+        {
+          "name": "getSelectedSpecialty",
+          "signature": "async getSelectedSpecialty()",
+          "startLine": 192,
+          "endLine": 194
+        },
+        {
+          "name": "getStatusOptionTexts",
+          "signature": "async getStatusOptionTexts()",
+          "startLine": 196,
+          "endLine": 200
+        },
+        {
+          "name": "getSelectedStatus",
+          "signature": "async getSelectedStatus()",
+          "startLine": 202,
+          "endLine": 205
+        },
+        {
+          "name": "selectStatus",
+          "signature": "async selectStatus(status: string)",
+          "startLine": 207,
+          "endLine": 209
+        },
+        {
+          "name": "fillAddress",
+          "signature": "async fillAddress(address: string)",
+          "startLine": 211,
+          "endLine": 213
+        },
+        {
+          "name": "getFormFields",
+          "signature": "getFormFields()",
+          "startLine": 215,
+          "endLine": 235
+        },
+        {
+          "name": "areAllTempFieldsDisabled",
+          "signature": "async areAllTempFieldsDisabled()",
+          "startLine": 237,
+          "endLine": 239
+        },
+        {
+          "name": "areAllTempFieldsEnabled",
+          "signature": "async areAllTempFieldsEnabled()",
+          "startLine": 241,
+          "endLine": 248
+        }
+      ],
+      "signature": "class BaseTempFormPage extends BasePage",
       "code": "export abstract class BaseTempFormPage extends BasePage {\n  readonly leftBox: Locator;\n  readonly rightBox: Locator;\n\n  // Left Box - Contact & Address\n  readonly firstNameInput: Locator;\n  readonly lastNameInput: Locator;\n  readonly cellPhoneInput: Locator;\n  readonly emailInput: Locator;\n  readonly addressInput: Locator;\n  readonly cityInput: Locator;\n  readonly stateSelect: Locator;\n  readonly ..."
     },
     {
@@ -1191,13 +1820,66 @@
       "code": "async getSelectedSpecialty(): Promise<string> {\n    return await this.specialtySelect.inputValue();\n  }"
     },
     {
+      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getStatusOptionTexts",
+      "file": "pages/BaseTempFormPage.ts",
+      "kind": "method",
+      "parent": "BaseTempFormPage",
+      "name": "getStatusOptionTexts",
+      "startLine": 196,
+      "endLine": 200,
+      "signature": "async getStatusOptionTexts()",
+      "locatorsUsed": [
+        "this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 }).catch(() => {})",
+        "this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 })",
+        "this.statusSelect.locator('option').first()",
+        "this.statusSelect.locator('option')"
+      ],
+      "code": "async getStatusOptionTexts(): Promise<string[]> {\n    await this.page.waitForLoadState('networkidle').catch(() => {});\n    await this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 }).catch(() => {});\n    return await this.getSelectOptionTexts(this.statusSelect);\n  }"
+    },
+    {
+      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getSelectedStatus",
+      "file": "pages/BaseTempFormPage.ts",
+      "kind": "method",
+      "parent": "BaseTempFormPage",
+      "name": "getSelectedStatus",
+      "startLine": 202,
+      "endLine": 205,
+      "signature": "async getSelectedStatus()",
+      "locatorsUsed": [],
+      "code": "async getSelectedStatus(): Promise<string> {\n    await this.page.waitForLoadState('networkidle').catch(() => {});\n    return await this.statusSelect.inputValue();\n  }"
+    },
+    {
+      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.selectStatus",
+      "file": "pages/BaseTempFormPage.ts",
+      "kind": "method",
+      "parent": "BaseTempFormPage",
+      "name": "selectStatus",
+      "startLine": 207,
+      "endLine": 209,
+      "signature": "async selectStatus(status: string)",
+      "locatorsUsed": [],
+      "code": "async selectStatus(status: string): Promise<void> {\n    await this.statusSelect.selectOption(status);\n  }"
+    },
+    {
+      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.fillAddress",
+      "file": "pages/BaseTempFormPage.ts",
+      "kind": "method",
+      "parent": "BaseTempFormPage",
+      "name": "fillAddress",
+      "startLine": 211,
+      "endLine": 213,
+      "signature": "async fillAddress(address: string)",
+      "locatorsUsed": [],
+      "code": "async fillAddress(address: string): Promise<void> {\n    await this.addressInput.fill(address);\n  }"
+    },
+    {
       "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getFormFields",
       "file": "pages/BaseTempFormPage.ts",
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getFormFields",
-      "startLine": 196,
-      "endLine": 216,
+      "startLine": 215,
+      "endLine": 235,
       "signature": "getFormFields()",
       "locatorsUsed": [],
       "code": "getFormFields(): Locator[] {\n    return [\n      this.firstNameInput,\n      this.lastNameInput,\n      this.cellPhoneInput,\n      this.emailInput,\n      this.addressInput,\n      this.cityInput,\n      this.stateSelect,\n      this.zipInput,\n      this.countySelect,\n      this.statusSelect,\n      this.certificationSelect,\n      this.specialtySelect,\n      this.dateOfBirthInput,\n      this.genderMaleRadio,\n      this.genderFemaleRadio,\n      this.genderOtherRadio,\n      this.maritalStatusSelect,\n    ];\n  }"
@@ -1208,8 +1890,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "areAllTempFieldsDisabled",
-      "startLine": 218,
-      "endLine": 220,
+      "startLine": 237,
+      "endLine": 239,
       "signature": "async areAllTempFieldsDisabled()",
       "locatorsUsed": [],
       "code": "async areAllTempFieldsDisabled(): Promise<boolean> {\n    return await super.areAllFieldsDisabled(this.getFormFields());\n  }"
@@ -1220,8 +1902,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "areAllTempFieldsEnabled",
-      "startLine": 222,
-      "endLine": 229,
+      "startLine": 241,
+      "endLine": 248,
       "signature": "async areAllTempFieldsEnabled()",
       "locatorsUsed": [],
       "code": "async areAllTempFieldsEnabled(): Promise<boolean> {\n    // Specialty is conditionally enabled based on certification selection\n    const certVal = await this.certificationSelect.inputValue().catch(() => '');\n    const fieldsToCheck = certVal\n      ? this.getFormFields()\n      : this.getFormFields().filter((f) => f !== this.specialtySelect);\n    return await super.areAllFieldsEnabled(fieldsToCheck);\n  }"
@@ -1230,10 +1912,42 @@
       "id": "pages/CertificationsPage.ts#CertificationsPage",
       "file": "pages/CertificationsPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "CertificationsPage",
       "startLine": 4,
       "endLine": 297,
+      "properties": [
+        "primaryNav",
+        "adminLink",
+        "adminSubNav",
+        "heading",
+        "addCertButton",
+        "addCertButtonContainer",
+        "searchInput",
+        "searchButton",
+        "table",
+        "tableHeaders",
+        "tableRows",
+        "paginationContainer",
+        "paginationText",
+        "previousPageButton",
+        "nextPageButton",
+        "feedbackBanner",
+        "modalDialog",
+        "modalTitle",
+        "editModalTitle",
+        "modalCloseButton",
+        "certNameInput",
+        "specialtiesDropdownButton",
+        "specialtiesDropdownMenu",
+        "statusSelect",
+        "modalCancelButton",
+        "modalSaveButton",
+        "saveChangesButton",
+        "modalRequiredFieldError",
+        "modalConflictError",
+        "modalErrorBanner"
+      ],
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
@@ -1272,7 +1986,177 @@
         "this.modalDialog.locator('.bg-red-50, .text-red-800, [role=\"alert\"]').first()",
         "this.modalDialog.locator('.bg-red-50, .text-red-800, [role=\"alert\"]')"
       ],
-      "signature": "class CertificationsPage",
+      "methodsSummary": [
+        {
+          "name": "gotoCertifications",
+          "signature": "async gotoCertifications()",
+          "startLine": 85,
+          "endLine": 88
+        },
+        {
+          "name": "getHeadingText",
+          "signature": "async getHeadingText()",
+          "startLine": 90,
+          "endLine": 92
+        },
+        {
+          "name": "isAdminTabActive",
+          "signature": "async isAdminTabActive()",
+          "startLine": 94,
+          "endLine": 98
+        },
+        {
+          "name": "isAddCertButtonCentered",
+          "signature": "async isAddCertButtonCentered()",
+          "startLine": 100,
+          "endLine": 103
+        },
+        {
+          "name": "search",
+          "signature": "async search(query: string)",
+          "startLine": 105,
+          "endLine": 112
+        },
+        {
+          "name": "clearSearch",
+          "signature": "async clearSearch()",
+          "startLine": 114,
+          "endLine": 121
+        },
+        {
+          "name": "openAddCertModal",
+          "signature": "async openAddCertModal()",
+          "startLine": 123,
+          "endLine": 126
+        },
+        {
+          "name": "closeDropdownIfOpen",
+          "signature": "async closeDropdownIfOpen()",
+          "startLine": 128,
+          "endLine": 133
+        },
+        {
+          "name": "closeModalViaCloseButton",
+          "signature": "async closeModalViaCloseButton()",
+          "startLine": 135,
+          "endLine": 139
+        },
+        {
+          "name": "closeModalViaCancel",
+          "signature": "async closeModalViaCancel()",
+          "startLine": 141,
+          "endLine": 145
+        },
+        {
+          "name": "fillCertName",
+          "signature": "async fillCertName(name: string)",
+          "startLine": 147,
+          "endLine": 149
+        },
+        {
+          "name": "toggleSpecialtiesDropdown",
+          "signature": "async toggleSpecialtiesDropdown()",
+          "startLine": 151,
+          "endLine": 153
+        },
+        {
+          "name": "getSpecialtyCheckbox",
+          "signature": "getSpecialtyCheckbox(specialtyName: string)",
+          "startLine": 155,
+          "endLine": 159
+        },
+        {
+          "name": "selectSpecialty",
+          "signature": "async selectSpecialty(specialtyName: string)",
+          "startLine": 161,
+          "endLine": 170
+        },
+        {
+          "name": "deselectSpecialty",
+          "signature": "async deselectSpecialty(specialtyName: string)",
+          "startLine": 172,
+          "endLine": 181
+        },
+        {
+          "name": "selectStatus",
+          "signature": "async selectStatus(status: 'Active' | 'Inactive')",
+          "startLine": 183,
+          "endLine": 185
+        },
+        {
+          "name": "saveModal",
+          "signature": "async saveModal()",
+          "startLine": 187,
+          "endLine": 189
+        },
+        {
+          "name": "createCertification",
+          "signature": "async createCertification(name: string, specialties: string[] = [], status: 'Active' | 'Inactive' = 'Active')",
+          "startLine": 191,
+          "endLine": 220
+        },
+        {
+          "name": "openEditCertModal",
+          "signature": "async openEditCertModal(name: string)",
+          "startLine": 222,
+          "endLine": 230
+        },
+        {
+          "name": "saveEditChanges",
+          "signature": "async saveEditChanges()",
+          "startLine": 232,
+          "endLine": 242
+        },
+        {
+          "name": "clearAllSpecialties",
+          "signature": "async clearAllSpecialties()",
+          "startLine": 244,
+          "endLine": 257
+        },
+        {
+          "name": "getCertRow",
+          "signature": "getCertRow(name: string)",
+          "startLine": 259,
+          "endLine": 261
+        },
+        {
+          "name": "getMappedSpecialtiesLocatorFor",
+          "signature": "async getMappedSpecialtiesLocatorFor(name: string)",
+          "startLine": 263,
+          "endLine": 270
+        },
+        {
+          "name": "getMappedSpecialtiesFor",
+          "signature": "async getMappedSpecialtiesFor(name: string)",
+          "startLine": 272,
+          "endLine": 275
+        },
+        {
+          "name": "getStatusPillFor",
+          "signature": "async getStatusPillFor(name: string)",
+          "startLine": 277,
+          "endLine": 284
+        },
+        {
+          "name": "reloadPage",
+          "signature": "async reloadPage()",
+          "startLine": 286,
+          "endLine": 288
+        },
+        {
+          "name": "goBack",
+          "signature": "async goBack()",
+          "startLine": 290,
+          "endLine": 292
+        },
+        {
+          "name": "goForward",
+          "signature": "async goForward()",
+          "startLine": 294,
+          "endLine": 296
+        }
+      ],
+      "signature": "class CertificationsPage extends BasePage",
       "code": "export class CertificationsPage extends BasePage {\n  // AppShell & Navigation\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n\n  // Page Header & Controls\n  readonly heading: Locator;\n  readonly addCertButton: Locator;\n  readonly addCertButtonContainer: Locator;\n  readonly searchInput: Locator;\n  readonly searchButton: Locator;\n\n  // Table & Paginati..."
     },
     {
@@ -1633,10 +2517,39 @@
       "id": "pages/ClientDetailPage.ts#ClientDetailPage",
       "file": "pages/ClientDetailPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "ClientDetailPage",
       "startLine": 5,
-      "endLine": 238,
+      "endLine": 282,
+      "properties": [
+        "pageHeading",
+        "leftBox",
+        "rightBox",
+        "fullNameInput",
+        "emailInput",
+        "addressInput",
+        "cityInput",
+        "stateSelect",
+        "zipInput",
+        "countySelect",
+        "statusSelect",
+        "saveButton",
+        "cancelButton",
+        "editButton",
+        "deleteButton",
+        "deleteModal",
+        "modalTitle",
+        "modalPrompt",
+        "modalCloseButton",
+        "modalCancelButton",
+        "modalConfirmDeleteButton",
+        "createSuccessBanner",
+        "saveSuccessBanner",
+        "deleteSuccessBanner",
+        "serverErrorBanner",
+        "deleteErrorBanner",
+        "noCountyFoundMessage"
+      ],
       "locatorsDefined": [
         "page.getByRole('heading', { level: 1 })",
         "page.locator('form > div > div').first()",
@@ -1670,7 +2583,183 @@
         "page.locator('[role=\"alert\"], p.text-red-600, p.text-red-700, span.text-red-600')",
         "page.getByText('No county found for this ZIP — please check the ZIP.')"
       ],
-      "signature": "class ClientDetailPage",
+      "methodsSummary": [
+        {
+          "name": "gotoAddClient",
+          "signature": "async gotoAddClient()",
+          "startLine": 85,
+          "endLine": 87
+        },
+        {
+          "name": "gotoClientDetail",
+          "signature": "async gotoClientDetail(id: number | string)",
+          "startLine": 89,
+          "endLine": 91
+        },
+        {
+          "name": "fillForm",
+          "signature": "async fillForm(data: Partial<ClientPayload>)",
+          "startLine": 93,
+          "endLine": 107
+        },
+        {
+          "name": "clickSave",
+          "signature": "async clickSave()",
+          "startLine": 109,
+          "endLine": 111
+        },
+        {
+          "name": "clickCancel",
+          "signature": "async clickCancel()",
+          "startLine": 113,
+          "endLine": 115
+        },
+        {
+          "name": "clickEdit",
+          "signature": "async clickEdit()",
+          "startLine": 117,
+          "endLine": 119
+        },
+        {
+          "name": "fillZip",
+          "signature": "async fillZip(zip: string)",
+          "startLine": 121,
+          "endLine": 124
+        },
+        {
+          "name": "clearZip",
+          "signature": "async clearZip()",
+          "startLine": 126,
+          "endLine": 129
+        },
+        {
+          "name": "isTwoColumnLayout",
+          "signature": "async isTwoColumnLayout()",
+          "startLine": 131,
+          "endLine": 136
+        },
+        {
+          "name": "getClientFormFields",
+          "signature": "getClientFormFields()",
+          "startLine": 138,
+          "endLine": 149
+        },
+        {
+          "name": "areAllFieldsDisabled",
+          "signature": "async areAllFieldsDisabled()",
+          "startLine": 151,
+          "endLine": 153
+        },
+        {
+          "name": "areAllFieldsEnabled",
+          "signature": "async areAllFieldsEnabled()",
+          "startLine": 155,
+          "endLine": 157
+        },
+        {
+          "name": "saveAndInterceptPostResponse",
+          "signature": "async saveAndInterceptPostResponse()",
+          "startLine": 159,
+          "endLine": 172
+        },
+        {
+          "name": "saveAndInterceptPutResponse",
+          "signature": "async saveAndInterceptPutResponse()",
+          "startLine": 174,
+          "endLine": 187
+        },
+        {
+          "name": "getStateOptionValues",
+          "signature": "async getStateOptionValues()",
+          "startLine": 189,
+          "endLine": 192
+        },
+        {
+          "name": "getCountyOptionTexts",
+          "signature": "async getCountyOptionTexts()",
+          "startLine": 194,
+          "endLine": 196
+        },
+        {
+          "name": "getStatusOptionTexts",
+          "signature": "async getStatusOptionTexts()",
+          "startLine": 198,
+          "endLine": 202
+        },
+        {
+          "name": "getSelectedStatus",
+          "signature": "async getSelectedStatus()",
+          "startLine": 204,
+          "endLine": 207
+        },
+        {
+          "name": "selectStatus",
+          "signature": "async selectStatus(status: string)",
+          "startLine": 209,
+          "endLine": 211
+        },
+        {
+          "name": "fillAddress",
+          "signature": "async fillAddress(address: string)",
+          "startLine": 213,
+          "endLine": 215
+        },
+        {
+          "name": "createClientRawViaApi",
+          "signature": "async createClientRawViaApi(payload: Partial<ClientPayload> & Record<string, any>)",
+          "startLine": 217,
+          "endLine": 226
+        },
+        {
+          "name": "updateClientRawViaApi",
+          "signature": "async updateClientRawViaApi(id: number | string, payload: Partial<ClientPayload> & Record<string, any>)",
+          "startLine": 228,
+          "endLine": 240
+        },
+        {
+          "name": "clickDelete",
+          "signature": "async clickDelete()",
+          "startLine": 242,
+          "endLine": 244
+        },
+        {
+          "name": "confirmDelete",
+          "signature": "async confirmDelete()",
+          "startLine": 246,
+          "endLine": 248
+        },
+        {
+          "name": "cancelDeleteModal",
+          "signature": "async cancelDeleteModal()",
+          "startLine": 250,
+          "endLine": 252
+        },
+        {
+          "name": "closeDeleteModal",
+          "signature": "async closeDeleteModal()",
+          "startLine": 254,
+          "endLine": 256
+        },
+        {
+          "name": "deleteAndInterceptResponse",
+          "signature": "async deleteAndInterceptResponse()",
+          "startLine": 258,
+          "endLine": 271
+        },
+        {
+          "name": "createClientViaApi",
+          "signature": "async createClientViaApi(payload: ClientPayload)",
+          "startLine": 273,
+          "endLine": 276
+        },
+        {
+          "name": "deleteClientViaApi",
+          "signature": "async deleteClientViaApi(id: number | string)",
+          "startLine": 278,
+          "endLine": 281
+        }
+      ],
+      "signature": "class ClientDetailPage extends BasePage",
       "code": "export class ClientDetailPage extends BasePage {\n  readonly pageHeading: Locator;\n  readonly leftBox: Locator;\n  readonly rightBox: Locator;\n\n  // Left Box Form Fields\n  readonly fullNameInput: Locator;\n  readonly emailInput: Locator;\n  readonly addressInput: Locator;\n  readonly cityInput: Locator;\n  readonly stateSelect: Locator;\n  readonly zipInput: Locator;\n  readonly countySelect: Locator;\n\n  ..."
     },
     {
@@ -1869,13 +2958,90 @@
       "code": "async getCountyOptionTexts(): Promise<string[]> {\n    return await this.getSelectOptionTexts(this.countySelect);\n  }"
     },
     {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.getStatusOptionTexts",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "getStatusOptionTexts",
+      "startLine": 198,
+      "endLine": 202,
+      "signature": "async getStatusOptionTexts()",
+      "locatorsUsed": [
+        "this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 }).catch(() => {})",
+        "this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 })",
+        "this.statusSelect.locator('option').first()",
+        "this.statusSelect.locator('option')"
+      ],
+      "code": "async getStatusOptionTexts(): Promise<string[]> {\n    await this.page.waitForLoadState('networkidle').catch(() => {});\n    await this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 }).catch(() => {});\n    return await this.getSelectOptionTexts(this.statusSelect);\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.getSelectedStatus",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "getSelectedStatus",
+      "startLine": 204,
+      "endLine": 207,
+      "signature": "async getSelectedStatus()",
+      "locatorsUsed": [],
+      "code": "async getSelectedStatus(): Promise<string> {\n    await this.page.waitForLoadState('networkidle').catch(() => {});\n    return await this.statusSelect.inputValue();\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.selectStatus",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "selectStatus",
+      "startLine": 209,
+      "endLine": 211,
+      "signature": "async selectStatus(status: string)",
+      "locatorsUsed": [],
+      "code": "async selectStatus(status: string): Promise<void> {\n    await this.statusSelect.selectOption(status);\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.fillAddress",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "fillAddress",
+      "startLine": 213,
+      "endLine": 215,
+      "signature": "async fillAddress(address: string)",
+      "locatorsUsed": [],
+      "code": "async fillAddress(address: string): Promise<void> {\n    await this.addressInput.fill(address);\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.createClientRawViaApi",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "createClientRawViaApi",
+      "startLine": 217,
+      "endLine": 226,
+      "signature": "async createClientRawViaApi(payload: Partial<ClientPayload> & Record<string, any>)",
+      "locatorsUsed": [],
+      "code": "async createClientRawViaApi(payload: Partial<ClientPayload> & Record<string, any>): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.post('/api/clients', { data: payload });\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.updateClientRawViaApi",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "updateClientRawViaApi",
+      "startLine": 228,
+      "endLine": 240,
+      "signature": "async updateClientRawViaApi(id: number | string, payload: Partial<ClientPayload> & Record<string, any>)",
+      "locatorsUsed": [],
+      "code": "async updateClientRawViaApi(\n    id: number | string,\n    payload: Partial<ClientPayload> & Record<string, any>\n  ): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.put(`/api/clients/${id}`, { data: payload });\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
       "id": "pages/ClientDetailPage.ts#ClientDetailPage.clickDelete",
       "file": "pages/ClientDetailPage.ts",
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "clickDelete",
-      "startLine": 198,
-      "endLine": 200,
+      "startLine": 242,
+      "endLine": 244,
       "signature": "async clickDelete()",
       "locatorsUsed": [],
       "code": "async clickDelete(): Promise<void> {\n    await this.deleteButton.click();\n  }"
@@ -1886,8 +3052,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "confirmDelete",
-      "startLine": 202,
-      "endLine": 204,
+      "startLine": 246,
+      "endLine": 248,
       "signature": "async confirmDelete()",
       "locatorsUsed": [],
       "code": "async confirmDelete(): Promise<void> {\n    await this.modalConfirmDeleteButton.click();\n  }"
@@ -1898,8 +3064,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "cancelDeleteModal",
-      "startLine": 206,
-      "endLine": 208,
+      "startLine": 250,
+      "endLine": 252,
       "signature": "async cancelDeleteModal()",
       "locatorsUsed": [],
       "code": "async cancelDeleteModal(): Promise<void> {\n    await this.modalCancelButton.click();\n  }"
@@ -1910,8 +3076,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "closeDeleteModal",
-      "startLine": 210,
-      "endLine": 212,
+      "startLine": 254,
+      "endLine": 256,
       "signature": "async closeDeleteModal()",
       "locatorsUsed": [],
       "code": "async closeDeleteModal(): Promise<void> {\n    await this.modalCloseButton.click();\n  }"
@@ -1922,8 +3088,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "deleteAndInterceptResponse",
-      "startLine": 214,
-      "endLine": 227,
+      "startLine": 258,
+      "endLine": 271,
       "signature": "async deleteAndInterceptResponse()",
       "locatorsUsed": [],
       "code": "async deleteAndInterceptResponse(): Promise<{ status: number; body: any }> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/clients') && resp.request().method() === 'DELETE'\n    );\n    await this.confirmDelete();\n    const response = await responsePromise;\n    let body = {};\n    try {\n      body = await response.json();\n    } catch {\n      // response body not json\n    }\n    return { status: response.status(), body };\n  }"
@@ -1934,8 +3100,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "createClientViaApi",
-      "startLine": 229,
-      "endLine": 232,
+      "startLine": 273,
+      "endLine": 276,
       "signature": "async createClientViaApi(payload: ClientPayload)",
       "locatorsUsed": [],
       "code": "async createClientViaApi(payload: ClientPayload): Promise<any> {\n    const response = await this.page.request.post('/api/clients', { data: payload });\n    return await response.json();\n  }"
@@ -1946,8 +3112,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "deleteClientViaApi",
-      "startLine": 234,
-      "endLine": 237,
+      "startLine": 278,
+      "endLine": 281,
       "signature": "async deleteClientViaApi(id: number | string)",
       "locatorsUsed": [],
       "code": "async deleteClientViaApi(id: number | string): Promise<any> {\n    const response = await this.page.request.delete(`/api/clients/${id}`);\n    return response.status();\n  }"
@@ -1956,10 +3122,22 @@
       "id": "pages/ClientPage.ts#ClientPage",
       "file": "pages/ClientPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "ClientPage",
       "startLine": 4,
       "endLine": 78,
+      "properties": [
+        "pageHeading",
+        "addClientButton",
+        "searchInput",
+        "searchButton",
+        "clientsTable",
+        "tableHeaders",
+        "tableRows",
+        "noRecordsMessage",
+        "prevButton",
+        "nextButton"
+      ],
       "locatorsDefined": [
         "page.getByRole('heading', { name: 'Client', level: 1 })",
         "page.getByRole('button', { name: /Add Client/i })",
@@ -1972,7 +3150,57 @@
         "page.getByRole('button', { name: 'Previous', exact: true })",
         "page.getByRole('button', { name: 'Next', exact: true })"
       ],
-      "signature": "class ClientPage",
+      "methodsSummary": [
+        {
+          "name": "gotoClient",
+          "signature": "async gotoClient()",
+          "startLine": 30,
+          "endLine": 32
+        },
+        {
+          "name": "clickAddClient",
+          "signature": "async clickAddClient()",
+          "startLine": 34,
+          "endLine": 36
+        },
+        {
+          "name": "search",
+          "signature": "async search(query: string)",
+          "startLine": 38,
+          "endLine": 42
+        },
+        {
+          "name": "getTableHeaders",
+          "signature": "async getTableHeaders()",
+          "startLine": 44,
+          "endLine": 55
+        },
+        {
+          "name": "getRowCount",
+          "signature": "async getRowCount()",
+          "startLine": 57,
+          "endLine": 61
+        },
+        {
+          "name": "clickFirstRow",
+          "signature": "async clickFirstRow()",
+          "startLine": 63,
+          "endLine": 67
+        },
+        {
+          "name": "clickRowByText",
+          "signature": "async clickRowByText(text: string)",
+          "startLine": 69,
+          "endLine": 73
+        },
+        {
+          "name": "getFirstRowText",
+          "signature": "async getFirstRowText()",
+          "startLine": 75,
+          "endLine": 77
+        }
+      ],
+      "signature": "class ClientPage extends BasePage",
       "code": "export class ClientPage extends BasePage {\n  readonly pageHeading: Locator;\n  readonly addClientButton: Locator;\n  readonly searchInput: Locator;\n  readonly searchButton: Locator;\n  readonly clientsTable: Locator;\n  readonly tableHeaders: Locator;\n  readonly tableRows: Locator;\n  readonly noRecordsMessage: Locator;\n  readonly prevButton: Locator;\n  readonly nextButton: Locator;\n\n  constructor(page..."
     },
     {
@@ -2075,10 +3303,28 @@
       "id": "pages/LayoutPage.ts#LayoutPage",
       "file": "pages/LayoutPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "LayoutPage",
       "startLine": 4,
       "endLine": 137,
+      "properties": [
+        "header",
+        "headerLogo",
+        "navContainer",
+        "homeTab",
+        "tempTab",
+        "adminTab",
+        "userInfo",
+        "logoutButton",
+        "adminSubmenu",
+        "userManagerSubTab",
+        "mainContent",
+        "tableContainer",
+        "dataTable",
+        "tableRows",
+        "formContainer",
+        "loginCard"
+      ],
       "locatorsDefined": [
         "page.locator('header')",
         "page.locator('header img[alt=\"CTMQ — Contractor & Talent Management\"]').first()",
@@ -2106,7 +3352,147 @@
         "page.locator('div.rounded-xl.border, form').first()",
         "page.locator('div.rounded-xl.border, form')"
       ],
-      "signature": "class LayoutPage",
+      "methodsSummary": [
+        {
+          "name": "gotoHome",
+          "signature": "async gotoHome()",
+          "startLine": 42,
+          "endLine": 44
+        },
+        {
+          "name": "gotoTemp",
+          "signature": "async gotoTemp()",
+          "startLine": 46,
+          "endLine": 48
+        },
+        {
+          "name": "gotoAddTemp",
+          "signature": "async gotoAddTemp()",
+          "startLine": 50,
+          "endLine": 52
+        },
+        {
+          "name": "gotoAdminUsers",
+          "signature": "async gotoAdminUsers()",
+          "startLine": 54,
+          "endLine": 56
+        },
+        {
+          "name": "gotoAddUser",
+          "signature": "async gotoAddUser()",
+          "startLine": 58,
+          "endLine": 60
+        },
+        {
+          "name": "gotoLogin",
+          "signature": "async gotoLogin()",
+          "startLine": 62,
+          "endLine": 64
+        },
+        {
+          "name": "clickHome",
+          "signature": "async clickHome()",
+          "startLine": 66,
+          "endLine": 68
+        },
+        {
+          "name": "clickTemp",
+          "signature": "async clickTemp()",
+          "startLine": 70,
+          "endLine": 72
+        },
+        {
+          "name": "clickAdmin",
+          "signature": "async clickAdmin()",
+          "startLine": 74,
+          "endLine": 76
+        },
+        {
+          "name": "clickUserManagerSubTab",
+          "signature": "async clickUserManagerSubTab()",
+          "startLine": 78,
+          "endLine": 80
+        },
+        {
+          "name": "clickLogout",
+          "signature": "async clickLogout()",
+          "startLine": 82,
+          "endLine": 84
+        },
+        {
+          "name": "getMainWidth",
+          "signature": "async getMainWidth()",
+          "startLine": 86,
+          "endLine": 89
+        },
+        {
+          "name": "getFormWidth",
+          "signature": "async getFormWidth()",
+          "startLine": 91,
+          "endLine": 94
+        },
+        {
+          "name": "getLogoBoundingBox",
+          "signature": "async getLogoBoundingBox()",
+          "startLine": 96,
+          "endLine": 98
+        },
+        {
+          "name": "getNavBoundingBox",
+          "signature": "async getNavBoundingBox()",
+          "startLine": 100,
+          "endLine": 102
+        },
+        {
+          "name": "getUserInfoBoundingBox",
+          "signature": "async getUserInfoBoundingBox()",
+          "startLine": 104,
+          "endLine": 106
+        },
+        {
+          "name": "getLogoutBoundingBox",
+          "signature": "async getLogoutBoundingBox()",
+          "startLine": 108,
+          "endLine": 110
+        },
+        {
+          "name": "hasPageHorizontalOverflow",
+          "signature": "async hasPageHorizontalOverflow()",
+          "startLine": 112,
+          "endLine": 114
+        },
+        {
+          "name": "getTableContainerScrollWidth",
+          "signature": "async getTableContainerScrollWidth()",
+          "startLine": 116,
+          "endLine": 118
+        },
+        {
+          "name": "getTableContainerClientWidth",
+          "signature": "async getTableContainerClientWidth()",
+          "startLine": 120,
+          "endLine": 122
+        },
+        {
+          "name": "waitForTableDataLoaded",
+          "signature": "async waitForTableDataLoaded()",
+          "startLine": 124,
+          "endLine": 126
+        },
+        {
+          "name": "isTabActive",
+          "signature": "async isTabActive(tab: Locator)",
+          "startLine": 128,
+          "endLine": 131
+        },
+        {
+          "name": "isSubmenuActive",
+          "signature": "async isSubmenuActive(subTab: Locator)",
+          "startLine": 133,
+          "endLine": 136
+        }
+      ],
+      "signature": "class LayoutPage extends BasePage",
       "code": "export class LayoutPage extends BasePage {\n  readonly header: Locator;\n  readonly headerLogo: Locator;\n  readonly navContainer: Locator;\n  readonly homeTab: Locator;\n  readonly tempTab: Locator;\n  readonly adminTab: Locator;\n  readonly userInfo: Locator;\n  readonly logoutButton: Locator;\n  readonly adminSubmenu: Locator;\n  readonly userManagerSubTab: Locator;\n  readonly mainContent: Locator;\n  rea..."
     },
     {
@@ -2393,10 +3779,20 @@
       "id": "pages/LoginPage.ts#LoginPage",
       "file": "pages/LoginPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "LoginPage",
       "startLine": 4,
       "endLine": 79,
+      "properties": [
+        "logo",
+        "usernameInput",
+        "passwordInput",
+        "loginButton",
+        "errorMessage",
+        "loginCard",
+        "usernameLabel",
+        "passwordLabel"
+      ],
       "locatorsDefined": [
         "page.getByAltText('CTMQ — Contractor & Talent Management')",
         "page.getByLabel('Username')",
@@ -2409,7 +3805,81 @@
         "page.getByText('Username', { exact: true })",
         "page.getByText('Password', { exact: true })"
       ],
-      "signature": "class LoginPage",
+      "methodsSummary": [
+        {
+          "name": "gotoLoginPage",
+          "signature": "async gotoLoginPage()",
+          "startLine": 26,
+          "endLine": 29
+        },
+        {
+          "name": "enterUsername",
+          "signature": "async enterUsername(username: string)",
+          "startLine": 31,
+          "endLine": 33
+        },
+        {
+          "name": "enterPassword",
+          "signature": "async enterPassword(password: string)",
+          "startLine": 35,
+          "endLine": 37
+        },
+        {
+          "name": "clickLoginButton",
+          "signature": "async clickLoginButton()",
+          "startLine": 39,
+          "endLine": 41
+        },
+        {
+          "name": "login",
+          "signature": "async login(username: string, password: string)",
+          "startLine": 43,
+          "endLine": 47
+        },
+        {
+          "name": "clearInputs",
+          "signature": "async clearInputs()",
+          "startLine": 49,
+          "endLine": 52
+        },
+        {
+          "name": "pressEnterInPassword",
+          "signature": "async pressEnterInPassword()",
+          "startLine": 54,
+          "endLine": 56
+        },
+        {
+          "name": "clickBackground",
+          "signature": "async clickBackground()",
+          "startLine": 58,
+          "endLine": 60
+        },
+        {
+          "name": "clickLoginCard",
+          "signature": "async clickLoginCard()",
+          "startLine": 62,
+          "endLine": 64
+        },
+        {
+          "name": "clickLogo",
+          "signature": "async clickLogo()",
+          "startLine": 66,
+          "endLine": 68
+        },
+        {
+          "name": "clickUsernameLabel",
+          "signature": "async clickUsernameLabel()",
+          "startLine": 70,
+          "endLine": 72
+        },
+        {
+          "name": "hasHorizontalScrollBar",
+          "signature": "async hasHorizontalScrollBar()",
+          "startLine": 74,
+          "endLine": 78
+        }
+      ],
+      "signature": "class LoginPage extends BasePage",
       "code": "export class LoginPage extends BasePage {\n  readonly logo: Locator;\n  readonly usernameInput: Locator;\n  readonly passwordInput: Locator;\n  readonly loginButton: Locator;\n  readonly errorMessage: Locator;\n  readonly loginCard: Locator;\n  readonly usernameLabel: Locator;\n  readonly passwordLabel: Locator;\n\n  constructor(page: Page) {\n    super(page);\n    this.logo = page.getByAltText('CTMQ — Contra..."
     },
     {
@@ -2560,10 +4030,22 @@
       "id": "pages/NavigationPage.ts#NavigationPage",
       "file": "pages/NavigationPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "NavigationPage",
       "startLine": 4,
       "endLine": 94,
+      "properties": [
+        "navContainer",
+        "homeLink",
+        "tempLink",
+        "clientLink",
+        "adminLink",
+        "headerLogo",
+        "logoutButton",
+        "userIdentity",
+        "pageHeading",
+        "leftSidebar"
+      ],
       "locatorsDefined": [
         "page.locator('div.flex.gap-2.px-4, nav').first()",
         "page.locator('div.flex.gap-2.px-4, nav')",
@@ -2579,7 +4061,93 @@
         "page.locator('h1')",
         "page.locator('aside, [role=\"navigation\"].sidebar')"
       ],
-      "signature": "class NavigationPage",
+      "methodsSummary": [
+        {
+          "name": "gotoHome",
+          "signature": "async gotoHome()",
+          "startLine": 30,
+          "endLine": 32
+        },
+        {
+          "name": "gotoTemp",
+          "signature": "async gotoTemp()",
+          "startLine": 34,
+          "endLine": 36
+        },
+        {
+          "name": "gotoClient",
+          "signature": "async gotoClient()",
+          "startLine": 38,
+          "endLine": 40
+        },
+        {
+          "name": "gotoAdmin",
+          "signature": "async gotoAdmin()",
+          "startLine": 42,
+          "endLine": 44
+        },
+        {
+          "name": "gotoAdminUsers",
+          "signature": "async gotoAdminUsers()",
+          "startLine": 46,
+          "endLine": 48
+        },
+        {
+          "name": "clickHome",
+          "signature": "async clickHome()",
+          "startLine": 50,
+          "endLine": 52
+        },
+        {
+          "name": "clickTemp",
+          "signature": "async clickTemp()",
+          "startLine": 54,
+          "endLine": 56
+        },
+        {
+          "name": "clickClient",
+          "signature": "async clickClient()",
+          "startLine": 58,
+          "endLine": 60
+        },
+        {
+          "name": "clickAdmin",
+          "signature": "async clickAdmin()",
+          "startLine": 62,
+          "endLine": 64
+        },
+        {
+          "name": "clickLogout",
+          "signature": "async clickLogout()",
+          "startLine": 66,
+          "endLine": 68
+        },
+        {
+          "name": "getPrimaryTabNames",
+          "signature": "async getPrimaryTabNames()",
+          "startLine": 70,
+          "endLine": 79
+        },
+        {
+          "name": "isTabActive",
+          "signature": "async isTabActive(tabLocator: Locator)",
+          "startLine": 81,
+          "endLine": 85
+        },
+        {
+          "name": "goBack",
+          "signature": "async goBack()",
+          "startLine": 87,
+          "endLine": 89
+        },
+        {
+          "name": "goForward",
+          "signature": "async goForward()",
+          "startLine": 91,
+          "endLine": 93
+        }
+      ],
+      "signature": "class NavigationPage extends BasePage",
       "code": "export class NavigationPage extends BasePage {\n  readonly navContainer: Locator;\n  readonly homeLink: Locator;\n  readonly tempLink: Locator;\n  readonly clientLink: Locator;\n  readonly adminLink: Locator;\n  readonly headerLogo: Locator;\n  readonly logoutButton: Locator;\n  readonly userIdentity: Locator;\n  readonly pageHeading: Locator;\n  readonly leftSidebar: Locator;\n\n  constructor(page: Page) {\n ..."
     },
     {
@@ -2756,10 +4324,43 @@
       "id": "pages/OrderTypesPage.ts#OrderTypesPage",
       "file": "pages/OrderTypesPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "OrderTypesPage",
       "startLine": 4,
       "endLine": 289,
+      "properties": [
+        "primaryNav",
+        "adminLink",
+        "adminSubNav",
+        "heading",
+        "addOrderTypeButton",
+        "addOrderTypeButtonContainer",
+        "categoryTabsNav",
+        "perDiemTab",
+        "longTermTab",
+        "searchInput",
+        "searchButton",
+        "table",
+        "tableHeaders",
+        "tableRows",
+        "paginationContainer",
+        "paginationText",
+        "previousPageButton",
+        "nextPageButton",
+        "feedbackBanner",
+        "modalDialog",
+        "modalTitle",
+        "modalSubtitle",
+        "modalCloseButton",
+        "modalCancelButton",
+        "nameInput",
+        "shiftOrderTypeDefaultSelect",
+        "statusSelect",
+        "defaultSelect",
+        "modalSaveButton",
+        "modalRequiredFieldError",
+        "modalConflictError"
+      ],
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
@@ -2817,7 +4418,183 @@
         "this.modalDialog.locator('text=/Order Type Name is required/i')",
         "this.modalDialog.locator('text=/already exists|conflict/i')"
       ],
-      "signature": "class OrderTypesPage",
+      "methodsSummary": [
+        {
+          "name": "gotoOrderTypes",
+          "signature": "async gotoOrderTypes()",
+          "startLine": 98,
+          "endLine": 101
+        },
+        {
+          "name": "getHeadingText",
+          "signature": "async getHeadingText()",
+          "startLine": 103,
+          "endLine": 105
+        },
+        {
+          "name": "isAdminTabActive",
+          "signature": "async isAdminTabActive()",
+          "startLine": 107,
+          "endLine": 111
+        },
+        {
+          "name": "isAddOrderTypeButtonCentered",
+          "signature": "async isAddOrderTypeButtonCentered()",
+          "startLine": 113,
+          "endLine": 116
+        },
+        {
+          "name": "isPerDiemTabActive",
+          "signature": "async isPerDiemTabActive()",
+          "startLine": 118,
+          "endLine": 121
+        },
+        {
+          "name": "isLongTermTabActive",
+          "signature": "async isLongTermTabActive()",
+          "startLine": 123,
+          "endLine": 126
+        },
+        {
+          "name": "clickPerDiemTab",
+          "signature": "async clickPerDiemTab()",
+          "startLine": 128,
+          "endLine": 134
+        },
+        {
+          "name": "clickLongTermTab",
+          "signature": "async clickLongTermTab()",
+          "startLine": 136,
+          "endLine": 142
+        },
+        {
+          "name": "search",
+          "signature": "async search(query: string)",
+          "startLine": 144,
+          "endLine": 151
+        },
+        {
+          "name": "clearSearch",
+          "signature": "async clearSearch()",
+          "startLine": 153,
+          "endLine": 160
+        },
+        {
+          "name": "openAddOrderTypeModal",
+          "signature": "async openAddOrderTypeModal()",
+          "startLine": 162,
+          "endLine": 165
+        },
+        {
+          "name": "closeModalViaCloseButton",
+          "signature": "async closeModalViaCloseButton()",
+          "startLine": 167,
+          "endLine": 170
+        },
+        {
+          "name": "closeModalViaCancel",
+          "signature": "async closeModalViaCancel()",
+          "startLine": 172,
+          "endLine": 175
+        },
+        {
+          "name": "fillOrderTypeName",
+          "signature": "async fillOrderTypeName(name: string)",
+          "startLine": 177,
+          "endLine": 179
+        },
+        {
+          "name": "selectShiftOrderTypeDefault",
+          "signature": "async selectShiftOrderTypeDefault(optionText: string)",
+          "startLine": 181,
+          "endLine": 183
+        },
+        {
+          "name": "selectStatus",
+          "signature": "async selectStatus(status: 'Active' | 'Hidden')",
+          "startLine": 185,
+          "endLine": 187
+        },
+        {
+          "name": "selectDefault",
+          "signature": "async selectDefault(choice: 'Yes' | 'No')",
+          "startLine": 189,
+          "endLine": 193
+        },
+        {
+          "name": "saveModal",
+          "signature": "async saveModal()",
+          "startLine": 195,
+          "endLine": 197
+        },
+        {
+          "name": "openEditOrderTypeModal",
+          "signature": "async openEditOrderTypeModal(name: string)",
+          "startLine": 199,
+          "endLine": 204
+        },
+        {
+          "name": "openEditOrderTypeModalByRow",
+          "signature": "async openEditOrderTypeModalByRow(rowIndex: number = 0)",
+          "startLine": 206,
+          "endLine": 214
+        },
+        {
+          "name": "updateOrderType",
+          "signature": "async updateOrderType(data: {\n    status?: 'Active' | 'Hidden';\n    isDefault?: 'Yes' | 'No' | boolean;\n    shiftOrderTypeDefault?: string;\n  })",
+          "startLine": 216,
+          "endLine": 233
+        },
+        {
+          "name": "createOrderType",
+          "signature": "async createOrderType(data: {\n    name: string;\n    status?: 'Active' | 'Hidden';\n    isDefault?: 'Yes' | 'No';\n    shiftOrderTypeDefault?: string;\n  })",
+          "startLine": 235,
+          "endLine": 257
+        },
+        {
+          "name": "getOrderTypeRow",
+          "signature": "getOrderTypeRow(name: string)",
+          "startLine": 259,
+          "endLine": 261
+        },
+        {
+          "name": "getStatusPillFor",
+          "signature": "async getStatusPillFor(name: string)",
+          "startLine": 263,
+          "endLine": 266
+        },
+        {
+          "name": "getDefaultIndicatorFor",
+          "signature": "async getDefaultIndicatorFor(name: string)",
+          "startLine": 268,
+          "endLine": 271
+        },
+        {
+          "name": "getShiftOrderTypeDefaultFor",
+          "signature": "async getShiftOrderTypeDefaultFor(name: string)",
+          "startLine": 273,
+          "endLine": 276
+        },
+        {
+          "name": "reloadPage",
+          "signature": "async reloadPage()",
+          "startLine": 278,
+          "endLine": 280
+        },
+        {
+          "name": "goBack",
+          "signature": "async goBack()",
+          "startLine": 282,
+          "endLine": 284
+        },
+        {
+          "name": "goForward",
+          "signature": "async goForward()",
+          "startLine": 286,
+          "endLine": 288
+        }
+      ],
+      "signature": "class OrderTypesPage extends BasePage",
       "code": "export class OrderTypesPage extends BasePage {\n  // AppShell & Navigation\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n\n  // Page Header & Controls\n  readonly heading: Locator;\n  readonly addOrderTypeButton: Locator;\n  readonly addOrderTypeButtonContainer: Locator;\n  readonly categoryTabsNav: Locator;\n  readonly perDiemTab: Locator;\n  readonly lon..."
     },
     {
@@ -3193,10 +4970,39 @@
       "id": "pages/ShiftsPage.ts#ShiftsPage",
       "file": "pages/ShiftsPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "ShiftsPage",
       "startLine": 16,
       "endLine": 241,
+      "properties": [
+        "primaryNav",
+        "adminLink",
+        "adminSubNav",
+        "heading",
+        "addShiftButton",
+        "addShiftButtonContainer",
+        "searchInput",
+        "searchButton",
+        "table",
+        "tableHeaders",
+        "tableRows",
+        "paginationContainer",
+        "paginationText",
+        "previousPageButton",
+        "nextPageButton",
+        "feedbackBanner",
+        "modalDialog",
+        "modalTitle",
+        "modalCloseButton",
+        "shiftNameInput",
+        "startTimeInput",
+        "endTimeInput",
+        "defaultShiftSelect",
+        "modalCancelButton",
+        "modalSaveButton",
+        "modalRequiredFieldError",
+        "modalConflictError"
+      ],
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
@@ -3250,7 +5056,159 @@
         "this.modalDialog.getByText(/already exists/i)",
         "this.modalDialog.locator('text=/already exists/i')"
       ],
-      "signature": "class ShiftsPage",
+      "methodsSummary": [
+        {
+          "name": "gotoShifts",
+          "signature": "async gotoShifts()",
+          "startLine": 91,
+          "endLine": 94
+        },
+        {
+          "name": "getHeadingText",
+          "signature": "async getHeadingText()",
+          "startLine": 96,
+          "endLine": 98
+        },
+        {
+          "name": "isAdminTabActive",
+          "signature": "async isAdminTabActive()",
+          "startLine": 100,
+          "endLine": 104
+        },
+        {
+          "name": "isAddShiftButtonCentered",
+          "signature": "async isAddShiftButtonCentered()",
+          "startLine": 106,
+          "endLine": 109
+        },
+        {
+          "name": "search",
+          "signature": "async search(query: string)",
+          "startLine": 111,
+          "endLine": 118
+        },
+        {
+          "name": "clearSearch",
+          "signature": "async clearSearch()",
+          "startLine": 120,
+          "endLine": 127
+        },
+        {
+          "name": "openAddShiftModal",
+          "signature": "async openAddShiftModal()",
+          "startLine": 129,
+          "endLine": 132
+        },
+        {
+          "name": "closeModalViaCloseButton",
+          "signature": "async closeModalViaCloseButton()",
+          "startLine": 134,
+          "endLine": 137
+        },
+        {
+          "name": "closeModalViaCancel",
+          "signature": "async closeModalViaCancel()",
+          "startLine": 139,
+          "endLine": 142
+        },
+        {
+          "name": "fillShiftName",
+          "signature": "async fillShiftName(name: string)",
+          "startLine": 144,
+          "endLine": 146
+        },
+        {
+          "name": "fillStartTime",
+          "signature": "async fillStartTime(time: string)",
+          "startLine": 148,
+          "endLine": 151
+        },
+        {
+          "name": "fillEndTime",
+          "signature": "async fillEndTime(time: string)",
+          "startLine": 153,
+          "endLine": 156
+        },
+        {
+          "name": "setDefaultShift",
+          "signature": "async setDefaultShift(isDefault: boolean)",
+          "startLine": 158,
+          "endLine": 160
+        },
+        {
+          "name": "saveModal",
+          "signature": "async saveModal()",
+          "startLine": 162,
+          "endLine": 164
+        },
+        {
+          "name": "openEditShiftModal",
+          "signature": "async openEditShiftModal(name: string)",
+          "startLine": 166,
+          "endLine": 171
+        },
+        {
+          "name": "openEditShiftModalByRow",
+          "signature": "async openEditShiftModalByRow(rowIndex: number = 0)",
+          "startLine": 173,
+          "endLine": 181
+        },
+        {
+          "name": "updateShift",
+          "signature": "async updateShift(startTime: string, endTime: string, isDefault?: boolean)",
+          "startLine": 183,
+          "endLine": 195
+        },
+        {
+          "name": "createShift",
+          "signature": "async createShift(name: string, startTime: string, endTime: string, isDefault: boolean = false)",
+          "startLine": 197,
+          "endLine": 209
+        },
+        {
+          "name": "getShiftRow",
+          "signature": "getShiftRow(name: string)",
+          "startLine": 211,
+          "endLine": 213
+        },
+        {
+          "name": "getStartTimeFor",
+          "signature": "async getStartTimeFor(name: string)",
+          "startLine": 215,
+          "endLine": 218
+        },
+        {
+          "name": "getEndTimeFor",
+          "signature": "async getEndTimeFor(name: string)",
+          "startLine": 220,
+          "endLine": 223
+        },
+        {
+          "name": "getDefaultShiftValueFor",
+          "signature": "async getDefaultShiftValueFor(name: string)",
+          "startLine": 225,
+          "endLine": 228
+        },
+        {
+          "name": "reloadPage",
+          "signature": "async reloadPage()",
+          "startLine": 230,
+          "endLine": 232
+        },
+        {
+          "name": "goBack",
+          "signature": "async goBack()",
+          "startLine": 234,
+          "endLine": 236
+        },
+        {
+          "name": "goForward",
+          "signature": "async goForward()",
+          "startLine": 238,
+          "endLine": 240
+        }
+      ],
+      "signature": "class ShiftsPage extends BasePage",
       "code": "export class ShiftsPage extends BasePage {\n  // AppShell & Navigation\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n\n  // Page Header & Controls\n  readonly heading: Locator;\n  readonly addShiftButton: Locator;\n  readonly addShiftButtonContainer: Locator;\n  readonly searchInput: Locator;\n  readonly searchButton: Locator;\n\n  // Table & Pagination\n  r..."
     },
     {
@@ -3582,10 +5540,42 @@
       "id": "pages/SpecialtiesPage.ts#SpecialtiesPage",
       "file": "pages/SpecialtiesPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "SpecialtiesPage",
       "startLine": 4,
       "endLine": 297,
+      "properties": [
+        "primaryNav",
+        "adminLink",
+        "adminSubNav",
+        "heading",
+        "addSpecialtyButton",
+        "addSpecialtyButtonContainer",
+        "searchInput",
+        "searchButton",
+        "table",
+        "tableHeaders",
+        "tableRows",
+        "paginationContainer",
+        "paginationText",
+        "previousPageButton",
+        "nextPageButton",
+        "feedbackBanner",
+        "modalDialog",
+        "modalTitle",
+        "editModalTitle",
+        "modalCloseButton",
+        "specialtyNameInput",
+        "certMappingDropdownButton",
+        "certMappingDropdownMenu",
+        "statusSelect",
+        "modalCancelButton",
+        "modalSaveButton",
+        "saveChangesButton",
+        "modalRequiredFieldError",
+        "modalConflictError",
+        "modalErrorBanner"
+      ],
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
@@ -3624,7 +5614,177 @@
         "this.modalDialog.locator('.bg-red-50, .text-red-800, [role=\"alert\"]').first()",
         "this.modalDialog.locator('.bg-red-50, .text-red-800, [role=\"alert\"]')"
       ],
-      "signature": "class SpecialtiesPage",
+      "methodsSummary": [
+        {
+          "name": "gotoSpecialties",
+          "signature": "async gotoSpecialties()",
+          "startLine": 85,
+          "endLine": 88
+        },
+        {
+          "name": "getHeadingText",
+          "signature": "async getHeadingText()",
+          "startLine": 90,
+          "endLine": 92
+        },
+        {
+          "name": "isAdminTabActive",
+          "signature": "async isAdminTabActive()",
+          "startLine": 94,
+          "endLine": 98
+        },
+        {
+          "name": "isAddSpecialtyButtonCentered",
+          "signature": "async isAddSpecialtyButtonCentered()",
+          "startLine": 100,
+          "endLine": 103
+        },
+        {
+          "name": "search",
+          "signature": "async search(query: string)",
+          "startLine": 105,
+          "endLine": 112
+        },
+        {
+          "name": "clearSearch",
+          "signature": "async clearSearch()",
+          "startLine": 114,
+          "endLine": 121
+        },
+        {
+          "name": "openAddSpecialtyModal",
+          "signature": "async openAddSpecialtyModal()",
+          "startLine": 123,
+          "endLine": 126
+        },
+        {
+          "name": "closeDropdownIfOpen",
+          "signature": "async closeDropdownIfOpen()",
+          "startLine": 128,
+          "endLine": 133
+        },
+        {
+          "name": "closeModalViaCloseButton",
+          "signature": "async closeModalViaCloseButton()",
+          "startLine": 135,
+          "endLine": 139
+        },
+        {
+          "name": "closeModalViaCancel",
+          "signature": "async closeModalViaCancel()",
+          "startLine": 141,
+          "endLine": 145
+        },
+        {
+          "name": "fillSpecialtyName",
+          "signature": "async fillSpecialtyName(name: string)",
+          "startLine": 147,
+          "endLine": 149
+        },
+        {
+          "name": "toggleCertificationDropdown",
+          "signature": "async toggleCertificationDropdown()",
+          "startLine": 151,
+          "endLine": 153
+        },
+        {
+          "name": "getCertCheckbox",
+          "signature": "getCertCheckbox(certName: string)",
+          "startLine": 155,
+          "endLine": 159
+        },
+        {
+          "name": "selectCertification",
+          "signature": "async selectCertification(certName: string)",
+          "startLine": 161,
+          "endLine": 170
+        },
+        {
+          "name": "deselectCertification",
+          "signature": "async deselectCertification(certName: string)",
+          "startLine": 172,
+          "endLine": 181
+        },
+        {
+          "name": "selectStatus",
+          "signature": "async selectStatus(status: 'Active' | 'Inactive')",
+          "startLine": 183,
+          "endLine": 185
+        },
+        {
+          "name": "saveModal",
+          "signature": "async saveModal()",
+          "startLine": 187,
+          "endLine": 189
+        },
+        {
+          "name": "createSpecialty",
+          "signature": "async createSpecialty(name: string, certifications: string[] = [], status: 'Active' | 'Inactive' = 'Active')",
+          "startLine": 191,
+          "endLine": 220
+        },
+        {
+          "name": "openEditSpecialtyModal",
+          "signature": "async openEditSpecialtyModal(name: string)",
+          "startLine": 222,
+          "endLine": 230
+        },
+        {
+          "name": "saveEditChanges",
+          "signature": "async saveEditChanges()",
+          "startLine": 232,
+          "endLine": 242
+        },
+        {
+          "name": "clearAllCertifications",
+          "signature": "async clearAllCertifications()",
+          "startLine": 244,
+          "endLine": 257
+        },
+        {
+          "name": "getSpecialtyRow",
+          "signature": "getSpecialtyRow(name: string)",
+          "startLine": 259,
+          "endLine": 261
+        },
+        {
+          "name": "getCertificationMappingLocatorFor",
+          "signature": "async getCertificationMappingLocatorFor(name: string)",
+          "startLine": 263,
+          "endLine": 270
+        },
+        {
+          "name": "getCertificationMappingFor",
+          "signature": "async getCertificationMappingFor(name: string)",
+          "startLine": 272,
+          "endLine": 275
+        },
+        {
+          "name": "getStatusPillFor",
+          "signature": "async getStatusPillFor(name: string)",
+          "startLine": 277,
+          "endLine": 284
+        },
+        {
+          "name": "reloadPage",
+          "signature": "async reloadPage()",
+          "startLine": 286,
+          "endLine": 288
+        },
+        {
+          "name": "goBack",
+          "signature": "async goBack()",
+          "startLine": 290,
+          "endLine": 292
+        },
+        {
+          "name": "goForward",
+          "signature": "async goForward()",
+          "startLine": 294,
+          "endLine": 296
+        }
+      ],
+      "signature": "class SpecialtiesPage extends BasePage",
       "code": "export class SpecialtiesPage extends BasePage {\n  // AppShell & Navigation\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n\n  // Page Header & Controls\n  readonly heading: Locator;\n  readonly addSpecialtyButton: Locator;\n  readonly addSpecialtyButtonContainer: Locator;\n  readonly searchInput: Locator;\n  readonly searchButton: Locator;\n\n  // Table & P..."
     },
     {
@@ -3985,10 +6145,42 @@
       "id": "pages/StatusOptionsPage.ts#StatusOptionsPage",
       "file": "pages/StatusOptionsPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "StatusOptionsPage",
       "startLine": 4,
-      "endLine": 293,
+      "endLine": 367,
+      "properties": [
+        "primaryNav",
+        "adminLink",
+        "adminSubNav",
+        "heading",
+        "addStatusOptionButton",
+        "addStatusOptionButtonContainer",
+        "subTabsContainer",
+        "clientTabButton",
+        "tempTabButton",
+        "searchInput",
+        "searchButton",
+        "table",
+        "tableHeaders",
+        "tableRows",
+        "paginationContainer",
+        "paginationText",
+        "previousPageButton",
+        "nextPageButton",
+        "feedbackBanner",
+        "modalDialog",
+        "modalTitle",
+        "modalCloseButton",
+        "statusNameInput",
+        "statusDescriptionInput",
+        "statusIsActiveSelect",
+        "statusDisplayOrderInput",
+        "modalCancelButton",
+        "modalSaveButton",
+        "modalRequiredFieldError",
+        "modalConflictError"
+      ],
       "locatorsDefined": [
         "page.locator('nav').first()",
         "page.locator('nav')",
@@ -4032,7 +6224,213 @@
         "this.modalDialog.locator('.bg-red-50, [role=\"alert\"]').filter({ hasText: /already exists/i })",
         "this.modalDialog.locator('.bg-red-50, [role=\"alert\"]')"
       ],
-      "signature": "class StatusOptionsPage",
+      "methodsSummary": [
+        {
+          "name": "gotoStatusOptions",
+          "signature": "async gotoStatusOptions()",
+          "startLine": 89,
+          "endLine": 92
+        },
+        {
+          "name": "getHeadingText",
+          "signature": "async getHeadingText()",
+          "startLine": 94,
+          "endLine": 96
+        },
+        {
+          "name": "isAdminTabActive",
+          "signature": "async isAdminTabActive()",
+          "startLine": 98,
+          "endLine": 102
+        },
+        {
+          "name": "isAddStatusOptionButtonCentered",
+          "signature": "async isAddStatusOptionButtonCentered()",
+          "startLine": 104,
+          "endLine": 107
+        },
+        {
+          "name": "isClientTabActive",
+          "signature": "async isClientTabActive()",
+          "startLine": 109,
+          "endLine": 112
+        },
+        {
+          "name": "isTempTabActive",
+          "signature": "async isTempTabActive()",
+          "startLine": 114,
+          "endLine": 117
+        },
+        {
+          "name": "switchToClientTab",
+          "signature": "async switchToClientTab()",
+          "startLine": 119,
+          "endLine": 125
+        },
+        {
+          "name": "switchToTempTab",
+          "signature": "async switchToTempTab()",
+          "startLine": 127,
+          "endLine": 133
+        },
+        {
+          "name": "search",
+          "signature": "async search(query: string)",
+          "startLine": 135,
+          "endLine": 142
+        },
+        {
+          "name": "clearSearch",
+          "signature": "async clearSearch()",
+          "startLine": 144,
+          "endLine": 151
+        },
+        {
+          "name": "openAddStatusOptionModal",
+          "signature": "async openAddStatusOptionModal()",
+          "startLine": 153,
+          "endLine": 156
+        },
+        {
+          "name": "closeModalViaCloseButton",
+          "signature": "async closeModalViaCloseButton()",
+          "startLine": 158,
+          "endLine": 161
+        },
+        {
+          "name": "closeModalViaCancel",
+          "signature": "async closeModalViaCancel()",
+          "startLine": 163,
+          "endLine": 166
+        },
+        {
+          "name": "fillStatusName",
+          "signature": "async fillStatusName(name: string)",
+          "startLine": 168,
+          "endLine": 170
+        },
+        {
+          "name": "fillStatusDescription",
+          "signature": "async fillStatusDescription(description: string)",
+          "startLine": 172,
+          "endLine": 174
+        },
+        {
+          "name": "fillDescription",
+          "signature": "async fillDescription(description: string)",
+          "startLine": 176,
+          "endLine": 178
+        },
+        {
+          "name": "selectIsActive",
+          "signature": "async selectIsActive(status: 'Active' | 'Inactive')",
+          "startLine": 180,
+          "endLine": 183
+        },
+        {
+          "name": "saveModal",
+          "signature": "async saveModal()",
+          "startLine": 185,
+          "endLine": 187
+        },
+        {
+          "name": "openEditStatusOptionModal",
+          "signature": "async openEditStatusOptionModal(name: string)",
+          "startLine": 189,
+          "endLine": 194
+        },
+        {
+          "name": "openEditStatusOptionModalByRow",
+          "signature": "async openEditStatusOptionModalByRow(rowIndex: number = 0)",
+          "startLine": 196,
+          "endLine": 204
+        },
+        {
+          "name": "fillDisplayOrder",
+          "signature": "async fillDisplayOrder(order: number | string)",
+          "startLine": 206,
+          "endLine": 208
+        },
+        {
+          "name": "updateStatusOption",
+          "signature": "async updateStatusOption(data: {\n    description?: string;\n    isActive?: 'Active' | 'Inactive' | boolean;\n    displayOrder?: number | string;\n  })",
+          "startLine": 210,
+          "endLine": 227
+        },
+        {
+          "name": "createStatusOption",
+          "signature": "async createStatusOption(name: string, description: string = '', status: 'Active' | 'Inactive' = 'Active')",
+          "startLine": 229,
+          "endLine": 246
+        },
+        {
+          "name": "getStatusOptionRow",
+          "signature": "getStatusOptionRow(name: string)",
+          "startLine": 248,
+          "endLine": 250
+        },
+        {
+          "name": "getStatusDescriptionFor",
+          "signature": "async getStatusDescriptionFor(name: string)",
+          "startLine": 252,
+          "endLine": 256
+        },
+        {
+          "name": "getCurrentlyActiveFor",
+          "signature": "async getCurrentlyActiveFor(name: string)",
+          "startLine": 258,
+          "endLine": 262
+        },
+        {
+          "name": "getStatusPillFor",
+          "signature": "getStatusPillFor(name: string)",
+          "startLine": 264,
+          "endLine": 267
+        },
+        {
+          "name": "getPaginationInfo",
+          "signature": "async getPaginationInfo()",
+          "startLine": 269,
+          "endLine": 280
+        },
+        {
+          "name": "reloadPage",
+          "signature": "async reloadPage()",
+          "startLine": 282,
+          "endLine": 284
+        },
+        {
+          "name": "goBack",
+          "signature": "async goBack()",
+          "startLine": 286,
+          "endLine": 288
+        },
+        {
+          "name": "goForward",
+          "signature": "async goForward()",
+          "startLine": 290,
+          "endLine": 292
+        },
+        {
+          "name": "getStatusOptionsViaApi",
+          "signature": "async getStatusOptionsViaApi(params: {\n    entityType?: 'Temp' | 'Client';\n    status?: string;\n    isActive?: boolean;\n    pageSize?: number;\n  })",
+          "startLine": 294,
+          "endLine": 313
+        },
+        {
+          "name": "createStatusOptionViaApi",
+          "signature": "async createStatusOptionViaApi(payload: {\n    entityType: 'Temp' | 'Client';\n    name: string;\n    description?: string;\n    isActive?: boolean;\n    displayOrder?: number;\n  })",
+          "startLine": 315,
+          "endLine": 338
+        },
+        {
+          "name": "updateStatusOptionViaApi",
+          "signature": "async updateStatusOptionViaApi(id: number | string, payload: {\n      entityType: 'Temp' | 'Client';\n      name: string;\n      description?: string;\n      isActive: boolean;\n      displayOrder?: number;\n    })",
+          "startLine": 340,
+          "endLine": 366
+        }
+      ],
+      "signature": "class StatusOptionsPage extends BasePage",
       "code": "export class StatusOptionsPage extends BasePage {\n  // AppShell & Navigation\n  readonly primaryNav: Locator;\n  readonly adminLink: Locator;\n  readonly adminSubNav: Locator;\n\n  // Page Header & Controls\n  readonly heading: Locator;\n  readonly addStatusOptionButton: Locator;\n  readonly addStatusOptionButtonContainer: Locator;\n  readonly subTabsContainer: Locator;\n  readonly clientTabButton: Locator;..."
     },
     {
@@ -4429,13 +6827,64 @@
       "code": "async goForward(): Promise<void> {\n    await this.page.goForward({ waitUntil: 'domcontentloaded' });\n  }"
     },
     {
+      "id": "pages/StatusOptionsPage.ts#StatusOptionsPage.getStatusOptionsViaApi",
+      "file": "pages/StatusOptionsPage.ts",
+      "kind": "method",
+      "parent": "StatusOptionsPage",
+      "name": "getStatusOptionsViaApi",
+      "startLine": 294,
+      "endLine": 313,
+      "signature": "async getStatusOptionsViaApi(params: {\n    entityType?: 'Temp' | 'Client';\n    status?: string;\n    isActive?: boolean;\n    pageSize?: number;\n  })",
+      "locatorsUsed": [],
+      "code": "async getStatusOptionsViaApi(params: {\n    entityType?: 'Temp' | 'Client';\n    status?: string;\n    isActive?: boolean;\n    pageSize?: number;\n  }): Promise<{ status: number; body: any }> {\n    const query = new URLSearchParams();\n    if (params.entityType !== undefined) query.set('entityType', params.entityType);\n    if (params.status !== undefined) query.set('status', params.status);\n    if (params.isActive !== undefined) query.set('isActive', String(params.isActive));\n    if (params.pageSize !== undefined) query.set('pageSize', String(params.pageSize));\n    const response = await this.page.request.get(`/api/admin/status-options?${query.toString()}`);\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
+      "id": "pages/StatusOptionsPage.ts#StatusOptionsPage.createStatusOptionViaApi",
+      "file": "pages/StatusOptionsPage.ts",
+      "kind": "method",
+      "parent": "StatusOptionsPage",
+      "name": "createStatusOptionViaApi",
+      "startLine": 315,
+      "endLine": 338,
+      "signature": "async createStatusOptionViaApi(payload: {\n    entityType: 'Temp' | 'Client';\n    name: string;\n    description?: string;\n    isActive?: boolean;\n    displayOrder?: number;\n  })",
+      "locatorsUsed": [],
+      "code": "async createStatusOptionViaApi(payload: {\n    entityType: 'Temp' | 'Client';\n    name: string;\n    description?: string;\n    isActive?: boolean;\n    displayOrder?: number;\n  }): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.post('/api/admin/status-options', {\n      data: {\n        entityType: payload.entityType,\n        name: payload.name,\n        description: payload.description ?? '',\n        isActive: payload.isActive ?? true,\n        displayOrder: payload.displayOrder ?? 10,\n      },\n    });\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
+      "id": "pages/StatusOptionsPage.ts#StatusOptionsPage.updateStatusOptionViaApi",
+      "file": "pages/StatusOptionsPage.ts",
+      "kind": "method",
+      "parent": "StatusOptionsPage",
+      "name": "updateStatusOptionViaApi",
+      "startLine": 340,
+      "endLine": 366,
+      "signature": "async updateStatusOptionViaApi(id: number | string, payload: {\n      entityType: 'Temp' | 'Client';\n      name: string;\n      description?: string;\n      isActive: boolean;\n      displayOrder?: number;\n    })",
+      "locatorsUsed": [],
+      "code": "async updateStatusOptionViaApi(\n    id: number | string,\n    payload: {\n      entityType: 'Temp' | 'Client';\n      name: string;\n      description?: string;\n      isActive: boolean;\n      displayOrder?: number;\n    }\n  ): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.put(`/api/admin/status-options/${id}`, {\n      data: {\n        entityType: payload.entityType,\n        name: payload.name,\n        description: payload.description ?? '',\n        isActive: payload.isActive,\n        displayOrder: payload.displayOrder ?? 10,\n      },\n    });\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
       "id": "pages/TempDetailPage.ts#TempDetailPage",
       "file": "pages/TempDetailPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BaseTempFormPage",
       "name": "TempDetailPage",
       "startLine": 5,
-      "endLine": 143,
+      "endLine": 168,
+      "properties": [
+        "pageHeading",
+        "notFoundMessage",
+        "editButton",
+        "duplicateEmailError",
+        "deleteButton",
+        "deleteModal",
+        "modalTitle",
+        "modalPrompt",
+        "modalCloseButton",
+        "modalCancelButton",
+        "modalConfirmDeleteButton",
+        "deleteSuccessBanner",
+        "deleteErrorBanner"
+      ],
       "locatorsDefined": [
         "page.getByRole('heading', { level: 1 })",
         "page.getByText('This temp could not be found.')",
@@ -4452,7 +6901,123 @@
         "page.getByText('Temp deleted successfully.')",
         "page.locator('[role=\"alert\"], p.text-red-600, p.text-red-700, span.text-red-600')"
       ],
-      "signature": "class TempDetailPage",
+      "methodsSummary": [
+        {
+          "name": "gotoTempDetail",
+          "signature": "async gotoTempDetail(id: number | string)",
+          "startLine": 41,
+          "endLine": 43
+        },
+        {
+          "name": "gotoAddTemp",
+          "signature": "async gotoAddTemp()",
+          "startLine": 45,
+          "endLine": 47
+        },
+        {
+          "name": "clickEdit",
+          "signature": "async clickEdit()",
+          "startLine": 49,
+          "endLine": 51
+        },
+        {
+          "name": "clearFirstName",
+          "signature": "async clearFirstName()",
+          "startLine": 53,
+          "endLine": 55
+        },
+        {
+          "name": "clearEmail",
+          "signature": "async clearEmail()",
+          "startLine": 57,
+          "endLine": 59
+        },
+        {
+          "name": "saveAndInterceptPutResponse",
+          "signature": "async saveAndInterceptPutResponse()",
+          "startLine": 61,
+          "endLine": 74
+        },
+        {
+          "name": "saveAndInterceptPostResponse",
+          "signature": "async saveAndInterceptPostResponse()",
+          "startLine": 76,
+          "endLine": 89
+        },
+        {
+          "name": "areAllFieldsDisabled",
+          "signature": "async areAllFieldsDisabled()",
+          "startLine": 91,
+          "endLine": 93
+        },
+        {
+          "name": "areAllFieldsEnabled",
+          "signature": "async areAllFieldsEnabled()",
+          "startLine": 95,
+          "endLine": 97
+        },
+        {
+          "name": "pressEnterKey",
+          "signature": "async pressEnterKey()",
+          "startLine": 99,
+          "endLine": 101
+        },
+        {
+          "name": "createTempViaApi",
+          "signature": "async createTempViaApi(payload: TempPayload)",
+          "startLine": 103,
+          "endLine": 106
+        },
+        {
+          "name": "createTempRawViaApi",
+          "signature": "async createTempRawViaApi(payload: Partial<TempPayload> & Record<string, any>)",
+          "startLine": 108,
+          "endLine": 117
+        },
+        {
+          "name": "updateTempRawViaApi",
+          "signature": "async updateTempRawViaApi(id: number | string, payload: Partial<TempPayload> & Record<string, any>)",
+          "startLine": 119,
+          "endLine": 131
+        },
+        {
+          "name": "clickDelete",
+          "signature": "async clickDelete()",
+          "startLine": 133,
+          "endLine": 135
+        },
+        {
+          "name": "confirmDelete",
+          "signature": "async confirmDelete()",
+          "startLine": 137,
+          "endLine": 139
+        },
+        {
+          "name": "cancelDeleteModal",
+          "signature": "async cancelDeleteModal()",
+          "startLine": 141,
+          "endLine": 143
+        },
+        {
+          "name": "closeDeleteModal",
+          "signature": "async closeDeleteModal()",
+          "startLine": 145,
+          "endLine": 147
+        },
+        {
+          "name": "deleteAndInterceptResponse",
+          "signature": "async deleteAndInterceptResponse()",
+          "startLine": 149,
+          "endLine": 162
+        },
+        {
+          "name": "deleteTempViaApi",
+          "signature": "async deleteTempViaApi(id: number | string)",
+          "startLine": 164,
+          "endLine": 167
+        }
+      ],
+      "signature": "class TempDetailPage extends BaseTempFormPage",
       "code": "export class TempDetailPage extends BaseTempFormPage {\n  readonly pageHeading: Locator;\n  readonly notFoundMessage: Locator;\n  readonly editButton: Locator;\n  readonly duplicateEmailError: Locator;\n\n  // Delete Action & Modal\n  readonly deleteButton: Locator;\n  readonly deleteModal: Locator;\n  readonly modalTitle: Locator;\n  readonly modalPrompt: Locator;\n  readonly modalCloseButton: Locator;\n  re..."
     },
     {
@@ -4588,13 +7153,37 @@
       "code": "async createTempViaApi(payload: TempPayload): Promise<any> {\n    const response = await this.page.request.post('/api/temps', { data: payload });\n    return await response.json();\n  }"
     },
     {
+      "id": "pages/TempDetailPage.ts#TempDetailPage.createTempRawViaApi",
+      "file": "pages/TempDetailPage.ts",
+      "kind": "method",
+      "parent": "TempDetailPage",
+      "name": "createTempRawViaApi",
+      "startLine": 108,
+      "endLine": 117,
+      "signature": "async createTempRawViaApi(payload: Partial<TempPayload> & Record<string, any>)",
+      "locatorsUsed": [],
+      "code": "async createTempRawViaApi(payload: Partial<TempPayload> & Record<string, any>): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.post('/api/temps', { data: payload });\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
+      "id": "pages/TempDetailPage.ts#TempDetailPage.updateTempRawViaApi",
+      "file": "pages/TempDetailPage.ts",
+      "kind": "method",
+      "parent": "TempDetailPage",
+      "name": "updateTempRawViaApi",
+      "startLine": 119,
+      "endLine": 131,
+      "signature": "async updateTempRawViaApi(id: number | string, payload: Partial<TempPayload> & Record<string, any>)",
+      "locatorsUsed": [],
+      "code": "async updateTempRawViaApi(\n    id: number | string,\n    payload: Partial<TempPayload> & Record<string, any>\n  ): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.put(`/api/temps/${id}`, { data: payload });\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
       "id": "pages/TempDetailPage.ts#TempDetailPage.clickDelete",
       "file": "pages/TempDetailPage.ts",
       "kind": "method",
       "parent": "TempDetailPage",
       "name": "clickDelete",
-      "startLine": 108,
-      "endLine": 110,
+      "startLine": 133,
+      "endLine": 135,
       "signature": "async clickDelete()",
       "locatorsUsed": [],
       "code": "async clickDelete(): Promise<void> {\n    await this.deleteButton.click();\n  }"
@@ -4605,8 +7194,8 @@
       "kind": "method",
       "parent": "TempDetailPage",
       "name": "confirmDelete",
-      "startLine": 112,
-      "endLine": 114,
+      "startLine": 137,
+      "endLine": 139,
       "signature": "async confirmDelete()",
       "locatorsUsed": [],
       "code": "async confirmDelete(): Promise<void> {\n    await this.modalConfirmDeleteButton.click();\n  }"
@@ -4617,8 +7206,8 @@
       "kind": "method",
       "parent": "TempDetailPage",
       "name": "cancelDeleteModal",
-      "startLine": 116,
-      "endLine": 118,
+      "startLine": 141,
+      "endLine": 143,
       "signature": "async cancelDeleteModal()",
       "locatorsUsed": [],
       "code": "async cancelDeleteModal(): Promise<void> {\n    await this.modalCancelButton.click();\n  }"
@@ -4629,8 +7218,8 @@
       "kind": "method",
       "parent": "TempDetailPage",
       "name": "closeDeleteModal",
-      "startLine": 120,
-      "endLine": 122,
+      "startLine": 145,
+      "endLine": 147,
       "signature": "async closeDeleteModal()",
       "locatorsUsed": [],
       "code": "async closeDeleteModal(): Promise<void> {\n    await this.modalCloseButton.click();\n  }"
@@ -4641,8 +7230,8 @@
       "kind": "method",
       "parent": "TempDetailPage",
       "name": "deleteAndInterceptResponse",
-      "startLine": 124,
-      "endLine": 137,
+      "startLine": 149,
+      "endLine": 162,
       "signature": "async deleteAndInterceptResponse()",
       "locatorsUsed": [],
       "code": "async deleteAndInterceptResponse(): Promise<{ status: number; body: any }> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/temps') && resp.request().method() === 'DELETE'\n    );\n    await this.confirmDelete();\n    const response = await responsePromise;\n    let body = {};\n    try {\n      body = await response.json();\n    } catch {\n      // response body not json\n    }\n    return { status: response.status(), body };\n  }"
@@ -4653,8 +7242,8 @@
       "kind": "method",
       "parent": "TempDetailPage",
       "name": "deleteTempViaApi",
-      "startLine": 139,
-      "endLine": 142,
+      "startLine": 164,
+      "endLine": 167,
       "signature": "async deleteTempViaApi(id: number | string)",
       "locatorsUsed": [],
       "code": "async deleteTempViaApi(id: number | string): Promise<any> {\n    const response = await this.page.request.delete(`/api/temps/${id}`);\n    return response.status();\n  }"
@@ -4663,10 +7252,18 @@
       "id": "pages/TempPage.ts#TempPage",
       "file": "pages/TempPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "TempPage",
       "startLine": 4,
       "endLine": 39,
+      "properties": [
+        "pageHeading",
+        "addTempButton",
+        "searchInput",
+        "searchButton",
+        "tempsTable",
+        "tableRows"
+      ],
       "locatorsDefined": [
         "page.getByRole('heading', { name: 'Temp', level: 1 })",
         "page.getByRole('button', { name: /Add Temp/i })",
@@ -4675,7 +7272,33 @@
         "page.getByRole('table')",
         "page.locator('table tbody tr[tabindex=\"0\"]')"
       ],
-      "signature": "class TempPage",
+      "methodsSummary": [
+        {
+          "name": "gotoTemp",
+          "signature": "async gotoTemp()",
+          "startLine": 22,
+          "endLine": 24
+        },
+        {
+          "name": "clickAddTemp",
+          "signature": "async clickAddTemp()",
+          "startLine": 26,
+          "endLine": 28
+        },
+        {
+          "name": "clickFirstRow",
+          "signature": "async clickFirstRow()",
+          "startLine": 30,
+          "endLine": 34
+        },
+        {
+          "name": "getRowCount",
+          "signature": "async getRowCount()",
+          "startLine": 36,
+          "endLine": 38
+        }
+      ],
+      "signature": "class TempPage extends BasePage",
       "code": "export class TempPage extends BasePage {\n  readonly pageHeading: Locator;\n  readonly addTempButton: Locator;\n  readonly searchInput: Locator;\n  readonly searchButton: Locator;\n  readonly tempsTable: Locator;\n  readonly tableRows: Locator;\n\n  constructor(page: Page) {\n    super(page);\n    this.pageHeading = page.getByRole('heading', { name: 'Temp', level: 1 });\n    this.addTempButton = page.getByRo..."
     },
     {
@@ -4730,10 +7353,38 @@
       "id": "pages/UserDetailPage.ts#UserDetailPage",
       "file": "pages/UserDetailPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "UserDetailPage",
       "startLine": 5,
       "endLine": 182,
+      "properties": [
+        "pageHeading",
+        "fullNameInput",
+        "usernameInput",
+        "titleInput",
+        "emailInput",
+        "roleDisplay",
+        "statusSelect",
+        "editButton",
+        "saveButton",
+        "cancelButton",
+        "deleteButton",
+        "deleteModal",
+        "modalTitle",
+        "modalPrompt",
+        "modalCloseButton",
+        "modalCancelButton",
+        "modalConfirmDeleteButton",
+        "feedbackBanner",
+        "saveSuccessBanner",
+        "deleteSuccessBanner",
+        "errorBanner",
+        "selfDeactivationError",
+        "selfDeletionError",
+        "duplicateUsernameError",
+        "duplicateEmailError",
+        "fullNameRequiredError"
+      ],
       "locatorsDefined": [
         "page.getByRole('heading', { level: 1 })",
         "page.locator('#fullName')",
@@ -4765,7 +7416,99 @@
         "page.getByText('That email address is already in use.')",
         "page.getByText('The Full Name field is required.')"
       ],
-      "signature": "class UserDetailPage",
+      "methodsSummary": [
+        {
+          "name": "gotoUserDetail",
+          "signature": "async gotoUserDetail(id: number | string)",
+          "startLine": 80,
+          "endLine": 83
+        },
+        {
+          "name": "clickEdit",
+          "signature": "async clickEdit()",
+          "startLine": 85,
+          "endLine": 87
+        },
+        {
+          "name": "clickSave",
+          "signature": "async clickSave()",
+          "startLine": 89,
+          "endLine": 91
+        },
+        {
+          "name": "clickCancel",
+          "signature": "async clickCancel()",
+          "startLine": 93,
+          "endLine": 95
+        },
+        {
+          "name": "clickDelete",
+          "signature": "async clickDelete()",
+          "startLine": 97,
+          "endLine": 99
+        },
+        {
+          "name": "confirmDelete",
+          "signature": "async confirmDelete()",
+          "startLine": 101,
+          "endLine": 103
+        },
+        {
+          "name": "cancelDeleteModal",
+          "signature": "async cancelDeleteModal()",
+          "startLine": 105,
+          "endLine": 107
+        },
+        {
+          "name": "closeDeleteModal",
+          "signature": "async closeDeleteModal()",
+          "startLine": 109,
+          "endLine": 111
+        },
+        {
+          "name": "fillForm",
+          "signature": "async fillForm(data: Partial<UserDetailPayload>)",
+          "startLine": 113,
+          "endLine": 121
+        },
+        {
+          "name": "areAllFieldsDisabled",
+          "signature": "async areAllFieldsDisabled()",
+          "startLine": 123,
+          "endLine": 131
+        },
+        {
+          "name": "areAllFieldsEnabled",
+          "signature": "async areAllFieldsEnabled()",
+          "startLine": 133,
+          "endLine": 141
+        },
+        {
+          "name": "saveAndInterceptPutResponse",
+          "signature": "async saveAndInterceptPutResponse()",
+          "startLine": 143,
+          "endLine": 156
+        },
+        {
+          "name": "deleteAndInterceptResponse",
+          "signature": "async deleteAndInterceptResponse()",
+          "startLine": 158,
+          "endLine": 171
+        },
+        {
+          "name": "createUserViaApi",
+          "signature": "async createUserViaApi(payload: UserDetailPayload)",
+          "startLine": 173,
+          "endLine": 176
+        },
+        {
+          "name": "deleteUserViaApi",
+          "signature": "async deleteUserViaApi(id: number | string)",
+          "startLine": 178,
+          "endLine": 181
+        }
+      ],
+      "signature": "class UserDetailPage extends BasePage",
       "code": "export class UserDetailPage extends BasePage {\n  readonly pageHeading: Locator;\n\n  // Form Fields\n  readonly fullNameInput: Locator;\n  readonly usernameInput: Locator;\n  readonly titleInput: Locator;\n  readonly emailInput: Locator;\n  readonly roleDisplay: Locator;\n  readonly statusSelect: Locator;\n\n  // Action Buttons\n  readonly editButton: Locator;\n  readonly saveButton: Locator;\n  readonly cance..."
     },
     {
@@ -4952,10 +7695,32 @@
       "id": "pages/UserManagerPage.ts#UserManagerPage",
       "file": "pages/UserManagerPage.ts",
       "kind": "class",
-      "parent": null,
+      "parent": "BasePage",
       "name": "UserManagerPage",
       "startLine": 4,
       "endLine": 110,
+      "properties": [
+        "addUserButton",
+        "addUserPlusIcon",
+        "pageHeading",
+        "searchInput",
+        "searchButton",
+        "primaryNav",
+        "homeNavLink",
+        "adminNavLink",
+        "userManagerNavLink",
+        "headerLogo",
+        "logoutButton",
+        "feedbackBanner",
+        "userCreatedBanner",
+        "userTable",
+        "tableHeaderColumns",
+        "tableRows",
+        "noUsersFoundRow",
+        "paginationFooter",
+        "previousPageButton",
+        "nextPageButton"
+      ],
       "locatorsDefined": [
         "page.getByRole('button', { name: /Add User/i })",
         "page.getByRole('button', { name: /Add User/i }).locator('svg')",
@@ -4981,7 +7746,75 @@
         "page.getByRole('button', { name: 'Previous' })",
         "page.getByRole('button', { name: 'Next' })"
       ],
-      "signature": "class UserManagerPage",
+      "methodsSummary": [
+        {
+          "name": "gotoUserManager",
+          "signature": "async gotoUserManager()",
+          "startLine": 50,
+          "endLine": 52
+        },
+        {
+          "name": "hoverAddUserButton",
+          "signature": "async hoverAddUserButton()",
+          "startLine": 54,
+          "endLine": 56
+        },
+        {
+          "name": "clickAddUserButton",
+          "signature": "async clickAddUserButton()",
+          "startLine": 58,
+          "endLine": 60
+        },
+        {
+          "name": "searchUser",
+          "signature": "async searchUser(query: string)",
+          "startLine": 62,
+          "endLine": 65
+        },
+        {
+          "name": "clearSearch",
+          "signature": "async clearSearch()",
+          "startLine": 67,
+          "endLine": 70
+        },
+        {
+          "name": "clickUserRow",
+          "signature": "async clickUserRow(index: number = 0)",
+          "startLine": 72,
+          "endLine": 74
+        },
+        {
+          "name": "getUserRowByUsername",
+          "signature": "getUserRowByUsername(username: string)",
+          "startLine": 76,
+          "endLine": 78
+        },
+        {
+          "name": "isButtonAboveHeading",
+          "signature": "async isButtonAboveHeading()",
+          "startLine": 80,
+          "endLine": 85
+        },
+        {
+          "name": "isButtonCentered",
+          "signature": "async isButtonCentered()",
+          "startLine": 87,
+          "endLine": 96
+        },
+        {
+          "name": "getButtonComputedStyle",
+          "signature": "async getButtonComputedStyle(property: string)",
+          "startLine": 98,
+          "endLine": 103
+        },
+        {
+          "name": "hasHorizontalScrollBar",
+          "signature": "async hasHorizontalScrollBar()",
+          "startLine": 105,
+          "endLine": 109
+        }
+      ],
+      "signature": "class UserManagerPage extends BasePage",
       "code": "export class UserManagerPage extends BasePage {\n  readonly addUserButton: Locator;\n  readonly addUserPlusIcon: Locator;\n  readonly pageHeading: Locator;\n  readonly searchInput: Locator;\n  readonly searchButton: Locator;\n  readonly primaryNav: Locator;\n  readonly homeNavLink: Locator;\n  readonly adminNavLink: Locator;\n  readonly userManagerNavLink: Locator;\n  readonly headerLogo: Locator;\n  readonl..."
     },
     {
@@ -7440,6 +10273,190 @@
       ],
       "locatorsUsed": [],
       "code": "test('TC-15 - Verify Client delete 404 Not Found displays error banner', async ({\n    authenticatedClientDetailPage,\n    page,\n  }) => {\n    const seedClient = await authenticatedClientDetailPage.createClientViaApi(\n      deleteConfirmationData.generateClient('tc15')\n    );\n\n    try {\n      await authenticatedClientDetailPage.gotoClientDetail(seedClient.id);\n      await authenticatedClientDetailPage.clickDelete();\n      await expect(authenticatedClientDetailPage.deleteModal).toBeVisible();\n\n      await page.route(`**/api/clients/${seedClient.id}`, async (route) => {\n        if (route.request().method() === 'DELETE') {\n          await route.fulfill({\n            status: 404,\n            contentType: 'application/json',\n            body: JSON.stringify(deleteConfirmationData.mockErrors.clientNotFound),\n          });\n        } else {\n          await route.continue();\n        }\n      });\n\n      await authenticatedClientDetailPage.confirmDelete();\n\n      await expect(authenticatedClientDetailPage.deleteModal).toBeHidden();\n      await expect(authenticatedClientDetailPage.deleteErrorBanner).toBeVisible();\n    } finally {\n      await page.unroute(`**/api/clients/${seedClient.id}`);\n      await authenticatedClientDetailPage.deleteClientViaApi(seedClient.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-01_-_API_filters_active_Temp_Status_Options_ord",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-01 - API filters active Temp Status Options ordered by DisplayOrder then Name",
+      "startLine": 7,
+      "endLine": 114,
+      "fixtures": [
+        "authenticatedStatusOptionsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-01 - API filters active Temp Status Options ordered by DisplayOrder then Name', async ({\n    authenticatedStatusOptionsPage,\n  }) => {\n    const orderLowNameB = statusOptionsData.dynamicDropdowns.generateShortStatus('TmpB');\n    const orderLowNameA = statusOptionsData.dynamicDropdowns.generateShortStatus('TmpA');\n    const orderHighName = statusOptionsData.dynamicDropdowns.generateShortStatus('TmpZ');\n    const inactiveTempName = statusOptionsData.dynamicDropdowns.generateShortStatus('TmpIn');\n    const activeClientName = statusOptionsData.dynamicDropdowns.generateShortStatus('CliEx');\n\n    const resB = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: orderLowNameB,\n      isActive: true,\n      displayOrder: 50,\n    });\n    const resA = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: orderLowNameA,\n      isActive: true,\n      displayOrder: 50,\n    });\n    const resZ = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: orderHighName,\n      isActive: true,\n      displayOrder: 60,\n    });\n    const resIn = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: inactiveTempName,\n      isActive: false,\n      displayOrder: 1,\n    });\n    const resCli = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: activeClientName,\n      isActive: true,\n      displayOrder: 1,\n    });\n\n    try {\n      const { status: statusParamCode, body: statusParamBody } =\n        await authenticatedStatusOptionsPage.getStatusOptionsViaApi({\n          entityType: 'Temp',\n          status: statusOptionsData.status.active,\n          pageSize: 500,\n        });\n      expect(statusParamCode).toBe(200);\n      expect(Array.isArray(statusParamBody.items)).toBe(true);\n\n      for (const item of statusParamBody.items) {\n        expect(item.entityType).toBe(statusOptionsData.tabs.temp);\n        expect(item.isActive).toBe(true);\n      }\n\n      const returnedNames = statusParamBody.items.map((i: any) => i.name);\n      expect(returnedNames).toContain(orderLowNameA);\n      expect(returnedNames).toContain(orderLowNameB);\n      expect(returnedNames).toContain(orderHighName);\n      expect(returnedNames).not.toContain(inactiveTempName);\n      expect(returnedNames).not.toContain(activeClientName);\n\n      // Verify ordering by DisplayOrder ascending, then Name ascending\n      const idxA = returnedNames.indexOf(orderLowNameA);\n      const idxB = returnedNames.indexOf(orderLowNameB);\n      const idxZ = returnedNames.indexOf(orderHighName);\n      expect(idxA).toBeLessThan(idxB);\n      expect(idxB).toBeLessThan(idxZ);\n\n      // Also verify ?isActive=true filter parameter\n      const { status: isActiveCode, body: isActiveBody } =\n        await authenticatedStatusOptionsPage.getStatusOptionsViaApi({\n          entityType: 'Temp',\n          isActive: true,\n          pageSize: 500,\n        });\n      expect(isActiveCode).toBe(200);\n      const isActiveNames = isActiveBody.items.map((i: any) => i.name);\n      expect(isActiveNames).toContain(orderLowNameA);\n      expect(isActiveNames).not.toContain(inactiveTempName);\n    } finally {\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(resB.body.id, {\n        entityType: 'Temp',\n        name: orderLowNameB,\n        isActive: false,\n        displayOrder: 50,\n      });\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(resA.body.id, {\n        entityType: 'Temp',\n        name: orderLowNameA,\n        isActive: false,\n        displayOrder: 50,\n      });\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(resZ.body.id, {\n        entityType: 'Temp',\n        name: orderHighName,\n        isActive: false,\n        displayOrder: 60,\n      });\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(resCli.body.id, {\n        entityType: 'Client',\n        name: activeClientName,\n        isActive: false,\n        displayOrder: 1,\n      });\n      expect(resIn.status).toBe(201);\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-02_-_API_filters_active_Client_Status_Options_o",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-02 - API filters active Client Status Options ordered by DisplayOrder then Name",
+      "startLine": 116,
+      "endLine": 223,
+      "fixtures": [
+        "authenticatedStatusOptionsPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-02 - API filters active Client Status Options ordered by DisplayOrder then Name', async ({\n    authenticatedStatusOptionsPage,\n  }) => {\n    const orderLowNameB = statusOptionsData.dynamicDropdowns.generateShortStatus('CliB');\n    const orderLowNameA = statusOptionsData.dynamicDropdowns.generateShortStatus('CliA');\n    const orderHighName = statusOptionsData.dynamicDropdowns.generateShortStatus('CliZ');\n    const inactiveClientName = statusOptionsData.dynamicDropdowns.generateShortStatus('CliIn');\n    const activeTempName = statusOptionsData.dynamicDropdowns.generateShortStatus('TmpEx');\n\n    const resB = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: orderLowNameB,\n      isActive: true,\n      displayOrder: 50,\n    });\n    const resA = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: orderLowNameA,\n      isActive: true,\n      displayOrder: 50,\n    });\n    const resZ = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: orderHighName,\n      isActive: true,\n      displayOrder: 60,\n    });\n    const resIn = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: inactiveClientName,\n      isActive: false,\n      displayOrder: 1,\n    });\n    const resTmp = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: activeTempName,\n      isActive: true,\n      displayOrder: 1,\n    });\n\n    try {\n      const { status: statusParamCode, body: statusParamBody } =\n        await authenticatedStatusOptionsPage.getStatusOptionsViaApi({\n          entityType: 'Client',\n          status: statusOptionsData.status.active,\n          pageSize: 500,\n        });\n      expect(statusParamCode).toBe(200);\n      expect(Array.isArray(statusParamBody.items)).toBe(true);\n\n      for (const item of statusParamBody.items) {\n        expect(item.entityType).toBe(statusOptionsData.tabs.client);\n        expect(item.isActive).toBe(true);\n      }\n\n      const returnedNames = statusParamBody.items.map((i: any) => i.name);\n      expect(returnedNames).toContain(orderLowNameA);\n      expect(returnedNames).toContain(orderLowNameB);\n      expect(returnedNames).toContain(orderHighName);\n      expect(returnedNames).not.toContain(inactiveClientName);\n      expect(returnedNames).not.toContain(activeTempName);\n\n      // Verify ordering by DisplayOrder ascending, then Name ascending\n      const idxA = returnedNames.indexOf(orderLowNameA);\n      const idxB = returnedNames.indexOf(orderLowNameB);\n      const idxZ = returnedNames.indexOf(orderHighName);\n      expect(idxA).toBeLessThan(idxB);\n      expect(idxB).toBeLessThan(idxZ);\n\n      // Verify ?isActive=true filter parameter\n      const { status: isActiveCode, body: isActiveBody } =\n        await authenticatedStatusOptionsPage.getStatusOptionsViaApi({\n          entityType: 'Client',\n          isActive: true,\n          pageSize: 500,\n        });\n      expect(isActiveCode).toBe(200);\n      const isActiveNames = isActiveBody.items.map((i: any) => i.name);\n      expect(isActiveNames).toContain(orderLowNameA);\n      expect(isActiveNames).not.toContain(inactiveClientName);\n    } finally {\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(resB.body.id, {\n        entityType: 'Client',\n        name: orderLowNameB,\n        isActive: false,\n        displayOrder: 50,\n      });\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(resA.body.id, {\n        entityType: 'Client',\n        name: orderLowNameA,\n        isActive: false,\n        displayOrder: 50,\n      });\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(resZ.body.id, {\n        entityType: 'Client',\n        name: orderHighName,\n        isActive: false,\n        displayOrder: 60,\n      });\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(resTmp.body.id, {\n        entityType: 'Temp',\n        name: activeTempName,\n        isActive: false,\n        displayOrder: 1,\n      });\n      expect(resIn.status).toBe(201);\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-03_-_Create_Temp_page_dynamically_populates_act",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-03 - Create Temp page dynamically populates active Temp Status Options with \"Active\" default",
+      "startLine": 225,
+      "endLine": 265,
+      "fixtures": [
+        "authenticatedStatusOptionsPage",
+        "addTempPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-03 - Create Temp page dynamically populates active Temp Status Options with \"Active\" default', async ({\n    authenticatedStatusOptionsPage,\n    addTempPage,\n  }) => {\n    const customTempStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('Onb');\n\n    await authenticatedStatusOptionsPage.switchToTempTab();\n    await authenticatedStatusOptionsPage.createStatusOption(\n      customTempStatus,\n      statusOptionsData.testPayloads.tempOption.description,\n      statusOptionsData.status.active\n    );\n    await expect(authenticatedStatusOptionsPage.modalDialog).toBeHidden();\n\n    try {\n      await addTempPage.gotoAddTemp();\n      await expect(addTempPage.pageHeading).toBeVisible();\n\n      const options = await addTempPage.getStatusOptionTexts();\n      for (const baseline of statusOptionsData.dynamicDropdowns.baselineStatuses) {\n        expect(options).toContain(baseline);\n      }\n      expect(options).toContain(customTempStatus);\n\n      const defaultSelected = await addTempPage.getSelectedStatus();\n      expect(defaultSelected).toBe(statusOptionsData.dynamicDropdowns.defaultStatus);\n    } finally {\n      const listRes = await authenticatedStatusOptionsPage.getStatusOptionsViaApi({\n        entityType: 'Temp',\n        pageSize: 500,\n      });\n      const created = listRes.body.items?.find((i: any) => i.name === customTempStatus);\n      if (created) {\n        await authenticatedStatusOptionsPage.updateStatusOptionViaApi(created.id, {\n          entityType: 'Temp',\n          name: customTempStatus,\n          isActive: false,\n        });\n      }\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-04_-_Create_Client_page_dynamically_populates_a",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-04 - Create Client page dynamically populates active Client Status Options with \"Active\" default",
+      "startLine": 267,
+      "endLine": 309,
+      "fixtures": [
+        "authenticatedStatusOptionsPage",
+        "clientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-04 - Create Client page dynamically populates active Client Status Options with \"Active\" default', async ({\n    authenticatedStatusOptionsPage,\n    clientDetailPage,\n  }) => {\n    const customClientStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('Prsp');\n\n    if (!(await authenticatedStatusOptionsPage.isClientTabActive())) {\n      await authenticatedStatusOptionsPage.switchToClientTab();\n    }\n    await authenticatedStatusOptionsPage.createStatusOption(\n      customClientStatus,\n      statusOptionsData.testPayloads.clientOption.description,\n      statusOptionsData.status.active\n    );\n    await expect(authenticatedStatusOptionsPage.modalDialog).toBeHidden();\n\n    try {\n      await clientDetailPage.gotoAddClient();\n      await expect(clientDetailPage.pageHeading).toBeVisible();\n\n      const options = await clientDetailPage.getStatusOptionTexts();\n      for (const baseline of statusOptionsData.dynamicDropdowns.baselineStatuses) {\n        expect(options).toContain(baseline);\n      }\n      expect(options).toContain(customClientStatus);\n\n      const defaultSelected = await clientDetailPage.getSelectedStatus();\n      expect(defaultSelected).toBe(statusOptionsData.dynamicDropdowns.defaultStatus);\n    } finally {\n      const listRes = await authenticatedStatusOptionsPage.getStatusOptionsViaApi({\n        entityType: 'Client',\n        pageSize: 500,\n      });\n      const created = listRes.body.items?.find((i: any) => i.name === customClientStatus);\n      if (created) {\n        await authenticatedStatusOptionsPage.updateStatusOptionViaApi(created.id, {\n          entityType: 'Client',\n          name: customClientStatus,\n          isActive: false,\n        });\n      }\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-05_-_Create_and_Edit_Temp_using_newly_added_act",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-05 - Create and Edit Temp using newly added active Status Option",
+      "startLine": 311,
+      "endLine": 360,
+      "fixtures": [
+        "authenticatedStatusOptionsPage",
+        "addTempPage",
+        "tempDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-05 - Create and Edit Temp using newly added active Status Option', async ({\n    authenticatedStatusOptionsPage,\n    addTempPage,\n    tempDetailPage,\n  }) => {\n    const customTempStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('Onb');\n    const createdOption = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: customTempStatus,\n      isActive: true,\n    });\n    let createdTempId: number | undefined;\n\n    try {\n      await addTempPage.gotoAddTemp();\n      await expect(addTempPage.pageHeading).toBeVisible();\n\n      const tempPayload = {\n        ...addTempData.generateTemp('tc05'),\n        status: customTempStatus,\n      };\n      await addTempPage.fillForm(tempPayload);\n      const { status: postStatus, body: postBody } = await addTempPage.saveAndInterceptApiResponse();\n      expect(postStatus).toBe(201);\n      expect(postBody.status).toBe(customTempStatus);\n      createdTempId = postBody.id;\n\n      await tempDetailPage.gotoTempDetail(createdTempId!);\n      expect(await tempDetailPage.getSelectedStatus()).toBe(customTempStatus);\n\n      await tempDetailPage.clickEdit();\n      const editOptions = await tempDetailPage.getStatusOptionTexts();\n      expect(editOptions).toContain(customTempStatus);\n      expect(editOptions).toContain(addTempData.statuses.inactive);\n\n      await tempDetailPage.selectStatus(addTempData.statuses.inactive);\n      const { status: putStatus, body: putBody } = await tempDetailPage.saveAndInterceptPutResponse();\n      expect(putStatus).toBe(200);\n      expect(putBody.status).toBe(addTempData.statuses.inactive);\n    } finally {\n      if (createdTempId) {\n        await tempDetailPage.deleteTempViaApi(createdTempId);\n      }\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(createdOption.body.id, {\n        entityType: 'Temp',\n        name: customTempStatus,\n        isActive: false,\n      });\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-06_-_Create_and_Edit_Client_using_newly_added_a",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-06 - Create and Edit Client using newly added active Status Option",
+      "startLine": 362,
+      "endLine": 410,
+      "fixtures": [
+        "authenticatedStatusOptionsPage",
+        "clientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-06 - Create and Edit Client using newly added active Status Option', async ({\n    authenticatedStatusOptionsPage,\n    clientDetailPage,\n  }) => {\n    const customClientStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('Prsp');\n    const createdOption = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: customClientStatus,\n      isActive: true,\n    });\n    let createdClientId: number | undefined;\n\n    try {\n      await clientDetailPage.gotoAddClient();\n      await expect(clientDetailPage.pageHeading).toBeVisible();\n\n      const clientPayload = {\n        ...clientData.generateClient('tc06'),\n        status: customClientStatus,\n      };\n      await clientDetailPage.fillForm(clientPayload);\n      const { status: postStatus, body: postBody } = await clientDetailPage.saveAndInterceptPostResponse();\n      expect(postStatus).toBe(201);\n      expect(postBody.status).toBe(customClientStatus);\n      createdClientId = postBody.id;\n\n      await clientDetailPage.gotoClientDetail(createdClientId!);\n      expect(await clientDetailPage.getSelectedStatus()).toBe(customClientStatus);\n\n      await clientDetailPage.clickEdit();\n      const editOptions = await clientDetailPage.getStatusOptionTexts();\n      expect(editOptions).toContain(customClientStatus);\n      expect(editOptions).toContain(clientData.statuses.inactive);\n\n      await clientDetailPage.selectStatus(clientData.statuses.inactive);\n      const { status: putStatus, body: putBody } = await clientDetailPage.saveAndInterceptPutResponse();\n      expect(putStatus).toBe(200);\n      expect(putBody.status).toBe(clientData.statuses.inactive);\n    } finally {\n      if (createdClientId) {\n        await clientDetailPage.deleteClientViaApi(createdClientId);\n      }\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(createdOption.body.id, {\n        entityType: 'Client',\n        name: customClientStatus,\n        isActive: false,\n      });\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-07_-_Inactive_Status_Options_are_excluded_from_",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-07 - Inactive Status Options are excluded from Temp and Client dropdowns",
+      "startLine": 412,
+      "endLine": 461,
+      "fixtures": [
+        "authenticatedStatusOptionsPage",
+        "addTempPage",
+        "tempDetailPage",
+        "clientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-07 - Inactive Status Options are excluded from Temp and Client dropdowns', async ({\n    authenticatedStatusOptionsPage,\n    addTempPage,\n    tempDetailPage,\n    clientDetailPage,\n  }) => {\n    const inactiveTempStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('TInac');\n    const inactiveClientStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('CInac');\n\n    await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: inactiveTempStatus,\n      isActive: false,\n    });\n    await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: inactiveClientStatus,\n      isActive: false,\n    });\n\n    const createdTemp = await tempDetailPage.createTempViaApi(addTempData.generateTemp('tc07'));\n    const createdClient = await clientDetailPage.createClientViaApi(clientData.generateClient('tc07'));\n\n    try {\n      // Check Add Temp\n      await addTempPage.gotoAddTemp();\n      const addTempOptions = await addTempPage.getStatusOptionTexts();\n      expect(addTempOptions).not.toContain(inactiveTempStatus);\n\n      // Check Edit Temp\n      await tempDetailPage.gotoTempDetail(createdTemp.id);\n      await tempDetailPage.clickEdit();\n      const editTempOptions = await tempDetailPage.getStatusOptionTexts();\n      expect(editTempOptions).not.toContain(inactiveTempStatus);\n\n      // Check Add Client\n      await clientDetailPage.gotoAddClient();\n      const addClientOptions = await clientDetailPage.getStatusOptionTexts();\n      expect(addClientOptions).not.toContain(inactiveClientStatus);\n\n      // Check Edit Client\n      await clientDetailPage.gotoClientDetail(createdClient.id);\n      await clientDetailPage.clickEdit();\n      const editClientOptions = await clientDetailPage.getStatusOptionTexts();\n      expect(editClientOptions).not.toContain(inactiveClientStatus);\n    } finally {\n      await tempDetailPage.deleteTempViaApi(createdTemp.id);\n      await clientDetailPage.deleteClientViaApi(createdClient.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-08_-_Entity_isolation_between_Temp_and_Client_S",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-08 - Entity isolation between Temp and Client Status dropdowns",
+      "startLine": 463,
+      "endLine": 504,
+      "fixtures": [
+        "authenticatedStatusOptionsPage",
+        "addTempPage",
+        "clientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-08 - Entity isolation between Temp and Client Status dropdowns', async ({\n    authenticatedStatusOptionsPage,\n    addTempPage,\n    clientDetailPage,\n  }) => {\n    const tempOnlyStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('TOnly');\n    const clientOnlyStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('COnly');\n\n    const tOption = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: tempOnlyStatus,\n      isActive: true,\n    });\n    const cOption = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: clientOnlyStatus,\n      isActive: true,\n    });\n\n    try {\n      await addTempPage.gotoAddTemp();\n      const tempOptions = await addTempPage.getStatusOptionTexts();\n      expect(tempOptions).toContain(tempOnlyStatus);\n      expect(tempOptions).not.toContain(clientOnlyStatus);\n\n      await clientDetailPage.gotoAddClient();\n      const clientOptions = await clientDetailPage.getStatusOptionTexts();\n      expect(clientOptions).toContain(clientOnlyStatus);\n      expect(clientOptions).not.toContain(tempOnlyStatus);\n    } finally {\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(tOption.body.id, {\n        entityType: 'Temp',\n        name: tempOnlyStatus,\n        isActive: false,\n      });\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(cOption.body.id, {\n        entityType: 'Client',\n        name: clientOnlyStatus,\n        isActive: false,\n      });\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-09_-_Backend_rejects_invalid__inactive__or_cros",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-09 - Backend rejects invalid, inactive, or cross-entity status on Temp/Client create and update",
+      "startLine": 506,
+      "endLine": 598,
+      "fixtures": [
+        "authenticatedStatusOptionsPage",
+        "tempDetailPage",
+        "clientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-09 - Backend rejects invalid, inactive, or cross-entity status on Temp/Client create and update', async ({\n    authenticatedStatusOptionsPage,\n    tempDetailPage,\n    clientDetailPage,\n  }) => {\n    const inactiveTempStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('TIn09');\n    const inactiveClientStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('CIn09');\n    const tempOnlyStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('TOn09');\n    const clientOnlyStatus = statusOptionsData.dynamicDropdowns.generateShortStatus('COn09');\n\n    await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: inactiveTempStatus,\n      isActive: false,\n    });\n    await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: inactiveClientStatus,\n      isActive: false,\n    });\n    const tOption = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: tempOnlyStatus,\n      isActive: true,\n    });\n    const cOption = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: clientOnlyStatus,\n      isActive: true,\n    });\n\n    const existingTemp = await tempDetailPage.createTempViaApi(addTempData.generateTemp('tc09'));\n    const existingClient = await clientDetailPage.createClientViaApi(clientData.generateClient('tc09'));\n\n    try {\n      const invalidTempStatuses = [\n        statusOptionsData.dynamicDropdowns.invalidStatusName,\n        inactiveTempStatus,\n        clientOnlyStatus,\n      ];\n\n      for (const badStatus of invalidTempStatuses) {\n        const postRes = await tempDetailPage.createTempRawViaApi({\n          ...addTempData.generateTemp('badPost'),\n          status: badStatus,\n        });\n        expect(postRes.status).toBe(400);\n        expect(postRes.body.message).toMatch(statusOptionsData.dynamicDropdowns.invalidStatusErrorPattern);\n\n        const putRes = await tempDetailPage.updateTempRawViaApi(existingTemp.id, {\n          ...existingTemp,\n          status: badStatus,\n        });\n        expect(putRes.status).toBe(400);\n        expect(putRes.body.message).toMatch(statusOptionsData.dynamicDropdowns.invalidStatusErrorPattern);\n      }\n\n      const invalidClientStatuses = [\n        statusOptionsData.dynamicDropdowns.invalidStatusName,\n        inactiveClientStatus,\n        tempOnlyStatus,\n      ];\n\n      for (const badStatus of invalidClientStatuses) {\n        const postRes = await clientDetailPage.createClientRawViaApi({\n          ...clientData.generateClient('badPost'),\n          status: badStatus,\n        });\n        expect(postRes.status).toBe(400);\n        expect(postRes.body.message).toMatch(statusOptionsData.dynamicDropdowns.invalidStatusErrorPattern);\n\n        const putRes = await clientDetailPage.updateClientRawViaApi(existingClient.id, {\n          ...existingClient,\n          status: badStatus,\n        });\n        expect(putRes.status).toBe(400);\n        expect(putRes.body.message).toMatch(statusOptionsData.dynamicDropdowns.invalidStatusErrorPattern);\n      }\n    } finally {\n      await tempDetailPage.deleteTempViaApi(existingTemp.id);\n      await clientDetailPage.deleteClientViaApi(existingClient.id);\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(tOption.body.id, {\n        entityType: 'Temp',\n        name: tempOnlyStatus,\n        isActive: false,\n      });\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(cOption.body.id, {\n        entityType: 'Client',\n        name: clientOnlyStatus,\n        isActive: false,\n      });\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-10_-_Existing_Temp_Client_with_subsequently_ina",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-10 - Existing Temp/Client with subsequently inactivated status preserves data on View/Edit",
+      "startLine": 600,
+      "endLine": 670,
+      "fixtures": [
+        "authenticatedStatusOptionsPage",
+        "tempDetailPage",
+        "clientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-10 - Existing Temp/Client with subsequently inactivated status preserves data on View/Edit', async ({\n    authenticatedStatusOptionsPage,\n    tempDetailPage,\n    clientDetailPage,\n  }) => {\n    const tempStatusName = statusOptionsData.dynamicDropdowns.generateShortStatus('TLeg');\n    const clientStatusName = statusOptionsData.dynamicDropdowns.generateShortStatus('CLeg');\n\n    const tOption = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Temp',\n      name: tempStatusName,\n      isActive: true,\n    });\n    const cOption = await authenticatedStatusOptionsPage.createStatusOptionViaApi({\n      entityType: 'Client',\n      name: clientStatusName,\n      isActive: true,\n    });\n\n    const createdTemp = await tempDetailPage.createTempViaApi({\n      ...addTempData.generateTemp('tc10'),\n      status: tempStatusName,\n    });\n    const createdClient = await clientDetailPage.createClientViaApi({\n      ...clientData.generateClient('tc10'),\n      status: clientStatusName,\n    });\n\n    try {\n      // Deactivate both status options\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(tOption.body.id, {\n        entityType: 'Temp',\n        name: tempStatusName,\n        isActive: false,\n      });\n      await authenticatedStatusOptionsPage.updateStatusOptionViaApi(cOption.body.id, {\n        entityType: 'Client',\n        name: clientStatusName,\n        isActive: false,\n      });\n\n      // Verify Temp View and Edit preserves status and saves unrelated field\n      await tempDetailPage.gotoTempDetail(createdTemp.id);\n      expect(await tempDetailPage.getSelectedStatus()).toBe(tempStatusName);\n      expect(await tempDetailPage.getStatusOptionTexts()).toContain(tempStatusName);\n\n      await tempDetailPage.clickEdit();\n      expect(await tempDetailPage.getSelectedStatus()).toBe(tempStatusName);\n      await tempDetailPage.fillAddress(statusOptionsData.dynamicDropdowns.updatedTempAddress);\n      const { status: tempPutStatus, body: tempPutBody } = await tempDetailPage.saveAndInterceptPutResponse();\n      expect(tempPutStatus).toBe(200);\n      expect(tempPutBody.status).toBe(tempStatusName);\n      expect(tempPutBody.address).toBe(statusOptionsData.dynamicDropdowns.updatedTempAddress);\n\n      // Verify Client View and Edit preserves status and saves unrelated field\n      await clientDetailPage.gotoClientDetail(createdClient.id);\n      expect(await clientDetailPage.getSelectedStatus()).toBe(clientStatusName);\n      expect(await clientDetailPage.getStatusOptionTexts()).toContain(clientStatusName);\n\n      await clientDetailPage.clickEdit();\n      expect(await clientDetailPage.getSelectedStatus()).toBe(clientStatusName);\n      await clientDetailPage.fillAddress(statusOptionsData.dynamicDropdowns.updatedClientAddress);\n      const { status: clientPutStatus, body: clientPutBody } = await clientDetailPage.saveAndInterceptPutResponse();\n      expect(clientPutStatus).toBe(200);\n      expect(clientPutBody.status).toBe(clientStatusName);\n      expect(clientPutBody.address).toBe(statusOptionsData.dynamicDropdowns.updatedClientAddress);\n    } finally {\n      await tempDetailPage.deleteTempViaApi(createdTemp.id);\n      await clientDetailPage.deleteClientViaApi(createdClient.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-11_-_Default__Active__selection_fallback_when__",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-11 - Default \"Active\" selection fallback when \"Active\" option is inactive or absent",
+      "startLine": 672,
+      "endLine": 697,
+      "fixtures": [
+        "authenticatedAddTempPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-11 - Default \"Active\" selection fallback when \"Active\" option is inactive or absent', async ({\n    authenticatedAddTempPage,\n  }) => {\n    await authenticatedAddTempPage.mockApiResponse(\n      /\\/api\\/admin\\/status-options.*entityType=Temp/,\n      200,\n      statusOptionsData.dynamicDropdowns.fallbackMockPayload,\n      'GET'\n    );\n\n    try {\n      await authenticatedAddTempPage.gotoAddTemp();\n      await expect(authenticatedAddTempPage.pageHeading).toBeVisible();\n\n      const options = await authenticatedAddTempPage.getStatusOptionTexts();\n      const expectedNames = statusOptionsData.dynamicDropdowns.fallbackMockPayload.items.map((i) => i.name);\n      expect(options).toEqual(expectedNames);\n      expect(options).not.toContain(statusOptionsData.dynamicDropdowns.defaultStatus);\n\n      const selectedValue = await authenticatedAddTempPage.getSelectedStatus();\n      expect(selectedValue).not.toBe(statusOptionsData.dynamicDropdowns.defaultStatus);\n      expect(expectedNames).toContain(selectedValue);\n    } finally {\n      await authenticatedAddTempPage.clearApiMocks();\n    }\n  })"
+    },
+    {
+      "id": "tests/dynamicStatusOptions.spec.ts#TC-12_-_Baseline_Status_Options___Active____Inacti",
+      "file": "tests/dynamicStatusOptions.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-75 - Dynamically populate Temp and Client Status dropdowns from active Admin Status Options",
+      "name": "TC-12 - Baseline Status Options (\"Active\", \"Inactive\") exist and existing records remain compatible",
+      "startLine": 699,
+      "endLine": 761,
+      "fixtures": [
+        "authenticatedStatusOptionsPage",
+        "tempDetailPage",
+        "clientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-12 - Baseline Status Options (\"Active\", \"Inactive\") exist and existing records remain compatible', async ({\n    authenticatedStatusOptionsPage,\n    tempDetailPage,\n    clientDetailPage,\n  }) => {\n    const tempStatusRes = await authenticatedStatusOptionsPage.getStatusOptionsViaApi({\n      entityType: 'Temp',\n      status: statusOptionsData.status.active,\n      pageSize: 500,\n    });\n    expect(tempStatusRes.status).toBe(200);\n    const tempStatusNames = tempStatusRes.body.items.map((i: any) => i.name);\n    for (const baseline of statusOptionsData.dynamicDropdowns.baselineStatuses) {\n      expect(tempStatusNames).toContain(baseline);\n    }\n\n    const clientStatusRes = await authenticatedStatusOptionsPage.getStatusOptionsViaApi({\n      entityType: 'Client',\n      status: statusOptionsData.status.active,\n      pageSize: 500,\n    });\n    expect(clientStatusRes.status).toBe(200);\n    const clientStatusNames = clientStatusRes.body.items.map((i: any) => i.name);\n    for (const baseline of statusOptionsData.dynamicDropdowns.baselineStatuses) {\n      expect(clientStatusNames).toContain(baseline);\n    }\n\n    const activeTemp = await tempDetailPage.createTempViaApi({\n      ...addTempData.generateTemp('tc12act'),\n      status: addTempData.statuses.active,\n    });\n    const inactiveTemp = await tempDetailPage.createTempViaApi({\n      ...addTempData.generateTemp('tc12inact'),\n      status: addTempData.statuses.inactive,\n    });\n    const activeClient = await clientDetailPage.createClientViaApi({\n      ...clientData.generateClient('tc12act'),\n      status: clientData.statuses.active,\n    });\n    const inactiveClient = await clientDetailPage.createClientViaApi({\n      ...clientData.generateClient('tc12inact'),\n      status: clientData.statuses.inactive,\n    });\n\n    try {\n      await tempDetailPage.gotoTempDetail(activeTemp.id);\n      expect(await tempDetailPage.getSelectedStatus()).toBe(addTempData.statuses.active);\n\n      await tempDetailPage.gotoTempDetail(inactiveTemp.id);\n      expect(await tempDetailPage.getSelectedStatus()).toBe(addTempData.statuses.inactive);\n\n      await clientDetailPage.gotoClientDetail(activeClient.id);\n      expect(await clientDetailPage.getSelectedStatus()).toBe(clientData.statuses.active);\n\n      await clientDetailPage.gotoClientDetail(inactiveClient.id);\n      expect(await clientDetailPage.getSelectedStatus()).toBe(clientData.statuses.inactive);\n    } finally {\n      await tempDetailPage.deleteTempViaApi(activeTemp.id);\n      await tempDetailPage.deleteTempViaApi(inactiveTemp.id);\n      await clientDetailPage.deleteClientViaApi(activeClient.id);\n      await clientDetailPage.deleteClientViaApi(inactiveClient.id);\n    }\n  })"
     },
     {
       "id": "tests/layoutFullWidth.spec.ts#TC-01_-_Header_Layout__Left-aligned_logo_and_prima",
@@ -10190,6 +13207,772 @@
       ],
       "locatorsUsed": [],
       "code": "test('TC-14 - Button behavior boundary isolation (no unintended mutations)', async ({\n    authenticatedUserManagerPage,\n    page,\n  }) => {\n    let unhandledErrorOccurred = false;\n    page.on('pageerror', () => {\n      unhandledErrorOccurred = true;\n    });\n\n    await authenticatedUserManagerPage.hoverAddUserButton();\n    await expect(authenticatedUserManagerPage.addUserButton).toBeVisible();\n\n    expect(unhandledErrorOccurred).toBe(false);\n  })"
+    },
+    {
+      "id": "test-data/addTempData.ts#TempPayload",
+      "file": "test-data/addTempData.ts",
+      "kind": "data",
+      "parent": "interface",
+      "name": "TempPayload",
+      "startLine": 1,
+      "endLine": 17,
+      "properties": [
+        "firstName",
+        "lastName",
+        "cellPhone",
+        "email",
+        "address",
+        "city",
+        "state",
+        "zip",
+        "county",
+        "status",
+        "certification",
+        "specialty",
+        "dateOfBirth",
+        "gender",
+        "maritalStatus"
+      ],
+      "signature": "interface TempPayload { firstName, lastName, cellPhone, email, address, city, state, zip, county, status, certification, specialty, dateOfBirth, gender, maritalStatus }",
+      "code": "export interface TempPayload {\n  firstName: string;\n  lastName: string;\n  cellPhone: string;\n  email: string;\n  address: string;\n  city: string;\n  state: string;\n  zip: string;\n  county: string;\n  status: 'Active' | 'Inactive' | string;\n  certification?: string;\n  specialty?: string;\n  dateOfBirth: string;\n  gender: 'Male' | 'Female' | 'Other';\n  maritalStatus: 'Single' | 'Married' | 'Divorced' | 'Widowed';\n}"
+    },
+    {
+      "id": "test-data/addTempData.ts#addTempData",
+      "file": "test-data/addTempData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "addTempData",
+      "startLine": 19,
+      "endLine": 91,
+      "properties": [
+        "urls",
+        "headings",
+        "messages",
+        "statuses",
+        "genders",
+        "maritalStatuses",
+        "zipLookups",
+        "all50States",
+        "generateTemp"
+      ],
+      "signature": "const addTempData (urls, headings, messages, statuses, genders, maritalStatuses, zipLookups, all50States, generateTemp)",
+      "code": "export const addTempData = {\n  urls: {\n    addTemp: '/temp/new',\n    tempList: '/temp',\n    apiTemps: '/api/temps',\n    login: '/login',\n  },\n  headings: {\n    addTemp: 'Add Temp',\n    tempList: 'Temp',\n  },\n  messages: {\n    successCreated: 'Temp created successfully.',\n    duplicateEmail: 'That email address is already in use.',\n    noCountyFound: 'No county found for this ZIP — please check the"
+    },
+    {
+      "id": "test-data/addTempData.ts#timestamp",
+      "file": "test-data/addTempData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "timestamp",
+      "startLine": 74,
+      "endLine": 74,
+      "properties": [],
+      "signature": "const timestamp ()",
+      "code": "const timestamp = Date.now();"
+    },
+    {
+      "id": "test-data/addUserData.ts#addUserData",
+      "file": "test-data/addUserData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "addUserData",
+      "startLine": 6,
+      "endLine": 55,
+      "properties": [
+        "urls",
+        "roles",
+        "statuses",
+        "messages",
+        "existingUsers",
+        "defaultPassword",
+        "invalidEmails",
+        "boundaryLengths",
+        "generateUser"
+      ],
+      "signature": "const addUserData (urls, roles, statuses, messages, existingUsers, defaultPassword, invalidEmails, boundaryLengths, generateUser)",
+      "code": "export const addUserData = {\n  urls: {\n    addUser: '/admin/users/new',\n    userManager: '/admin/users',\n    login: '/login',\n    apiUsers: '/api/admin/users',\n  },\n  roles: {\n    defaultRole: 'Staffing Admin',\n  },\n  statuses: {\n    active: 'active' as const,\n    inactive: 'inactive' as const,\n    activeDisplay: 'Active',\n    inactiveDisplay: 'Inactive',\n  },\n  messages: {\n    userCreatedSuccess:"
+    },
+    {
+      "id": "test-data/addUserData.ts#uniqueId",
+      "file": "test-data/addUserData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "uniqueId",
+      "startLine": 45,
+      "endLine": 45,
+      "properties": [],
+      "signature": "const uniqueId ()",
+      "code": "const uniqueId = `${prefix}_${Date.now()}_${Math.floor(Math.random() * 10000)}`;"
+    },
+    {
+      "id": "test-data/adminBidirectionalMappingData.ts#adminBidirectionalMappingData",
+      "file": "test-data/adminBidirectionalMappingData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "adminBidirectionalMappingData",
+      "startLine": 1,
+      "endLine": 36,
+      "properties": [
+        "routes",
+        "tableHeaders",
+        "fallbackPlaceholder",
+        "baseEntities",
+        "status",
+        "generators",
+        "viewports"
+      ],
+      "signature": "const adminBidirectionalMappingData (routes, tableHeaders, fallbackPlaceholder, baseEntities, status, generators, viewports)",
+      "code": "export const adminBidirectionalMappingData = {\n  routes: {\n    certifications: '/admin/certifications',\n    specialties: '/admin/specialties',\n    login: '/login',\n  },\n  tableHeaders: {\n    certifications: ['CERTIFICATION NAME', 'MAPPED SPECIALTIES', 'STATUS'],\n    specialties: ['SPECIALTY NAME', 'CERTIFICATION MAPPING', 'STATUS'],\n  },\n  fallbackPlaceholder: '-',\n  baseEntities: {\n    cardiology"
+    },
+    {
+      "id": "test-data/adminGeneralSettingsData.ts#adminGeneralSettingsData",
+      "file": "test-data/adminGeneralSettingsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "adminGeneralSettingsData",
+      "startLine": 1,
+      "endLine": 37,
+      "properties": [
+        "cardTitle",
+        "subsectionTitle",
+        "settingItems",
+        "itemRoutes",
+        "urls",
+        "styles",
+        "viewports"
+      ],
+      "signature": "const adminGeneralSettingsData (cardTitle, subsectionTitle, settingItems, itemRoutes, urls, styles, viewports)",
+      "code": "export const adminGeneralSettingsData = {\n  cardTitle: 'GENERAL SETTINGS',\n  subsectionTitle: 'General',\n  settingItems: [\n    'Certifications',\n    'Specialties',\n    'Shifts',\n    'Order Types',\n    'Status Options',\n  ],\n  itemRoutes: {\n    'Certifications': /\\/admin\\/certifications$/,\n    'Specialties': /\\/admin\\/specialties$/,\n    'Shifts': /\\/admin\\/shifts$/,\n    'Order Types': /\\/admin\\/ord"
+    },
+    {
+      "id": "test-data/adminGeneralSettingsEditData.ts#adminGeneralSettingsEditData",
+      "file": "test-data/adminGeneralSettingsEditData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "adminGeneralSettingsEditData",
+      "startLine": 1,
+      "endLine": 45,
+      "properties": [
+        "routes",
+        "modalTitles",
+        "successBanners",
+        "immutableFieldClasses",
+        "testPayloads"
+      ],
+      "signature": "const adminGeneralSettingsEditData (routes, modalTitles, successBanners, immutableFieldClasses, testPayloads)",
+      "code": "export const adminGeneralSettingsEditData = {\n  routes: {\n    shifts: '/admin/shifts',\n    orderTypes: '/admin/order-types',\n    statusOptions: '/admin/status-options',\n    login: '/login',\n  },\n  modalTitles: {\n    editShift: 'Edit Shift Option',\n    editOrderType: 'Edit Order Type',\n    editStatusOption: 'Edit Status Option',\n    addShift: /Add Shift Option|Creating Shift Option/i,\n    addOrderT"
+    },
+    {
+      "id": "test-data/adminHeadingsData.ts#adminHeadingsData",
+      "file": "test-data/adminHeadingsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "adminHeadingsData",
+      "startLine": 1,
+      "endLine": 28,
+      "properties": [
+        "headings",
+        "typography",
+        "routes",
+        "viewports"
+      ],
+      "signature": "const adminHeadingsData (headings, typography, routes, viewports)",
+      "code": "export const adminHeadingsData = {\n  headings: {\n    shifts: 'Shifts',\n    orderTypes: 'Order Types',\n    statusOptions: 'Status Options',\n    specialties: 'Specialties',\n    certifications: 'Certifications',\n  },\n  typography: {\n    expectedTag: 'H1',\n    cssClass: 'text-xl font-semibold text-slate-900',\n    fontSize: '22px',\n    fontWeight: '600',\n  },\n  routes: {\n    shifts: '/admin/shifts',\n  "
+    },
+    {
+      "id": "test-data/adminModalSubmitResetData.ts#adminModalSubmitResetData",
+      "file": "test-data/adminModalSubmitResetData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "adminModalSubmitResetData",
+      "startLine": 1,
+      "endLine": 69,
+      "properties": [
+        "routes",
+        "submitButtonText",
+        "savingStatePattern",
+        "testPayloads"
+      ],
+      "signature": "const adminModalSubmitResetData (routes, submitButtonText, savingStatePattern, testPayloads)",
+      "code": "export const adminModalSubmitResetData = {\n  routes: {\n    shifts: '/admin/shifts',\n    orderTypes: '/admin/order-types',\n    statusOptions: '/admin/status-options',\n    certifications: '/admin/certifications',\n    specialties: '/admin/specialties',\n  },\n  submitButtonText: {\n    shifts: /Save Shift|Save/i,\n    orderTypes: /Save Order Type|Save/i,\n    statusOptions: /Save/i,\n    certifications: /S"
+    },
+    {
+      "id": "test-data/adminNavData.ts#adminNavData",
+      "file": "test-data/adminNavData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "adminNavData",
+      "startLine": 1,
+      "endLine": 25,
+      "properties": [
+        "urls",
+        "tabs",
+        "styles",
+        "viewports"
+      ],
+      "signature": "const adminNavData (urls, tabs, styles, viewports)",
+      "code": "export const adminNavData = {\n  urls: {\n    admin: '/admin',\n    adminUsers: '/admin/users',\n    adminUsersNew: '/admin/users/new',\n    login: '/login',\n    home: '/',\n  },\n  tabs: {\n    home: 'Home',\n    temp: 'Temp',\n    client: 'Client',\n    admin: 'Admin',\n    userManager: 'User Manager',\n  },\n  styles: {\n    activeAdminNavPattern: /border-blue-900/,\n    activeUserSubmenuPattern: /bg-blue-900/"
+    },
+    {
+      "id": "test-data/authData.ts#authData",
+      "file": "test-data/authData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "authData",
+      "startLine": 6,
+      "endLine": 42,
+      "properties": [
+        "validUser",
+        "invalidUser",
+        "inactiveUser",
+        "nonExistentUser",
+        "branding",
+        "messages",
+        "viewports",
+        "apiEndpoints"
+      ],
+      "signature": "const authData (validUser, invalidUser, inactiveUser, nonExistentUser, branding, messages, viewports, apiEndpoints)",
+      "code": "export const authData = {\n  validUser: {\n    username: process.env.Staffing_USERNAME || 'qaengineer',\n    password: process.env.Staffing_PASSWORD || 'Varshini@99',\n  },\n  invalidUser: {\n    username: 'invalid_user_antigravity@test.com',\n    password: 'WrongPassword!',\n  },\n  inactiveUser: {\n    username: 'inactive_staffing_user',\n    password: 'Password123!',\n  },\n  nonExistentUser: {\n    username"
+    },
+    {
+      "id": "test-data/certificationsData.ts#certificationsData",
+      "file": "test-data/certificationsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "certificationsData",
+      "startLine": 1,
+      "endLine": 58,
+      "properties": [
+        "routes",
+        "pageHeading",
+        "addButtonText",
+        "tableHeaders",
+        "status",
+        "validationMessages",
+        "modal",
+        "defaultCertifications",
+        "testPayloads",
+        "viewports"
+      ],
+      "signature": "const certificationsData (routes, pageHeading, addButtonText, tableHeaders, status, validationMessages, modal, defaultCertifications, testPayloads, viewports)",
+      "code": "export const certificationsData = {\n  routes: {\n    certifications: '/admin/certifications',\n    admin: '/admin',\n    login: '/login',\n  },\n  pageHeading: 'Certifications',\n  addButtonText: 'Add Certification',\n  tableHeaders: ['Certification Name', 'Mapped Specialties', 'Status'],\n  status: {\n    active: 'Active',\n    inactive: 'Inactive',\n  },\n  validationMessages: {\n    nameRequired: 'Certifica"
+    },
+    {
+      "id": "test-data/certificationsData.ts#prefix",
+      "file": "test-data/certificationsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "prefix",
+      "startLine": 49,
+      "endLine": 49,
+      "properties": [],
+      "signature": "const prefix ()",
+      "code": "const prefix = `Cert-100-Char-Boundary-${uniqueSuffix}-`;"
+    },
+    {
+      "id": "test-data/clientData.ts#ClientPayload",
+      "file": "test-data/clientData.ts",
+      "kind": "data",
+      "parent": "interface",
+      "name": "ClientPayload",
+      "startLine": 1,
+      "endLine": 10,
+      "properties": [
+        "fullName",
+        "email",
+        "address",
+        "city",
+        "state",
+        "zip",
+        "county",
+        "status"
+      ],
+      "signature": "interface ClientPayload { fullName, email, address, city, state, zip, county, status }",
+      "code": "export interface ClientPayload {\n  fullName: string;\n  email: string;\n  address: string;\n  city: string;\n  state: string;\n  zip: string;\n  county: string;\n  status: string;\n}"
+    },
+    {
+      "id": "test-data/clientData.ts#clientData",
+      "file": "test-data/clientData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "clientData",
+      "startLine": 12,
+      "endLine": 68,
+      "properties": [
+        "urls",
+        "headings",
+        "tableHeaders",
+        "statuses",
+        "messages",
+        "zipLookups",
+        "viewports",
+        "generateClient",
+        "invalidEmails"
+      ],
+      "signature": "const clientData (urls, headings, tableHeaders, statuses, messages, zipLookups, viewports, generateClient, invalidEmails)",
+      "code": "export const clientData = {\n  urls: {\n    client: '/client',\n    clientNew: '/client/new',\n    apiClients: '/api/clients',\n    login: '/login',\n  },\n  headings: {\n    client: 'Client',\n    addClient: 'Add Client',\n    viewClient: 'View Client',\n    editClient: 'Edit Client',\n  },\n  tableHeaders: ['FULL NAME', 'EMAIL', 'STATUS'],\n  statuses: {\n    active: 'Active',\n    inactive: 'Inactive',\n  },\n  "
+    },
+    {
+      "id": "test-data/clientData.ts#timestamp",
+      "file": "test-data/clientData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "timestamp",
+      "startLine": 55,
+      "endLine": 55,
+      "properties": [],
+      "signature": "const timestamp ()",
+      "code": "const timestamp = Date.now();"
+    },
+    {
+      "id": "test-data/clientNavData.ts#clientNavData",
+      "file": "test-data/clientNavData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "clientNavData",
+      "startLine": 1,
+      "endLine": 34,
+      "properties": [
+        "urls",
+        "tabs",
+        "styles",
+        "headings",
+        "buttons",
+        "header"
+      ],
+      "signature": "const clientNavData (urls, tabs, styles, headings, buttons, header)",
+      "code": "export const clientNavData = {\n  urls: {\n    home: '/',\n    temp: '/temp',\n    client: '/client',\n    clientNew: '/client/new',\n    adminUsers: '/admin/users',\n    login: '/login',\n  },\n  tabs: {\n    expectedOrder: ['Home', 'Temp', 'Client', 'Admin'],\n    home: 'Home',\n    temp: 'Temp',\n    client: 'Client',\n    admin: 'Admin',\n  },\n  styles: {\n    activeClassPattern: /border-blue-900.*text-blue-9"
+    },
+    {
+      "id": "test-data/countyZipSyncData.ts#countyZipSyncData",
+      "file": "test-data/countyZipSyncData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "countyZipSyncData",
+      "startLine": 3,
+      "endLine": 26,
+      "properties": [
+        "validZips",
+        "invalidZips",
+        "defaultCountyOption",
+        "messages"
+      ],
+      "signature": "const countyZipSyncData (validZips, invalidZips, defaultCountyOption, messages)",
+      "code": "export const countyZipSyncData = {\n  validZips: {\n    suffolk: {\n      zip: '02108',\n      expectedCounty: 'Suffolk County',\n    },\n    hampden: {\n      zip: addTempData.zipLookups.singleMatchHampden.zip,\n      expectedCounty: addTempData.zipLookups.singleMatchHampden.county,\n    },\n    beverlyHills: {\n      zip: addTempData.zipLookups.singleMatchBeverlyHills.zip,\n      expectedCounty: addTempData"
+    },
+    {
+      "id": "test-data/deleteConfirmationData.ts#deleteConfirmationData",
+      "file": "test-data/deleteConfirmationData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "deleteConfirmationData",
+      "startLine": 5,
+      "endLine": 89,
+      "properties": [
+        "urls",
+        "modal",
+        "styles",
+        "banners",
+        "mockErrors",
+        "generateTemp",
+        "generateClient",
+        "generateUser"
+      ],
+      "signature": "const deleteConfirmationData (urls, modal, styles, banners, mockErrors, generateTemp, generateClient, generateUser)",
+      "code": "export const deleteConfirmationData = {\n  urls: {\n    tempList: '/temp',\n    tempDetailPrefix: '/temp/',\n    clientList: '/client',\n    clientDetailPrefix: '/client/',\n    userManager: '/admin/users',\n    userDetailPrefix: '/admin/users/',\n    apiTemps: '/api/temps',\n    apiClients: '/api/clients',\n    apiUsers: '/api/admin/users',\n  },\n  modal: {\n    prompt: \"Are you sure? This can't be undone.\","
+    },
+    {
+      "id": "test-data/deleteConfirmationData.ts#timestamp",
+      "file": "test-data/deleteConfirmationData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "timestamp",
+      "startLine": 47,
+      "endLine": 47,
+      "properties": [],
+      "signature": "const timestamp ()",
+      "code": "const timestamp = Date.now();"
+    },
+    {
+      "id": "test-data/deleteConfirmationData.ts#timestamp",
+      "file": "test-data/deleteConfirmationData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "timestamp",
+      "startLine": 65,
+      "endLine": 65,
+      "properties": [],
+      "signature": "const timestamp ()",
+      "code": "const timestamp = Date.now();"
+    },
+    {
+      "id": "test-data/deleteConfirmationData.ts#timestamp",
+      "file": "test-data/deleteConfirmationData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "timestamp",
+      "startLine": 78,
+      "endLine": 78,
+      "properties": [],
+      "signature": "const timestamp ()",
+      "code": "const timestamp = Date.now();"
+    },
+    {
+      "id": "test-data/layoutData.ts#layoutData",
+      "file": "test-data/layoutData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "layoutData",
+      "startLine": 1,
+      "endLine": 38,
+      "properties": [
+        "viewports",
+        "urls",
+        "thresholds",
+        "labels",
+        "styles"
+      ],
+      "signature": "const layoutData (viewports, urls, thresholds, labels, styles)",
+      "code": "export const layoutData = {\n  viewports: {\n    ultrawide: { width: 2560, height: 1440 },\n    desktopWide: { width: 1920, height: 1080 },\n    desktopStandard: { width: 1440, height: 900 },\n    desktopCompact: { width: 1280, height: 720 },\n    tablet: { width: 768, height: 1024 },\n    mobile: { width: 375, height: 667 },\n  },\n  urls: {\n    home: '/',\n    temp: '/temp',\n    tempNew: '/temp/new',\n    "
+    },
+    {
+      "id": "test-data/orderTypesData.ts#orderTypesData",
+      "file": "test-data/orderTypesData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "orderTypesData",
+      "startLine": 1,
+      "endLine": 64,
+      "properties": [
+        "routes",
+        "pageHeading",
+        "addButtonText",
+        "tabs",
+        "tableHeaders",
+        "status",
+        "defaultIndicators",
+        "modal",
+        "validationMessages",
+        "testPayloads",
+        "viewports"
+      ],
+      "signature": "const orderTypesData (routes, pageHeading, addButtonText, tabs, tableHeaders, status, defaultIndicators, modal, validationMessages, testPayloads, viewports)",
+      "code": "export const orderTypesData = {\n  routes: {\n    orderTypes: '/admin/order-types',\n    admin: '/admin',\n    login: '/login',\n  },\n  pageHeading: 'Order Types',\n  addButtonText: 'Add Order Type',\n  tabs: {\n    perDiem: 'Per Diem Order Types',\n    longTerm: 'Long Term Order Types',\n  },\n  tableHeaders: {\n    perDiem: ['#', 'Order Type Name', 'Status', 'Order Form Default'],\n    longTerm: ['#', 'Order"
+    },
+    {
+      "id": "test-data/orderTypesData.ts#prefix",
+      "file": "test-data/orderTypesData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "prefix",
+      "startLine": 55,
+      "endLine": 55,
+      "properties": [],
+      "signature": "const prefix ()",
+      "code": "const prefix = `OT-100-Char-Boundary-${uniqueSuffix}-`;"
+    },
+    {
+      "id": "test-data/shiftsData.ts#shiftsData",
+      "file": "test-data/shiftsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "shiftsData",
+      "startLine": 1,
+      "endLine": 55,
+      "properties": [
+        "routes",
+        "pageHeading",
+        "addButtonText",
+        "tableHeaders",
+        "defaultShiftOptions",
+        "validationMessages",
+        "modal",
+        "defaultShifts",
+        "testPayloads",
+        "viewports"
+      ],
+      "signature": "const shiftsData (routes, pageHeading, addButtonText, tableHeaders, defaultShiftOptions, validationMessages, modal, defaultShifts, testPayloads, viewports)",
+      "code": "export const shiftsData = {\n  routes: {\n    shifts: '/admin/shifts',\n    admin: '/admin',\n    login: '/login',\n  },\n  pageHeading: 'Shifts',\n  addButtonText: 'Add Shift Option',\n  tableHeaders: ['#', 'Shift Name', 'Start Time', 'End Time', 'Default Shift'],\n  defaultShiftOptions: {\n    yes: 'Yes',\n    no: 'No',\n  },\n  validationMessages: {\n    nameRequired: 'Shift Name is required.',\n    startTime"
+    },
+    {
+      "id": "test-data/shiftsData.ts#prefix",
+      "file": "test-data/shiftsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "prefix",
+      "startLine": 46,
+      "endLine": 46,
+      "properties": [],
+      "signature": "const prefix ()",
+      "code": "const prefix = `Shift-100-Char-Boundary-${uniqueSuffix}-`;"
+    },
+    {
+      "id": "test-data/specialtiesCertificationsEditData.ts#editData",
+      "file": "test-data/specialtiesCertificationsEditData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "editData",
+      "startLine": 4,
+      "endLine": 24,
+      "properties": [
+        "routes",
+        "specialties",
+        "certifications"
+      ],
+      "signature": "const editData (routes, specialties, certifications)",
+      "code": "export const editData = {\n  routes: {\n    specialties: specialtiesData.routes.specialties,\n    certifications: certificationsData.routes.certifications,\n    login: specialtiesData.routes.login,\n  },\n  specialties: {\n    editTitle: specialtiesData.modal.editTitle,\n    saveChangesButton: specialtiesData.modal.saveChangesButton,\n    updateSuccess: specialtiesData.validationMessages.updateSuccess,\n   "
+    },
+    {
+      "id": "test-data/specialtiesData.ts#specialtiesData",
+      "file": "test-data/specialtiesData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "specialtiesData",
+      "startLine": 1,
+      "endLine": 61,
+      "properties": [
+        "routes",
+        "pageHeading",
+        "addButtonText",
+        "tableHeaders",
+        "status",
+        "validationMessages",
+        "modal",
+        "defaultSpecialties",
+        "testPayloads",
+        "viewports"
+      ],
+      "signature": "const specialtiesData (routes, pageHeading, addButtonText, tableHeaders, status, validationMessages, modal, defaultSpecialties, testPayloads, viewports)",
+      "code": "export const specialtiesData = {\n  routes: {\n    specialties: '/admin/specialties',\n    admin: '/admin',\n    login: '/login',\n  },\n  pageHeading: 'Specialties',\n  addButtonText: 'Add Specialty',\n  tableHeaders: ['Specialty Name', 'Certification Mapping', 'Status'],\n  status: {\n    active: 'Active',\n    inactive: 'Inactive',\n  },\n  validationMessages: {\n    nameRequired: 'Specialty Name is required"
+    },
+    {
+      "id": "test-data/specialtiesData.ts#prefix",
+      "file": "test-data/specialtiesData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "prefix",
+      "startLine": 52,
+      "endLine": 52,
+      "properties": [],
+      "signature": "const prefix ()",
+      "code": "const prefix = `Specialty-100-Char-Boundary-${uniqueSuffix}-`;"
+    },
+    {
+      "id": "test-data/statusOptionsData.ts#statusOptionsData",
+      "file": "test-data/statusOptionsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "statusOptionsData",
+      "startLine": 1,
+      "endLine": 102,
+      "properties": [
+        "routes",
+        "addButtonText",
+        "tabs",
+        "tableHeaders",
+        "status",
+        "validationMessages",
+        "modal",
+        "defaultStatusOptions",
+        "testPayloads",
+        "viewports",
+        "dynamicDropdowns"
+      ],
+      "signature": "const statusOptionsData (routes, addButtonText, tabs, tableHeaders, status, validationMessages, modal, defaultStatusOptions, testPayloads, viewports, dynamicDropdowns)",
+      "code": "export const statusOptionsData = {\n  routes: {\n    statusOptions: '/admin/status-options',\n    admin: '/admin',\n    login: '/login',\n  },\n  addButtonText: 'Add Status Option',\n  tabs: {\n    client: 'Client',\n    temp: 'Temp',\n  },\n  tableHeaders: ['#', 'STATUS NAME', 'STATUS DESCRIPTION', 'CURRENTLY ACTIVE'],\n  status: {\n    active: 'Active',\n    inactive: 'Inactive',\n    activeDisplay: 'Yes',\n   "
+    },
+    {
+      "id": "test-data/statusOptionsData.ts#prefix",
+      "file": "test-data/statusOptionsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "prefix",
+      "startLine": 53,
+      "endLine": 53,
+      "properties": [],
+      "signature": "const prefix ()",
+      "code": "const prefix = `Status-100-Char-${uniqueSuffix}-`;"
+    },
+    {
+      "id": "test-data/statusOptionsData.ts#prefix",
+      "file": "test-data/statusOptionsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "prefix",
+      "startLine": 57,
+      "endLine": 57,
+      "properties": [],
+      "signature": "const prefix ()",
+      "code": "const prefix = `Status-255-Char-Desc-${uniqueSuffix}-`;"
+    },
+    {
+      "id": "test-data/statusOptionsData.ts#rand",
+      "file": "test-data/statusOptionsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "rand",
+      "startLine": 74,
+      "endLine": 74,
+      "properties": [],
+      "signature": "const rand ()",
+      "code": "const rand = Math.floor(1000 + Math.random() * 9000);"
+    },
+    {
+      "id": "test-data/statusOptionsData.ts#timePart",
+      "file": "test-data/statusOptionsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "timePart",
+      "startLine": 75,
+      "endLine": 75,
+      "properties": [],
+      "signature": "const timePart ()",
+      "code": "const timePart = String(Date.now()).slice(-3);"
+    },
+    {
+      "id": "test-data/tempCertSpecialtyData.ts#tempCertSpecialtyData",
+      "file": "test-data/tempCertSpecialtyData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "tempCertSpecialtyData",
+      "startLine": 1,
+      "endLine": 70,
+      "properties": [
+        "urls",
+        "labels",
+        "placeholders",
+        "messages",
+        "seedData",
+        "testTemps",
+        "viewports"
+      ],
+      "signature": "const tempCertSpecialtyData (urls, labels, placeholders, messages, seedData, testTemps, viewports)",
+      "code": "export const tempCertSpecialtyData = {\n  urls: {\n    addTemp: '/temp/new',\n    tempList: '/temp',\n    tempDetail: (id: number | string) => `/temp/${id}`,\n    apiTemps: '/api/temps',\n    apiAdminCertifications: '/api/admin/certifications',\n    apiAdminSpecialties: '/api/admin/specialties',\n    login: '/login',\n  },\n  labels: {\n    certification: 'Certification',\n    specialty: 'Specialty',\n  },\n  p"
+    },
+    {
+      "id": "test-data/tempDetailData.ts#tempDetailData",
+      "file": "test-data/tempDetailData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "tempDetailData",
+      "startLine": 3,
+      "endLine": 53,
+      "properties": [
+        "urls",
+        "headings",
+        "messages",
+        "testValues",
+        "viewports",
+        "generateTemp"
+      ],
+      "signature": "const tempDetailData (urls, headings, messages, testValues, viewports, generateTemp)",
+      "code": "export const tempDetailData = {\n  urls: {\n    tempList: '/temp',\n    addTemp: '/temp/new',\n    login: '/login',\n    apiTemps: '/api/temps',\n  },\n  headings: {\n    viewTemp: 'View Temp',\n    editTemp: 'Edit Temp',\n    addTemp: 'Add Temp',\n    tempList: 'Temp',\n  },\n  messages: {\n    duplicateEmail: 'That email address is already in use.',\n    notFound: 'This temp could not be found.',\n    noCountyF"
+    },
+    {
+      "id": "test-data/tempDetailData.ts#timestamp",
+      "file": "test-data/tempDetailData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "timestamp",
+      "startLine": 36,
+      "endLine": 36,
+      "properties": [],
+      "signature": "const timestamp ()",
+      "code": "const timestamp = Date.now();"
+    },
+    {
+      "id": "test-data/tempNavData.ts#tempNavData",
+      "file": "test-data/tempNavData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "tempNavData",
+      "startLine": 1,
+      "endLine": 25,
+      "properties": [
+        "urls",
+        "tabs",
+        "styles",
+        "placeholder",
+        "header"
+      ],
+      "signature": "const tempNavData (urls, tabs, styles, placeholder, header)",
+      "code": "export const tempNavData = {\n  urls: {\n    home: '/',\n    temp: '/temp',\n    adminUsers: '/admin/users',\n    login: '/login',\n  },\n  tabs: {\n    expectedOrder: ['Home', 'Temp', 'Admin'],\n    home: 'Home',\n    temp: 'Temp',\n    admin: 'Admin',\n  },\n  styles: {\n    activeClassPattern: /border-blue-900.*text-blue-900/,\n    inactiveClassPattern: /border-transparent.*text-slate-600/,\n  },\n  placeholder"
+    },
+    {
+      "id": "test-data/userDetailData.ts#UserDetailPayload",
+      "file": "test-data/userDetailData.ts",
+      "kind": "data",
+      "parent": "interface",
+      "name": "UserDetailPayload",
+      "startLine": 6,
+      "endLine": 15,
+      "properties": [
+        "fullName",
+        "username",
+        "title",
+        "email",
+        "password",
+        "confirmPassword",
+        "isActive",
+        "role"
+      ],
+      "signature": "interface UserDetailPayload { fullName, username, title, email, password, confirmPassword, isActive, role }",
+      "code": "export interface UserDetailPayload {\n  fullName: string;\n  username: string;\n  title: string;\n  email: string;\n  password?: string;\n  confirmPassword?: string;\n  isActive: boolean;\n  role?: string;\n}"
+    },
+    {
+      "id": "test-data/userDetailData.ts#userDetailData",
+      "file": "test-data/userDetailData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "userDetailData",
+      "startLine": 17,
+      "endLine": 69,
+      "properties": [
+        "urls",
+        "headings",
+        "roles",
+        "statuses",
+        "messages",
+        "modal",
+        "adminUser",
+        "generateUser"
+      ],
+      "signature": "const userDetailData (urls, headings, roles, statuses, messages, modal, adminUser, generateUser)",
+      "code": "export const userDetailData = {\n  urls: {\n    userManager: '/admin/users',\n    userDetailPrefix: '/admin/users/',\n    apiUsers: '/api/admin/users',\n    apiAuthMe: '/api/auth/me',\n  },\n  headings: {\n    viewUser: 'View User',\n    editUser: 'Edit User',\n  },\n  roles: {\n    defaultRole: 'Staffing Admin',\n  },\n  statuses: {\n    active: 'active' as const,\n    inactive: 'inactive' as const,\n    activeDi"
+    },
+    {
+      "id": "test-data/userDetailData.ts#uniqueId",
+      "file": "test-data/userDetailData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "uniqueId",
+      "startLine": 57,
+      "endLine": 57,
+      "properties": [],
+      "signature": "const uniqueId ()",
+      "code": "const uniqueId = `${prefix}_${Date.now()}_${Math.floor(Math.random() * 10000)}`;"
+    },
+    {
+      "id": "test-data/userManagerData.ts#userManagerData",
+      "file": "test-data/userManagerData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "userManagerData",
+      "startLine": 6,
+      "endLine": 60,
+      "properties": [
+        "validUser",
+        "urls",
+        "button",
+        "navigation",
+        "table",
+        "search",
+        "messages",
+        "viewports",
+        "apiEndpoints"
+      ],
+      "signature": "const userManagerData (validUser, urls, button, navigation, table, search, messages, viewports, apiEndpoints)",
+      "code": "export const userManagerData = {\n  validUser: {\n    username: process.env.Staffing_USERNAME || 'qaengineer',\n    password: process.env.Staffing_PASSWORD || 'Varshini@99',\n  },\n  urls: {\n    userManager: '/admin/users',\n    login: '/login',\n    adminUserDetailPrefix: '/admin/users/',\n  },\n  button: {\n    name: 'Add User',\n    ariaLabel: 'Add User',\n    tailwindClasses: {\n      bg: 'bg-blue-600',\n  "
     }
   ]
 }

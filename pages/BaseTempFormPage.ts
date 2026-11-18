@@ -193,6 +193,25 @@ export abstract class BaseTempFormPage extends BasePage {
     return await this.specialtySelect.inputValue();
   }
 
+  async getStatusOptionTexts(): Promise<string[]> {
+    await this.page.waitForLoadState('networkidle').catch(() => {});
+    await this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 }).catch(() => {});
+    return await this.getSelectOptionTexts(this.statusSelect);
+  }
+
+  async getSelectedStatus(): Promise<string> {
+    await this.page.waitForLoadState('networkidle').catch(() => {});
+    return await this.statusSelect.inputValue();
+  }
+
+  async selectStatus(status: string): Promise<void> {
+    await this.statusSelect.selectOption(status);
+  }
+
+  async fillAddress(address: string): Promise<void> {
+    await this.addressInput.fill(address);
+  }
+
   getFormFields(): Locator[] {
     return [
       this.firstNameInput,
