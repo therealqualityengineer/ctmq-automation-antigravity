@@ -1,15 +1,15 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-19T04:58:07.783Z",
+    "generatedAt": "2026-11-19T06:59:19.666Z",
     "generator": "AST Symbol Chunker v1.1",
-    "totalFilesScanned": 74,
-    "totalChunks": 811,
+    "totalFilesScanned": 75,
+    "totalChunks": 827,
     "stats": {
       "pageObjects": 19,
-      "methods": 375,
-      "tests": 371,
+      "methods": 382,
+      "tests": 380,
       "testData": 46,
-      "filesProcessed": 74
+      "filesProcessed": 75
     }
   },
   "chunks": [
@@ -972,7 +972,7 @@
       "parent": null,
       "name": "BasePage",
       "startLine": 3,
-      "endLine": 129,
+      "endLine": 145,
       "properties": [
         "page"
       ],
@@ -1103,6 +1103,24 @@
           "signature": "async getHeadingCount(level: number = 1)",
           "startLine": 126,
           "endLine": 128
+        },
+        {
+          "name": "getFieldLabel",
+          "signature": "getFieldLabel(labelText: string)",
+          "startLine": 130,
+          "endLine": 136
+        },
+        {
+          "name": "getRequiredAsterisk",
+          "signature": "getRequiredAsterisk(labelText: string)",
+          "startLine": 138,
+          "endLine": 140
+        },
+        {
+          "name": "clearSelect",
+          "signature": "async clearSelect(locator: Locator)",
+          "startLine": 142,
+          "endLine": 144
         }
       ],
       "signature": "class BasePage",
@@ -1382,13 +1400,57 @@
       "code": "async getHeadingCount(level: number = 1): Promise<number> {\n    return await this.page.locator(`h${level}`).count();\n  }"
     },
     {
+      "id": "pages/BasePage.ts#BasePage.getFieldLabel",
+      "file": "pages/BasePage.ts",
+      "kind": "method",
+      "parent": "BasePage",
+      "name": "getFieldLabel",
+      "startLine": 130,
+      "endLine": 136,
+      "signature": "getFieldLabel(labelText: string)",
+      "locatorsUsed": [
+        "this.page\n      .locator('form label, form span')\n      .filter({ hasText: new RegExp(`^\\\\s*${escaped}\\\\s*\\\\*?\\\\s*$`) })\n      .first()",
+        "this.page\n      .locator('form label, form span')\n      .filter({ hasText: new RegExp(`^\\\\s*${escaped}\\\\s*\\\\*?\\\\s*$`) })",
+        "this.page\n      .locator('form label, form span')"
+      ],
+      "code": "getFieldLabel(labelText: string): Locator {\n    const escaped = labelText.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n    return this.page\n      .locator('form label, form span')\n      .filter({ hasText: new RegExp(`^\\\\s*${escaped}\\\\s*\\\\*?\\\\s*$`) })\n      .first();\n  }"
+    },
+    {
+      "id": "pages/BasePage.ts#BasePage.getRequiredAsterisk",
+      "file": "pages/BasePage.ts",
+      "kind": "method",
+      "parent": "BasePage",
+      "name": "getRequiredAsterisk",
+      "startLine": 138,
+      "endLine": 140,
+      "signature": "getRequiredAsterisk(labelText: string)",
+      "locatorsUsed": [
+        "this.getFieldLabel(labelText).locator('span.text-red-600', { hasText: '*' })"
+      ],
+      "code": "getRequiredAsterisk(labelText: string): Locator {\n    return this.getFieldLabel(labelText).locator('span.text-red-600', { hasText: '*' });\n  }"
+    },
+    {
+      "id": "pages/BasePage.ts#BasePage.clearSelect",
+      "file": "pages/BasePage.ts",
+      "kind": "method",
+      "parent": "BasePage",
+      "name": "clearSelect",
+      "startLine": 142,
+      "endLine": 144,
+      "signature": "async clearSelect(locator: Locator)",
+      "locatorsUsed": [
+        "locator.selectOption('')"
+      ],
+      "code": "async clearSelect(locator: Locator): Promise<void> {\n    await locator.selectOption('');\n  }"
+    },
+    {
       "id": "pages/BaseTempFormPage.ts#BaseTempFormPage",
       "file": "pages/BaseTempFormPage.ts",
       "kind": "class",
       "parent": "BasePage",
       "name": "BaseTempFormPage",
       "startLine": 5,
-      "endLine": 329,
+      "endLine": 313,
       "properties": [
         "leftBox",
         "rightBox",
@@ -1596,34 +1658,16 @@
           "endLine": 252
         },
         {
-          "name": "getFieldLabel",
-          "signature": "getFieldLabel(labelText: string)",
-          "startLine": 254,
-          "endLine": 260
-        },
-        {
-          "name": "getRequiredAsterisk",
-          "signature": "getRequiredAsterisk(labelText: string)",
-          "startLine": 262,
-          "endLine": 264
-        },
-        {
-          "name": "clearSelect",
-          "signature": "async clearSelect(locator: Locator)",
-          "startLine": 266,
-          "endLine": 268
-        },
-        {
           "name": "getTempViaApi",
           "signature": "async getTempViaApi(id: number | string)",
-          "startLine": 270,
-          "endLine": 279
+          "startLine": 254,
+          "endLine": 263
         },
         {
           "name": "getActiveMappedCertAndSpecialtyViaApi",
           "signature": "async getActiveMappedCertAndSpecialtyViaApi()",
-          "startLine": 281,
-          "endLine": 328
+          "startLine": 265,
+          "endLine": 312
         }
       ],
       "signature": "class BaseTempFormPage extends BasePage",
@@ -1943,57 +1987,13 @@
       "code": "async areAllTempFieldsEnabled(): Promise<boolean> {\n    // Specialty is conditionally enabled based on certification selection\n    const certVal = await this.certificationSelect.inputValue().catch(() => '');\n    const fieldsToCheck = certVal\n      ? this.getFormFields()\n      : this.getFormFields().filter((f) => f !== this.specialtySelect);\n    return await super.areAllFieldsEnabled(fieldsToCheck);\n  }"
     },
     {
-      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getFieldLabel",
-      "file": "pages/BaseTempFormPage.ts",
-      "kind": "method",
-      "parent": "BaseTempFormPage",
-      "name": "getFieldLabel",
-      "startLine": 254,
-      "endLine": 260,
-      "signature": "getFieldLabel(labelText: string)",
-      "locatorsUsed": [
-        "this.page\n      .locator('form label, form span')\n      .filter({ hasText: new RegExp(`^\\\\s*${escaped}\\\\s*\\\\*?\\\\s*$`) })\n      .first()",
-        "this.page\n      .locator('form label, form span')\n      .filter({ hasText: new RegExp(`^\\\\s*${escaped}\\\\s*\\\\*?\\\\s*$`) })",
-        "this.page\n      .locator('form label, form span')"
-      ],
-      "code": "getFieldLabel(labelText: string): Locator {\n    const escaped = labelText.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n    return this.page\n      .locator('form label, form span')\n      .filter({ hasText: new RegExp(`^\\\\s*${escaped}\\\\s*\\\\*?\\\\s*$`) })\n      .first();\n  }"
-    },
-    {
-      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getRequiredAsterisk",
-      "file": "pages/BaseTempFormPage.ts",
-      "kind": "method",
-      "parent": "BaseTempFormPage",
-      "name": "getRequiredAsterisk",
-      "startLine": 262,
-      "endLine": 264,
-      "signature": "getRequiredAsterisk(labelText: string)",
-      "locatorsUsed": [
-        "this.getFieldLabel(labelText).locator('span.text-red-600', { hasText: '*' })"
-      ],
-      "code": "getRequiredAsterisk(labelText: string): Locator {\n    return this.getFieldLabel(labelText).locator('span.text-red-600', { hasText: '*' });\n  }"
-    },
-    {
-      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.clearSelect",
-      "file": "pages/BaseTempFormPage.ts",
-      "kind": "method",
-      "parent": "BaseTempFormPage",
-      "name": "clearSelect",
-      "startLine": 266,
-      "endLine": 268,
-      "signature": "async clearSelect(locator: Locator)",
-      "locatorsUsed": [
-        "locator.selectOption('')"
-      ],
-      "code": "async clearSelect(locator: Locator): Promise<void> {\n    await locator.selectOption('');\n  }"
-    },
-    {
       "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getTempViaApi",
       "file": "pages/BaseTempFormPage.ts",
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getTempViaApi",
-      "startLine": 270,
-      "endLine": 279,
+      "startLine": 254,
+      "endLine": 263,
       "signature": "async getTempViaApi(id: number | string)",
       "locatorsUsed": [],
       "code": "async getTempViaApi(id: number | string): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.get(`/api/temps/${id}`);\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
@@ -2004,8 +2004,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getActiveMappedCertAndSpecialtyViaApi",
-      "startLine": 281,
-      "endLine": 328,
+      "startLine": 265,
+      "endLine": 312,
       "signature": "async getActiveMappedCertAndSpecialtyViaApi()",
       "locatorsUsed": [],
       "code": "async getActiveMappedCertAndSpecialtyViaApi(): Promise<{\n    certification: string;\n    specialty: string;\n    unmappedSpecialty?: string;\n  }> {\n    const certsRes = await this.page.request.get('/api/admin/certifications?pageSize=200');\n    const certsJson = await certsRes.json();\n    const certs: any[] = Array.isArray(certsJson) ? certsJson : certsJson.items ?? certsJson.data ?? [];\n\n    const specsRes = await this.page.request.get('/api/admin/specialties?pageSize=200');\n    const specsJson = await specsRes.json();\n    const specs: any[] = Array.isArray(specsJson) ? specsJson : specsJson.items ?? specsJson.data ?? [];\n\n    const isActiveRecord = (r: any) =>\n      (r.status ? String(r.status).toLowerCase() === 'active' : true) && r.isActive !== false;\n\n    const activeSpecs = specs.filter(isActiveRecord);\n    const activeSpecNames = new Set(activeSpecs.map((s) => String(s.name).toLowerCase()));\n    const activeCerts = certs.filter(isActiveRecord);\n\n    for (const cert of activeCerts) {\n      const rawMapped = cert.specialties ?? cert.mappedSpecialties ?? [];\n      let mappedNames: string[] = [];\n      if (typeof rawMapped === 'string') {\n        mappedNames = rawMapped\n          .split(',')\n          .map((s) => s.trim())\n          .filter((name) => name.length > 0 && (activeSpecNames.size === 0 || activeSpecNames.has(name.toLowerCase())));\n      } else if (Array.isArray(rawMapped)) {\n        mappedNames = rawMapped\n          .filter((s: any) => typeof s === 'string' || isActiveRecord(s))\n          .map((s: any) => (typeof s === 'string' ? s.trim() : String(s.name).trim()))\n          .filter(Boolean);\n      }\n\n      if (mappedNames.length > 0) {\n        const mappedSet = new Set(mappedNames.map((n) => n.toLowerCase()));\n        const unmapped = activeSpecs.find((s) => !mappedSet.has(String(s.name).toLowerCase()));\n        return {\n          certification: cert.name,\n          specialty: mappedNames[0],\n          unmappedSpecialty: unmapped?.name,\n        };\n      }\n    }\n\n    throw new Error('No active Certification with a mapped active Specialty found in Admin Masters.');\n  }"
@@ -2622,7 +2622,7 @@
       "parent": "BasePage",
       "name": "ClientDetailPage",
       "startLine": 5,
-      "endLine": 282,
+      "endLine": 330,
       "properties": [
         "pageHeading",
         "leftBox",
@@ -2650,6 +2650,8 @@
         "deleteSuccessBanner",
         "serverErrorBanner",
         "deleteErrorBanner",
+        "feedbackErrorBanner",
+        "feedbackSuccessBanner",
         "noCountyFoundMessage"
       ],
       "locatorsDefined": [
@@ -2683,182 +2685,226 @@
         "page.locator('p.text-red-700, [role=\"alert\"]').filter({ hasText: /Internal Server Error|failed|error/i })",
         "page.locator('p.text-red-700, [role=\"alert\"]')",
         "page.locator('[role=\"alert\"], p.text-red-600, p.text-red-700, span.text-red-600')",
+        "page.locator('[role=\"alert\"]')",
+        "page.locator('[role=\"status\"]')",
         "page.getByText('No county found for this ZIP — please check the ZIP.')"
       ],
       "methodsSummary": [
         {
           "name": "gotoAddClient",
           "signature": "async gotoAddClient()",
-          "startLine": 85,
-          "endLine": 87
-        },
-        {
-          "name": "gotoClientDetail",
-          "signature": "async gotoClientDetail(id: number | string)",
           "startLine": 89,
           "endLine": 91
         },
         {
+          "name": "gotoClientDetail",
+          "signature": "async gotoClientDetail(id: number | string)",
+          "startLine": 93,
+          "endLine": 95
+        },
+        {
           "name": "fillForm",
           "signature": "async fillForm(data: Partial<ClientPayload>)",
-          "startLine": 93,
-          "endLine": 107
+          "startLine": 97,
+          "endLine": 111
         },
         {
           "name": "clickSave",
           "signature": "async clickSave()",
-          "startLine": 109,
-          "endLine": 111
-        },
-        {
-          "name": "clickCancel",
-          "signature": "async clickCancel()",
           "startLine": 113,
           "endLine": 115
         },
         {
-          "name": "clickEdit",
-          "signature": "async clickEdit()",
+          "name": "clickCancel",
+          "signature": "async clickCancel()",
           "startLine": 117,
           "endLine": 119
         },
         {
+          "name": "clickEdit",
+          "signature": "async clickEdit()",
+          "startLine": 121,
+          "endLine": 123
+        },
+        {
           "name": "fillZip",
           "signature": "async fillZip(zip: string)",
-          "startLine": 121,
-          "endLine": 124
+          "startLine": 125,
+          "endLine": 128
         },
         {
           "name": "clearZip",
           "signature": "async clearZip()",
-          "startLine": 126,
-          "endLine": 129
+          "startLine": 130,
+          "endLine": 133
         },
         {
           "name": "isTwoColumnLayout",
           "signature": "async isTwoColumnLayout()",
-          "startLine": 131,
-          "endLine": 136
+          "startLine": 135,
+          "endLine": 140
         },
         {
           "name": "getClientFormFields",
           "signature": "getClientFormFields()",
-          "startLine": 138,
-          "endLine": 149
+          "startLine": 142,
+          "endLine": 153
         },
         {
           "name": "areAllFieldsDisabled",
           "signature": "async areAllFieldsDisabled()",
-          "startLine": 151,
-          "endLine": 153
-        },
-        {
-          "name": "areAllFieldsEnabled",
-          "signature": "async areAllFieldsEnabled()",
           "startLine": 155,
           "endLine": 157
         },
         {
+          "name": "areAllFieldsEnabled",
+          "signature": "async areAllFieldsEnabled()",
+          "startLine": 159,
+          "endLine": 161
+        },
+        {
           "name": "saveAndInterceptPostResponse",
           "signature": "async saveAndInterceptPostResponse()",
-          "startLine": 159,
-          "endLine": 172
+          "startLine": 163,
+          "endLine": 176
         },
         {
           "name": "saveAndInterceptPutResponse",
           "signature": "async saveAndInterceptPutResponse()",
-          "startLine": 174,
-          "endLine": 187
+          "startLine": 178,
+          "endLine": 191
         },
         {
           "name": "getStateOptionValues",
           "signature": "async getStateOptionValues()",
-          "startLine": 189,
-          "endLine": 192
+          "startLine": 193,
+          "endLine": 196
         },
         {
           "name": "getCountyOptionTexts",
           "signature": "async getCountyOptionTexts()",
-          "startLine": 194,
-          "endLine": 196
+          "startLine": 198,
+          "endLine": 200
         },
         {
           "name": "getStatusOptionTexts",
           "signature": "async getStatusOptionTexts()",
-          "startLine": 198,
-          "endLine": 202
+          "startLine": 202,
+          "endLine": 206
         },
         {
           "name": "getSelectedStatus",
           "signature": "async getSelectedStatus()",
-          "startLine": 204,
-          "endLine": 207
+          "startLine": 208,
+          "endLine": 211
         },
         {
           "name": "selectStatus",
           "signature": "async selectStatus(status: string)",
-          "startLine": 209,
-          "endLine": 211
-        },
-        {
-          "name": "fillAddress",
-          "signature": "async fillAddress(address: string)",
           "startLine": 213,
           "endLine": 215
         },
         {
+          "name": "fillAddress",
+          "signature": "async fillAddress(address: string)",
+          "startLine": 217,
+          "endLine": 219
+        },
+        {
           "name": "createClientRawViaApi",
           "signature": "async createClientRawViaApi(payload: Partial<ClientPayload> & Record<string, any>)",
-          "startLine": 217,
-          "endLine": 226
+          "startLine": 221,
+          "endLine": 230
         },
         {
           "name": "updateClientRawViaApi",
           "signature": "async updateClientRawViaApi(id: number | string, payload: Partial<ClientPayload> & Record<string, any>)",
-          "startLine": 228,
-          "endLine": 240
+          "startLine": 232,
+          "endLine": 244
         },
         {
           "name": "clickDelete",
           "signature": "async clickDelete()",
-          "startLine": 242,
-          "endLine": 244
-        },
-        {
-          "name": "confirmDelete",
-          "signature": "async confirmDelete()",
           "startLine": 246,
           "endLine": 248
         },
         {
-          "name": "cancelDeleteModal",
-          "signature": "async cancelDeleteModal()",
+          "name": "confirmDelete",
+          "signature": "async confirmDelete()",
           "startLine": 250,
           "endLine": 252
         },
         {
-          "name": "closeDeleteModal",
-          "signature": "async closeDeleteModal()",
+          "name": "cancelDeleteModal",
+          "signature": "async cancelDeleteModal()",
           "startLine": 254,
           "endLine": 256
         },
         {
+          "name": "closeDeleteModal",
+          "signature": "async closeDeleteModal()",
+          "startLine": 258,
+          "endLine": 260
+        },
+        {
           "name": "deleteAndInterceptResponse",
           "signature": "async deleteAndInterceptResponse()",
-          "startLine": 258,
-          "endLine": 271
+          "startLine": 262,
+          "endLine": 275
         },
         {
           "name": "createClientViaApi",
           "signature": "async createClientViaApi(payload: ClientPayload)",
-          "startLine": 273,
-          "endLine": 276
+          "startLine": 277,
+          "endLine": 280
         },
         {
           "name": "deleteClientViaApi",
           "signature": "async deleteClientViaApi(id: number | string)",
-          "startLine": 278,
-          "endLine": 281
+          "startLine": 282,
+          "endLine": 285
+        },
+        {
+          "name": "clearFullName",
+          "signature": "async clearFullName()",
+          "startLine": 287,
+          "endLine": 289
+        },
+        {
+          "name": "clearEmail",
+          "signature": "async clearEmail()",
+          "startLine": 291,
+          "endLine": 293
+        },
+        {
+          "name": "clearAddress",
+          "signature": "async clearAddress()",
+          "startLine": 295,
+          "endLine": 297
+        },
+        {
+          "name": "clearCity",
+          "signature": "async clearCity()",
+          "startLine": 299,
+          "endLine": 301
+        },
+        {
+          "name": "clearState",
+          "signature": "async clearState()",
+          "startLine": 303,
+          "endLine": 305
+        },
+        {
+          "name": "getClientViaApi",
+          "signature": "async getClientViaApi(id: number | string)",
+          "startLine": 307,
+          "endLine": 316
+        },
+        {
+          "name": "getClientsListViaApi",
+          "signature": "async getClientsListViaApi()",
+          "startLine": 318,
+          "endLine": 329
         }
       ],
       "signature": "class ClientDetailPage extends BasePage",
@@ -2870,8 +2916,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "gotoAddClient",
-      "startLine": 85,
-      "endLine": 87,
+      "startLine": 89,
+      "endLine": 91,
       "signature": "async gotoAddClient()",
       "locatorsUsed": [],
       "code": "async gotoAddClient(): Promise<void> {\n    await this.navigate('/client/new');\n  }"
@@ -2882,8 +2928,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "gotoClientDetail",
-      "startLine": 89,
-      "endLine": 91,
+      "startLine": 93,
+      "endLine": 95,
       "signature": "async gotoClientDetail(id: number | string)",
       "locatorsUsed": [],
       "code": "async gotoClientDetail(id: number | string): Promise<void> {\n    await this.navigate(`/client/${id}`);\n  }"
@@ -2894,8 +2940,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "fillForm",
-      "startLine": 93,
-      "endLine": 107,
+      "startLine": 97,
+      "endLine": 111,
       "signature": "async fillForm(data: Partial<ClientPayload>)",
       "locatorsUsed": [],
       "code": "async fillForm(data: Partial<ClientPayload>): Promise<void> {\n    if (data.fullName !== undefined) await this.fullNameInput.fill(data.fullName);\n    if (data.email !== undefined) await this.emailInput.fill(data.email);\n    if (data.address !== undefined) await this.addressInput.fill(data.address);\n    if (data.city !== undefined) await this.cityInput.fill(data.city);\n    if (data.state !== undefined) await this.stateSelect.selectOption(data.state);\n    if (data.zip !== undefined) {\n      await this.zipInput.fill(data.zip);\n      await this.page.waitForTimeout(300);\n    }\n    if (data.county !== undefined && data.county !== '') {\n      await this.countySelect.selectOption(data.county);\n    }\n    if (data.status !== undefined) await this.statusSelect.selectOption(data.status);\n  }"
@@ -2906,8 +2952,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "clickSave",
-      "startLine": 109,
-      "endLine": 111,
+      "startLine": 113,
+      "endLine": 115,
       "signature": "async clickSave()",
       "locatorsUsed": [],
       "code": "async clickSave(): Promise<void> {\n    await this.saveButton.click();\n  }"
@@ -2918,8 +2964,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "clickCancel",
-      "startLine": 113,
-      "endLine": 115,
+      "startLine": 117,
+      "endLine": 119,
       "signature": "async clickCancel()",
       "locatorsUsed": [],
       "code": "async clickCancel(): Promise<void> {\n    await this.cancelButton.click();\n  }"
@@ -2930,8 +2976,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "clickEdit",
-      "startLine": 117,
-      "endLine": 119,
+      "startLine": 121,
+      "endLine": 123,
       "signature": "async clickEdit()",
       "locatorsUsed": [],
       "code": "async clickEdit(): Promise<void> {\n    await this.editButton.click();\n  }"
@@ -2942,8 +2988,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "fillZip",
-      "startLine": 121,
-      "endLine": 124,
+      "startLine": 125,
+      "endLine": 128,
       "signature": "async fillZip(zip: string)",
       "locatorsUsed": [],
       "code": "async fillZip(zip: string): Promise<void> {\n    await this.zipInput.fill(zip);\n    await this.page.waitForTimeout(300);\n  }"
@@ -2954,8 +3000,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "clearZip",
-      "startLine": 126,
-      "endLine": 129,
+      "startLine": 130,
+      "endLine": 133,
       "signature": "async clearZip()",
       "locatorsUsed": [],
       "code": "async clearZip(): Promise<void> {\n    await this.zipInput.clear();\n    await this.page.waitForTimeout(300);\n  }"
@@ -2966,8 +3012,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "isTwoColumnLayout",
-      "startLine": 131,
-      "endLine": 136,
+      "startLine": 135,
+      "endLine": 140,
       "signature": "async isTwoColumnLayout()",
       "locatorsUsed": [],
       "code": "async isTwoColumnLayout(): Promise<boolean> {\n    const left = await this.leftBox.boundingBox();\n    const right = await this.rightBox.boundingBox();\n    if (!left || !right) return false;\n    return left.y === right.y && left.x < right.x;\n  }"
@@ -2978,8 +3024,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "getClientFormFields",
-      "startLine": 138,
-      "endLine": 149,
+      "startLine": 142,
+      "endLine": 153,
       "signature": "getClientFormFields()",
       "locatorsUsed": [],
       "code": "getClientFormFields(): Locator[] {\n    return [\n      this.fullNameInput,\n      this.emailInput,\n      this.addressInput,\n      this.cityInput,\n      this.stateSelect,\n      this.zipInput,\n      this.countySelect,\n      this.statusSelect,\n    ];\n  }"
@@ -2990,8 +3036,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "areAllFieldsDisabled",
-      "startLine": 151,
-      "endLine": 153,
+      "startLine": 155,
+      "endLine": 157,
       "signature": "async areAllFieldsDisabled()",
       "locatorsUsed": [],
       "code": "async areAllFieldsDisabled(): Promise<boolean> {\n    return await super.areAllFieldsDisabled(this.getClientFormFields());\n  }"
@@ -3002,8 +3048,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "areAllFieldsEnabled",
-      "startLine": 155,
-      "endLine": 157,
+      "startLine": 159,
+      "endLine": 161,
       "signature": "async areAllFieldsEnabled()",
       "locatorsUsed": [],
       "code": "async areAllFieldsEnabled(): Promise<boolean> {\n    return await super.areAllFieldsEnabled(this.getClientFormFields());\n  }"
@@ -3014,8 +3060,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "saveAndInterceptPostResponse",
-      "startLine": 159,
-      "endLine": 172,
+      "startLine": 163,
+      "endLine": 176,
       "signature": "async saveAndInterceptPostResponse()",
       "locatorsUsed": [],
       "code": "async saveAndInterceptPostResponse(): Promise<{ status: number; body: any }> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/clients') && resp.request().method() === 'POST'\n    );\n    await this.saveButton.click();\n    const response = await responsePromise;\n    let body = {};\n    try {\n      body = await response.json();\n    } catch {\n      // response body not json\n    }\n    return { status: response.status(), body };\n  }"
@@ -3026,8 +3072,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "saveAndInterceptPutResponse",
-      "startLine": 174,
-      "endLine": 187,
+      "startLine": 178,
+      "endLine": 191,
       "signature": "async saveAndInterceptPutResponse()",
       "locatorsUsed": [],
       "code": "async saveAndInterceptPutResponse(): Promise<{ status: number; body: any }> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/clients') && resp.request().method() === 'PUT'\n    );\n    await this.saveButton.click();\n    const response = await responsePromise;\n    let body = {};\n    try {\n      body = await response.json();\n    } catch {\n      // response body not json\n    }\n    return { status: response.status(), body };\n  }"
@@ -3038,8 +3084,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "getStateOptionValues",
-      "startLine": 189,
-      "endLine": 192,
+      "startLine": 193,
+      "endLine": 196,
       "signature": "async getStateOptionValues()",
       "locatorsUsed": [
         "this.stateSelect.locator('option[value=\"AL\"]').waitFor({ state: 'attached' })",
@@ -3053,8 +3099,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "getCountyOptionTexts",
-      "startLine": 194,
-      "endLine": 196,
+      "startLine": 198,
+      "endLine": 200,
       "signature": "async getCountyOptionTexts()",
       "locatorsUsed": [],
       "code": "async getCountyOptionTexts(): Promise<string[]> {\n    return await this.getSelectOptionTexts(this.countySelect);\n  }"
@@ -3065,8 +3111,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "getStatusOptionTexts",
-      "startLine": 198,
-      "endLine": 202,
+      "startLine": 202,
+      "endLine": 206,
       "signature": "async getStatusOptionTexts()",
       "locatorsUsed": [
         "this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 }).catch(() => {})",
@@ -3082,8 +3128,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "getSelectedStatus",
-      "startLine": 204,
-      "endLine": 207,
+      "startLine": 208,
+      "endLine": 211,
       "signature": "async getSelectedStatus()",
       "locatorsUsed": [],
       "code": "async getSelectedStatus(): Promise<string> {\n    await this.page.waitForLoadState('networkidle').catch(() => {});\n    return await this.statusSelect.inputValue();\n  }"
@@ -3094,8 +3140,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "selectStatus",
-      "startLine": 209,
-      "endLine": 211,
+      "startLine": 213,
+      "endLine": 215,
       "signature": "async selectStatus(status: string)",
       "locatorsUsed": [],
       "code": "async selectStatus(status: string): Promise<void> {\n    await this.statusSelect.selectOption(status);\n  }"
@@ -3106,8 +3152,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "fillAddress",
-      "startLine": 213,
-      "endLine": 215,
+      "startLine": 217,
+      "endLine": 219,
       "signature": "async fillAddress(address: string)",
       "locatorsUsed": [],
       "code": "async fillAddress(address: string): Promise<void> {\n    await this.addressInput.fill(address);\n  }"
@@ -3118,8 +3164,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "createClientRawViaApi",
-      "startLine": 217,
-      "endLine": 226,
+      "startLine": 221,
+      "endLine": 230,
       "signature": "async createClientRawViaApi(payload: Partial<ClientPayload> & Record<string, any>)",
       "locatorsUsed": [],
       "code": "async createClientRawViaApi(payload: Partial<ClientPayload> & Record<string, any>): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.post('/api/clients', { data: payload });\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
@@ -3130,8 +3176,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "updateClientRawViaApi",
-      "startLine": 228,
-      "endLine": 240,
+      "startLine": 232,
+      "endLine": 244,
       "signature": "async updateClientRawViaApi(id: number | string, payload: Partial<ClientPayload> & Record<string, any>)",
       "locatorsUsed": [],
       "code": "async updateClientRawViaApi(\n    id: number | string,\n    payload: Partial<ClientPayload> & Record<string, any>\n  ): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.put(`/api/clients/${id}`, { data: payload });\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
@@ -3142,8 +3188,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "clickDelete",
-      "startLine": 242,
-      "endLine": 244,
+      "startLine": 246,
+      "endLine": 248,
       "signature": "async clickDelete()",
       "locatorsUsed": [],
       "code": "async clickDelete(): Promise<void> {\n    await this.deleteButton.click();\n  }"
@@ -3154,8 +3200,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "confirmDelete",
-      "startLine": 246,
-      "endLine": 248,
+      "startLine": 250,
+      "endLine": 252,
       "signature": "async confirmDelete()",
       "locatorsUsed": [],
       "code": "async confirmDelete(): Promise<void> {\n    await this.modalConfirmDeleteButton.click();\n  }"
@@ -3166,8 +3212,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "cancelDeleteModal",
-      "startLine": 250,
-      "endLine": 252,
+      "startLine": 254,
+      "endLine": 256,
       "signature": "async cancelDeleteModal()",
       "locatorsUsed": [],
       "code": "async cancelDeleteModal(): Promise<void> {\n    await this.modalCancelButton.click();\n  }"
@@ -3178,8 +3224,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "closeDeleteModal",
-      "startLine": 254,
-      "endLine": 256,
+      "startLine": 258,
+      "endLine": 260,
       "signature": "async closeDeleteModal()",
       "locatorsUsed": [],
       "code": "async closeDeleteModal(): Promise<void> {\n    await this.modalCloseButton.click();\n  }"
@@ -3190,8 +3236,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "deleteAndInterceptResponse",
-      "startLine": 258,
-      "endLine": 271,
+      "startLine": 262,
+      "endLine": 275,
       "signature": "async deleteAndInterceptResponse()",
       "locatorsUsed": [],
       "code": "async deleteAndInterceptResponse(): Promise<{ status: number; body: any }> {\n    const responsePromise = this.page.waitForResponse(\n      (resp) => resp.url().includes('/api/clients') && resp.request().method() === 'DELETE'\n    );\n    await this.confirmDelete();\n    const response = await responsePromise;\n    let body = {};\n    try {\n      body = await response.json();\n    } catch {\n      // response body not json\n    }\n    return { status: response.status(), body };\n  }"
@@ -3202,8 +3248,8 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "createClientViaApi",
-      "startLine": 273,
-      "endLine": 276,
+      "startLine": 277,
+      "endLine": 280,
       "signature": "async createClientViaApi(payload: ClientPayload)",
       "locatorsUsed": [],
       "code": "async createClientViaApi(payload: ClientPayload): Promise<any> {\n    const response = await this.page.request.post('/api/clients', { data: payload });\n    return await response.json();\n  }"
@@ -3214,11 +3260,95 @@
       "kind": "method",
       "parent": "ClientDetailPage",
       "name": "deleteClientViaApi",
-      "startLine": 278,
-      "endLine": 281,
+      "startLine": 282,
+      "endLine": 285,
       "signature": "async deleteClientViaApi(id: number | string)",
       "locatorsUsed": [],
       "code": "async deleteClientViaApi(id: number | string): Promise<any> {\n    const response = await this.page.request.delete(`/api/clients/${id}`);\n    return response.status();\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.clearFullName",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "clearFullName",
+      "startLine": 287,
+      "endLine": 289,
+      "signature": "async clearFullName()",
+      "locatorsUsed": [],
+      "code": "async clearFullName(): Promise<void> {\n    await this.fullNameInput.clear();\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.clearEmail",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "clearEmail",
+      "startLine": 291,
+      "endLine": 293,
+      "signature": "async clearEmail()",
+      "locatorsUsed": [],
+      "code": "async clearEmail(): Promise<void> {\n    await this.emailInput.clear();\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.clearAddress",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "clearAddress",
+      "startLine": 295,
+      "endLine": 297,
+      "signature": "async clearAddress()",
+      "locatorsUsed": [],
+      "code": "async clearAddress(): Promise<void> {\n    await this.addressInput.clear();\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.clearCity",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "clearCity",
+      "startLine": 299,
+      "endLine": 301,
+      "signature": "async clearCity()",
+      "locatorsUsed": [],
+      "code": "async clearCity(): Promise<void> {\n    await this.cityInput.clear();\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.clearState",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "clearState",
+      "startLine": 303,
+      "endLine": 305,
+      "signature": "async clearState()",
+      "locatorsUsed": [],
+      "code": "async clearState(): Promise<void> {\n    await this.clearSelect(this.stateSelect);\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.getClientViaApi",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "getClientViaApi",
+      "startLine": 307,
+      "endLine": 316,
+      "signature": "async getClientViaApi(id: number | string)",
+      "locatorsUsed": [],
+      "code": "async getClientViaApi(id: number | string): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.get(`/api/clients/${id}`);\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
+      "id": "pages/ClientDetailPage.ts#ClientDetailPage.getClientsListViaApi",
+      "file": "pages/ClientDetailPage.ts",
+      "kind": "method",
+      "parent": "ClientDetailPage",
+      "name": "getClientsListViaApi",
+      "startLine": 318,
+      "endLine": 329,
+      "signature": "async getClientsListViaApi()",
+      "locatorsUsed": [],
+      "code": "async getClientsListViaApi(): Promise<{ status: number; body: any; items: any[]; totalCount: number }> {\n    const response = await this.page.request.get('/api/clients?pageSize=200');\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    const items: any[] = Array.isArray(body) ? body : body.items ?? body.data ?? [];\n    const totalCount = typeof body.totalCount === 'number' ? body.totalCount : items.length;\n    return { status: response.status(), body, items, totalCount };\n  }"
     },
     {
       "id": "pages/ClientPage.ts#ClientPage",
@@ -10027,6 +10157,132 @@
       "code": "test('TC-16 - Responsive layout check on tablet and mobile viewports', async ({ authenticatedClientDetailPage, clientPage }) => {\n    // Check Client List responsive layout\n    await clientPage.gotoClient();\n    await clientPage.setViewport(768, 1024);\n    await expect(clientPage.clientsTable).toBeVisible();\n\n    await clientPage.setViewport(375, 667);\n    await expect(clientPage.clientsTable).toBeVisible();\n\n    // Check Client Form responsive layout\n    await authenticatedClientDetailPage.gotoAddClient();\n    await authenticatedClientDetailPage.setViewport(768, 1024);\n    await expect(authenticatedClientDetailPage.leftBox).toBeVisible();\n    await expect(authenticatedClientDetailPage.rightBox).toBeVisible();\n\n    await authenticatedClientDetailPage.setViewport(375, 667);\n    await expect(authenticatedClientDetailPage.leftBox).toBeVisible();\n    await expect(authenticatedClientDetailPage.rightBox).toBeVisible();\n  })"
     },
     {
+      "id": "tests/clientMandatoryFields.spec.ts#TC-01_-_Verify_red_asterisk_____indicator_on_all_6",
+      "file": "tests/clientMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-80 - Client Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-01 - Verify red asterisk (*) indicator on all 6 mandatory field labels and absence on non-marked fields on Add Client (/client/new)",
+      "startLine": 5,
+      "endLine": 30,
+      "fixtures": [
+        "authenticatedClientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-01 - Verify red asterisk (*) indicator on all 6 mandatory field labels and absence on non-marked fields on Add Client (/client/new)', async ({\n    authenticatedClientDetailPage,\n  }) => {\n    await authenticatedClientDetailPage.gotoAddClient();\n    await expect(authenticatedClientDetailPage.pageHeading).toBeVisible();\n\n    for (const label of clientData.mandatoryLabels) {\n      const labelLocator = authenticatedClientDetailPage.getFieldLabel(label);\n      const asteriskLocator = authenticatedClientDetailPage.getRequiredAsterisk(label);\n\n      await expect(labelLocator, `Label \"${label}\" should be visible on /client/new`).toBeVisible();\n      await expect(asteriskLocator, `Mandatory field \"${label}\" should display a red asterisk (*)`).toBeVisible();\n      await expect(asteriskLocator).toHaveText('*');\n    }\n\n    for (const label of clientData.nonMarkedLabels) {\n      const labelLocator = authenticatedClientDetailPage.getFieldLabel(label);\n      const asteriskLocator = authenticatedClientDetailPage.getRequiredAsterisk(label);\n\n      await expect(labelLocator, `Label \"${label}\" should be visible on /client/new`).toBeVisible();\n      await expect(\n        asteriskLocator,\n        `Non-marked field \"${label}\" should NOT display a red asterisk (*)`\n      ).toHaveCount(0);\n    }\n  })"
+    },
+    {
+      "id": "tests/clientMandatoryFields.spec.ts#TC-02_-_Verify_red_asterisk_____indicator_on_all_6",
+      "file": "tests/clientMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-80 - Client Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-02 - Verify red asterisk (*) indicator on all 6 mandatory field labels and absence on non-marked fields in both View and Edit modes on Client Detail (/client/:id)",
+      "startLine": 32,
+      "endLine": 76,
+      "fixtures": [
+        "authenticatedClientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-02 - Verify red asterisk (*) indicator on all 6 mandatory field labels and absence on non-marked fields in both View and Edit modes on Client Detail (/client/:id)', async ({\n    authenticatedClientDetailPage,\n  }) => {\n    const payload = clientData.generateClient('tc02');\n    const created = await authenticatedClientDetailPage.createClientViaApi(payload);\n    expect(created.id).toBeTruthy();\n\n    try {\n      await authenticatedClientDetailPage.gotoClientDetail(created.id);\n      await expect(authenticatedClientDetailPage.editButton).toBeVisible();\n\n      // View mode verification\n      for (const label of clientData.mandatoryLabels) {\n        await expect(\n          authenticatedClientDetailPage.getRequiredAsterisk(label),\n          `View mode: mandatory field \"${label}\" should display red asterisk`\n        ).toBeVisible();\n      }\n      for (const label of clientData.nonMarkedLabels) {\n        await expect(\n          authenticatedClientDetailPage.getRequiredAsterisk(label),\n          `View mode: non-marked field \"${label}\" should NOT display red asterisk`\n        ).toHaveCount(0);\n      }\n\n      // Transition to Edit mode and re-verify\n      await authenticatedClientDetailPage.clickEdit();\n      await expect(authenticatedClientDetailPage.saveButton).toBeVisible();\n\n      for (const label of clientData.mandatoryLabels) {\n        await expect(\n          authenticatedClientDetailPage.getRequiredAsterisk(label),\n          `Edit mode: mandatory field \"${label}\" should display red asterisk`\n        ).toBeVisible();\n      }\n      for (const label of clientData.nonMarkedLabels) {\n        await expect(\n          authenticatedClientDetailPage.getRequiredAsterisk(label),\n          `Edit mode: non-marked field \"${label}\" should NOT display red asterisk`\n        ).toHaveCount(0);\n      }\n    } finally {\n      await authenticatedClientDetailPage.deleteClientViaApi(created.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/clientMandatoryFields.spec.ts#TC-03_-_Successfully_create_a_new_Client_and_updat",
+      "file": "tests/clientMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-80 - Client Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-03 - Successfully create a new Client and update in Edit mode when all 6 mandatory fields are populated",
+      "startLine": 78,
+      "endLine": 112,
+      "fixtures": [
+        "authenticatedClientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-03 - Successfully create a new Client and update in Edit mode when all 6 mandatory fields are populated', async ({\n    authenticatedClientDetailPage,\n  }) => {\n    const payload = clientData.generateClient('tc03');\n    await authenticatedClientDetailPage.gotoAddClient();\n    await expect(authenticatedClientDetailPage.pageHeading).toBeVisible();\n\n    await authenticatedClientDetailPage.fillForm(payload);\n    const postRes = await authenticatedClientDetailPage.saveAndInterceptPostResponse();\n\n    expect(postRes.status).toBe(201);\n    expect(postRes.body?.id).toBeTruthy();\n    await expect(authenticatedClientDetailPage.createSuccessBanner).toBeVisible();\n\n    const createdId = postRes.body.id;\n    try {\n      await authenticatedClientDetailPage.gotoClientDetail(createdId);\n      await authenticatedClientDetailPage.clickEdit();\n      await expect(authenticatedClientDetailPage.saveButton).toBeVisible();\n\n      const updatedPayload = clientData.generateClient('tc03-updated');\n      await authenticatedClientDetailPage.fillAddress(updatedPayload.address);\n      const putRes = await authenticatedClientDetailPage.saveAndInterceptPutResponse();\n\n      expect(putRes.status).toBe(200);\n      await expect(authenticatedClientDetailPage.saveSuccessBanner).toBeVisible();\n\n      const fetched = await authenticatedClientDetailPage.getClientViaApi(createdId);\n      expect(fetched.status).toBe(200);\n      expect(fetched.body.fullName).toBe(payload.fullName);\n      expect(fetched.body.address).toBe(updatedPayload.address);\n    } finally {\n      await authenticatedClientDetailPage.deleteClientViaApi(createdId);\n    }\n  })"
+    },
+    {
+      "id": "tests/clientMandatoryFields.spec.ts#TC-04_-_Frontend_required-field_validation_blocks_",
+      "file": "tests/clientMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-80 - Client Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-04 - Frontend required-field validation blocks Add Client (/client/new) submission when any mandatory field is missing",
+      "startLine": 114,
+      "endLine": 172,
+      "fixtures": [
+        "authenticatedClientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-04 - Frontend required-field validation blocks Add Client (/client/new) submission when any mandatory field is missing', async ({\n    authenticatedClientDetailPage,\n  }) => {\n    const payload = clientData.generateClient('tc04');\n    await authenticatedClientDetailPage.gotoAddClient();\n    await expect(authenticatedClientDetailPage.pageHeading).toBeVisible();\n    await authenticatedClientDetailPage.fillForm(payload);\n\n    const mandatoryChecks = [\n      {\n        name: 'Full Name',\n        locator: authenticatedClientDetailPage.fullNameInput,\n        clear: () => authenticatedClientDetailPage.clearFullName(),\n        restore: () => authenticatedClientDetailPage.fullNameInput.fill(payload.fullName),\n      },\n      {\n        name: 'Email',\n        locator: authenticatedClientDetailPage.emailInput,\n        clear: () => authenticatedClientDetailPage.clearEmail(),\n        restore: () => authenticatedClientDetailPage.emailInput.fill(payload.email),\n      },\n      {\n        name: 'Address',\n        locator: authenticatedClientDetailPage.addressInput,\n        clear: () => authenticatedClientDetailPage.clearAddress(),\n        restore: () => authenticatedClientDetailPage.addressInput.fill(payload.address),\n      },\n      {\n        name: 'City',\n        locator: authenticatedClientDetailPage.cityInput,\n        clear: () => authenticatedClientDetailPage.clearCity(),\n        restore: () => authenticatedClientDetailPage.cityInput.fill(payload.city),\n      },\n      {\n        name: 'State',\n        locator: authenticatedClientDetailPage.stateSelect,\n        clear: () => authenticatedClientDetailPage.clearState(),\n        restore: () => authenticatedClientDetailPage.stateSelect.selectOption(payload.state),\n      },\n      {\n        name: 'ZIP',\n        locator: authenticatedClientDetailPage.zipInput,\n        clear: () => authenticatedClientDetailPage.clearZip(),\n        restore: () => authenticatedClientDetailPage.fillZip(payload.zip),\n      },\n    ];\n\n    for (const check of mandatoryChecks) {\n      await check.clear();\n      await authenticatedClientDetailPage.clickSave();\n\n      const isInvalid = await authenticatedClientDetailPage.isFieldInvalid(check.locator);\n      const isAlertVisible = await authenticatedClientDetailPage.feedbackErrorBanner.isVisible().catch(() => false);\n      expect(isInvalid || isAlertVisible, `Empty \"${check.name}\" on /client/new should block submission`).toBe(true);\n      await expect(authenticatedClientDetailPage.createSuccessBanner).toHaveCount(0);\n\n      await check.restore();\n    }\n  })"
+    },
+    {
+      "id": "tests/clientMandatoryFields.spec.ts#TC-05_-_Frontend_required-field_validation_blocks_",
+      "file": "tests/clientMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-80 - Client Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-05 - Frontend required-field validation blocks Edit Client (/client/:id) save when any of the 6 mandatory fields is cleared",
+      "startLine": 174,
+      "endLine": 244,
+      "fixtures": [
+        "authenticatedClientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-05 - Frontend required-field validation blocks Edit Client (/client/:id) save when any of the 6 mandatory fields is cleared', async ({\n    authenticatedClientDetailPage,\n  }) => {\n    const payload = clientData.generateClient('tc05');\n    const created = await authenticatedClientDetailPage.createClientViaApi(payload);\n    expect(created.id).toBeTruthy();\n\n    try {\n      await authenticatedClientDetailPage.gotoClientDetail(created.id);\n      await authenticatedClientDetailPage.clickEdit();\n      await expect(authenticatedClientDetailPage.saveButton).toBeVisible();\n\n      const editChecks = [\n        {\n          name: 'Full Name',\n          clear: () => authenticatedClientDetailPage.clearFullName(),\n          restore: () => authenticatedClientDetailPage.fullNameInput.fill(payload.fullName),\n        },\n        {\n          name: 'Email',\n          clear: () => authenticatedClientDetailPage.clearEmail(),\n          restore: () => authenticatedClientDetailPage.emailInput.fill(payload.email),\n        },\n        {\n          name: 'Address',\n          clear: () => authenticatedClientDetailPage.clearAddress(),\n          restore: () => authenticatedClientDetailPage.addressInput.fill(payload.address),\n        },\n        {\n          name: 'City',\n          clear: () => authenticatedClientDetailPage.clearCity(),\n          restore: () => authenticatedClientDetailPage.cityInput.fill(payload.city),\n        },\n        {\n          name: 'State',\n          clear: () => authenticatedClientDetailPage.clearState(),\n          restore: () => authenticatedClientDetailPage.stateSelect.selectOption(payload.state),\n        },\n        {\n          name: 'ZIP',\n          clear: () => authenticatedClientDetailPage.clearZip(),\n          restore: () => authenticatedClientDetailPage.fillZip(payload.zip),\n        },\n      ];\n\n      for (const check of editChecks) {\n        await check.clear();\n        await authenticatedClientDetailPage.clickSave();\n\n        await expect(\n          authenticatedClientDetailPage.feedbackErrorBanner,\n          `Clearing \"${check.name}\" in Edit mode should display FeedbackBanner error`\n        ).toBeVisible();\n        await expect(authenticatedClientDetailPage.feedbackErrorBanner).toContainText(\n          clientData.messages.requiredErrorPattern\n        );\n        await expect(authenticatedClientDetailPage.saveSuccessBanner).toHaveCount(0);\n\n        await check.restore();\n      }\n\n      // Confirm persisted values were never overwritten with empty data\n      const fetched = await authenticatedClientDetailPage.getClientViaApi(created.id);\n      expect(fetched.status).toBe(200);\n      expect(fetched.body.fullName).toBe(payload.fullName);\n      expect(fetched.body.email).toBe(payload.email);\n      expect(fetched.body.zip).toBe(payload.zip);\n    } finally {\n      await authenticatedClientDetailPage.deleteClientViaApi(created.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/clientMandatoryFields.spec.ts#TC-06_-_Backend_POST__api_clients_rejects_requests",
+      "file": "tests/clientMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-80 - Client Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-06 - Backend POST /api/clients rejects requests with missing or blank mandatory fields with 400 Bad Request",
+      "startLine": 246,
+      "endLine": 260,
+      "fixtures": [
+        "authenticatedClientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-06 - Backend POST /api/clients rejects requests with missing or blank mandatory fields with 400 Bad Request', async ({\n    authenticatedClientDetailPage,\n  }) => {\n    const validBase = clientData.generateClient('tc06');\n    const mandatoryKeys: Array<keyof typeof validBase> = ['fullName', 'email', 'address', 'city', 'state', 'zip'];\n\n    for (const key of mandatoryKeys) {\n      const uniqueAttempt = clientData.generateClient(`tc06-${key}`);\n      const res = await authenticatedClientDetailPage.createClientRawViaApi({\n        ...uniqueAttempt,\n        [key]: clientData.invalidValues.empty,\n      });\n      expect(res.status, `POST /api/clients with empty \"${key}\" should return 400 Bad Request`).toBe(400);\n    }\n  })"
+    },
+    {
+      "id": "tests/clientMandatoryFields.spec.ts#TC-07_-_Backend_PUT__api_clients__id__rejects_upda",
+      "file": "tests/clientMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-80 - Client Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-07 - Backend PUT /api/clients/{id} rejects updates with missing or blank mandatory fields with 400 Bad Request",
+      "startLine": 262,
+      "endLine": 294,
+      "fixtures": [
+        "authenticatedClientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-07 - Backend PUT /api/clients/{id} rejects updates with missing or blank mandatory fields with 400 Bad Request', async ({\n    authenticatedClientDetailPage,\n  }) => {\n    const validBase = clientData.generateClient('tc07');\n    const created = await authenticatedClientDetailPage.createClientViaApi(validBase);\n    expect(created.id).toBeTruthy();\n\n    try {\n      const mandatoryKeys: Array<keyof typeof validBase> = ['fullName', 'email', 'address', 'city', 'state', 'zip'];\n\n      for (const key of mandatoryKeys) {\n        const res = await authenticatedClientDetailPage.updateClientRawViaApi(created.id, {\n          ...validBase,\n          [key]: clientData.invalidValues.empty,\n        });\n        expect(res.status, `PUT /api/clients/${created.id} with empty \"${key}\" should return 400 Bad Request`).toBe(\n          400\n        );\n      }\n\n      // Verify existing Client data remains untouched\n      const fetched = await authenticatedClientDetailPage.getClientViaApi(created.id);\n      expect(fetched.status).toBe(200);\n      expect(fetched.body.fullName).toBe(validBase.fullName);\n      expect(fetched.body.email).toBe(validBase.email);\n      expect(fetched.body.address).toBe(validBase.address);\n      expect(fetched.body.city).toBe(validBase.city);\n      expect(fetched.body.state).toBe(validBase.state);\n      expect(fetched.body.zip).toBe(validBase.zip);\n    } finally {\n      await authenticatedClientDetailPage.deleteClientViaApi(created.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/clientMandatoryFields.spec.ts#TC-08_-_Whitespace-only_values_in_mandatory_fields",
+      "file": "tests/clientMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-80 - Client Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-08 - Whitespace-only values in mandatory fields are rejected on UI save and Backend POST/PUT APIs",
+      "startLine": 296,
+      "endLine": 345,
+      "fixtures": [
+        "authenticatedClientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-08 - Whitespace-only values in mandatory fields are rejected on UI save and Backend POST/PUT APIs', async ({\n    authenticatedClientDetailPage,\n  }) => {\n    const validBase = clientData.generateClient('tc08');\n\n    // 1. UI Add Client with whitespace-only Full Name\n    await authenticatedClientDetailPage.gotoAddClient();\n    await authenticatedClientDetailPage.fillForm({\n      ...validBase,\n      fullName: clientData.invalidValues.whitespace,\n    });\n    await authenticatedClientDetailPage.clickSave();\n    await expect(authenticatedClientDetailPage.feedbackErrorBanner).toBeVisible();\n    await expect(authenticatedClientDetailPage.createSuccessBanner).toHaveCount(0);\n\n    // 2. Backend POST /api/clients with whitespace-only mandatory fields\n    const postWhitespaceName = await authenticatedClientDetailPage.createClientRawViaApi({\n      ...validBase,\n      fullName: clientData.invalidValues.whitespace,\n    });\n    expect(postWhitespaceName.status).toBe(400);\n\n    const postWhitespaceCity = await authenticatedClientDetailPage.createClientRawViaApi({\n      ...validBase,\n      city: clientData.invalidValues.whitespace,\n    });\n    expect(postWhitespaceCity.status).toBe(400);\n\n    // 3. UI Edit Client & Backend PUT /api/clients/{id} with whitespace-only values\n    const created = await authenticatedClientDetailPage.createClientViaApi(validBase);\n    expect(created.id).toBeTruthy();\n\n    try {\n      await authenticatedClientDetailPage.gotoClientDetail(created.id);\n      await authenticatedClientDetailPage.clickEdit();\n      await authenticatedClientDetailPage.fullNameInput.fill(clientData.invalidValues.whitespace);\n      await authenticatedClientDetailPage.clickSave();\n\n      await expect(authenticatedClientDetailPage.feedbackErrorBanner).toBeVisible();\n      await expect(authenticatedClientDetailPage.saveSuccessBanner).toHaveCount(0);\n\n      const putWhitespaceAddress = await authenticatedClientDetailPage.updateClientRawViaApi(created.id, {\n        ...validBase,\n        address: clientData.invalidValues.whitespace,\n      });\n      expect(putWhitespaceAddress.status).toBe(400);\n    } finally {\n      await authenticatedClientDetailPage.deleteClientViaApi(created.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/clientMandatoryFields.spec.ts#TC-09_-_Zero_Data_Loss___two-column_FieldRow_layou",
+      "file": "tests/clientMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-80 - Client Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-09 - Zero Data Loss & two-column FieldRow layout integrity across View/Edit mode transitions",
+      "startLine": 347,
+      "endLine": 390,
+      "fixtures": [
+        "authenticatedClientDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-09 - Zero Data Loss & two-column FieldRow layout integrity across View/Edit mode transitions', async ({\n    authenticatedClientDetailPage,\n  }) => {\n    const beforeList = await authenticatedClientDetailPage.getClientsListViaApi();\n    expect(beforeList.status).toBe(200);\n    const baselinePermanentIds = beforeList.items\n      .filter((c: any) => !String(c.fullName || '').includes('Global Client tc0'))\n      .map((c: any) => c.id);\n\n    const payload = clientData.generateClient('tc09');\n    const created = await authenticatedClientDetailPage.createClientViaApi(payload);\n    expect(created.id).toBeTruthy();\n\n    try {\n      await authenticatedClientDetailPage.gotoClientDetail(created.id);\n      await expect(authenticatedClientDetailPage.editButton).toBeVisible();\n      expect(await authenticatedClientDetailPage.isTwoColumnLayout()).toBe(true);\n      expect(await authenticatedClientDetailPage.areAllFieldsDisabled()).toBe(true);\n\n      // Enter Edit mode, trigger required field validation error, then Cancel back to View mode\n      await authenticatedClientDetailPage.clickEdit();\n      await expect(authenticatedClientDetailPage.saveButton).toBeVisible();\n      expect(await authenticatedClientDetailPage.areAllFieldsEnabled()).toBe(true);\n\n      await authenticatedClientDetailPage.clearFullName();\n      await authenticatedClientDetailPage.clickSave();\n      await expect(authenticatedClientDetailPage.feedbackErrorBanner).toBeVisible();\n\n      await authenticatedClientDetailPage.clickCancel();\n      await expect(authenticatedClientDetailPage.editButton).toBeVisible();\n      expect(await authenticatedClientDetailPage.areAllFieldsDisabled()).toBe(true);\n      expect(await authenticatedClientDetailPage.isTwoColumnLayout()).toBe(true);\n      await expect(authenticatedClientDetailPage.fullNameInput).toHaveValue(payload.fullName);\n    } finally {\n      await authenticatedClientDetailPage.deleteClientViaApi(created.id);\n    }\n\n    const afterList = await authenticatedClientDetailPage.getClientsListViaApi();\n    expect(afterList.status).toBe(200);\n    const afterPermanentIds = afterList.items\n      .filter((c: any) => !String(c.fullName || '').includes('Global Client tc0'))\n      .map((c: any) => c.id);\n    expect(afterPermanentIds).toEqual(baselinePermanentIds);\n  })"
+    },
+    {
       "id": "tests/clientNavigation.spec.ts#TC-01_-_Primary_navigation_tab_order_and_visibilit",
       "file": "tests/clientNavigation.spec.ts",
       "kind": "test",
@@ -13763,19 +14019,22 @@
       "parent": "const",
       "name": "clientData",
       "startLine": 12,
-      "endLine": 68,
+      "endLine": 75,
       "properties": [
         "urls",
         "headings",
         "tableHeaders",
         "statuses",
+        "mandatoryLabels",
+        "nonMarkedLabels",
+        "invalidValues",
         "messages",
         "zipLookups",
         "viewports",
         "generateClient",
         "invalidEmails"
       ],
-      "signature": "const clientData (urls, headings, tableHeaders, statuses, messages, zipLookups, viewports, generateClient, invalidEmails)",
+      "signature": "const clientData (urls, headings, tableHeaders, statuses, mandatoryLabels, nonMarkedLabels, invalidValues, messages, zipLookups, viewports, generateClient, invalidEmails)",
       "code": "export const clientData = {\n  urls: {\n    client: '/client',\n    clientNew: '/client/new',\n    apiClients: '/api/clients',\n    login: '/login',\n  },\n  headings: {\n    client: 'Client',\n    addClient: 'Add Client',\n    viewClient: 'View Client',\n    editClient: 'Edit Client',\n  },\n  tableHeaders: ['FULL NAME', 'EMAIL', 'STATUS'],\n  statuses: {\n    active: 'Active',\n    inactive: 'Inactive',\n  },\n  "
     },
     {
@@ -13784,8 +14043,8 @@
       "kind": "data",
       "parent": "const",
       "name": "timestamp",
-      "startLine": 55,
-      "endLine": 55,
+      "startLine": 62,
+      "endLine": 62,
       "properties": [],
       "signature": "const timestamp ()",
       "code": "const timestamp = Date.now();"
