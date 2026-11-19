@@ -95,21 +95,29 @@
           <!-- FLOW DIAGRAM VIEW -->
           <div id="flowCanvasView" class="flow-canvas">
             <div class="orchestrator-row">
-              <div class="human-trigger-pill">→ User Trigger Prompt</div>
+              <div class="trigger-entry-group">
+                <div id="humanTriggerPill" class="human-trigger-pill">→ Implement Test CTMQ-75</div>
+                <span class="trigger-dotted-arrow" title="Triggers QA Orchestrator Agent">┄┄┄▸</span>
+              </div>
               <div id="orchestratorNode" class="orchestrator-box">
                 <div class="orch-icon">⚡</div>
                 <div class="orch-body">
                   <div class="orch-title-row">
-                    <span class="orch-name">qa-sdlc-orchestrator</span>
-                    <span class="orch-tag">ANTIGRAVITY</span>
+                    <span class="orch-name">QA Orchestrator Agent</span>
+                    <code class="orch-code-id">qa-orchestrator-agent</code>
+                    <span class="orch-tag">AGENT / SUB-AGENT</span>
                     <span id="orchStateBadge" class="orch-state-badge">Completed</span>
                   </div>
                   <div id="orchSubtext" class="orch-subtext">
-                    ↓ coordinating plan-agent → git-agent → script-agent → jira-agent
+                    ↓ Autonomous E2E workflow coordinating git-agent ⇢ plan-agent ⇢ script-agent ⇢ jira-agent
                   </div>
+                  <div id="orchDelegationChain" class="orch-delegation-chain"></div>
                 </div>
               </div>
             </div>
+
+            <!-- DOTTED ARROW ROUTING TREE FROM QA ORCHESTRATOR AGENT TO 5 STAGES -->
+            <div id="orchestratorConnectorTree" class="orch-connector-tree"></div>
 
             <!-- 5 SWIMLANE COLUMNS -->
             <div id="swimlanesContainer" class="swimlanes-grid"></div>

@@ -411,11 +411,16 @@ function buildLiveTicketSummary(tId, evts) {
     }
   }
 
-  // Determine workflow state: in_progress | pr_raised | completed
+  // Determine workflow state: failed | in_progress | pr_raised | completed
+  const anyStepFailed =
+    lastEvt.status === 'failed' ||
+    Object.values(stepMap).some((e) => e.status === 'failed');
   const anyStepInProgress = Object.values(stepMap).some((e) => e.status === 'in_progress');
   const isClosed = stepMap['jira-close']?.status === 'passed';
   const isPrRaised = stepMap['raise-pr']?.status === 'passed';
-  const workflowState = anyStepInProgress
+  const workflowState = anyStepFailed
+    ? 'failed'
+    : anyStepInProgress
     ? 'in_progress'
     : isClosed
     ? 'completed'
@@ -553,11 +558,34 @@ function buildFullDashboardState(requestedTicket) {
         .sort()
     : [];
 
-  const knownTicketIds = new Set(summary.tickets.map((t) => t.ticket));
+  const knownTicketMap = new Map(summary.tickets.map((t, idx) => [t.ticket, idx]));
   for (const tId of allJsonlFiles) {
-    if (!knownTicketIds.has(tId)) {
-      const evts = readLedgerEvents(tId);
+    const evts = readLedgerEvents(tId);
+    if (!knownTicketMap.has(tId)) {
       summary.tickets.push(buildLiveTicketSummary(tId, evts));
+    } else {
+      const hasLiveActivity =
+        tId === activeState.activeTicket &&
+        evts.some(
+          (e) =>
+            e.status === 'in_progress' ||
+            e.status === 'failed' ||
+            e.agent === 'qa-orchestrator-agent' ||
+            (e.id && e.id.startsWith('evt_'))
+        );
+      if (hasLiveActivity) {
+        const idx = knownTicketMap.get(tId);
+        const existing = summary.tickets[idx];
+        const liveSummary = buildLiveTicketSummary(tId, evts);
+        summary.tickets[idx] = {
+          ...existing,
+          ...liveSummary,
+          title:
+            liveSummary.title && !liveSummary.title.startsWith('Live Agent Execution')
+              ? liveSummary.title
+              : existing.title || liveSummary.title
+        };
+      }
     }
   }
 

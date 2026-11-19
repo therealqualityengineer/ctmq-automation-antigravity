@@ -23,6 +23,9 @@ const ROOT_DIR = path.resolve(__dirname, '../..');
 const TELEMETRY_DIR = path.join(ROOT_DIR, '.context', 'telemetry');
 
 const STEP_LABELS = {
+  'orchestrator-start': 'QA Orchestrator Agent Started',
+  'orchestrator-halt': 'QA Orchestrator Agent Halted (Blocker/Bug)',
+  'orchestrator-complete': 'QA Orchestrator Agent Completed E2E',
   'jira-fetch': 'Jira Fetch & Story Analysis',
   'blueprint-read': 'Domain Blueprint Grounding',
   'testcase-design': 'QA Test Case Design (EP/BVA)',
@@ -121,6 +124,9 @@ function emitEvent(rawInput = {}) {
   const branch = rawInput.branch || getCurrentBranch();
   const ticket = (rawInput.ticket || process.env.TICKET_ID || inferTicketFromBranch(branch)).toUpperCase();
   const ledgerFile = path.join(TELEMETRY_DIR, `${ticket}.jsonl`);
+  if (rawInput.reset && fs.existsSync(ledgerFile)) {
+    fs.unlinkSync(ledgerFile);
+  }
   const existingEvents = readExistingEvents(ledgerFile);
 
   const timestamp = rawInput.timestamp || new Date().toISOString();

@@ -25,6 +25,10 @@ Add Testcase {JiraTicket}
 ## End-to-End Workflow
 
 ### Step 1: Fetch Ticket via Atlassian MCP & Ground in Domain Knowledge
+0. Emit `in_progress` telemetry for `jira-fetch` so the **QA-SDLC Live Dashboard** (`http://127.0.0.1:5174`) animates the dotted arrow into `DEFINE`:
+   ```bash
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent plan-agent --stage DEFINE --step jira-fetch --status in_progress --message "Fetching {JiraTicket} requirements from Jira"
+   ```
 1. Call `getAccessibleAtlassianResources` once per session to retrieve and cache the `cloudId`.
 2. Call `getJiraIssue` with `cloudId` and `issueIdOrKey: "{JiraTicket}"` using `view: "evidence"` or `view: "full"`.
 3. Extract:
@@ -33,6 +37,12 @@ Add Testcase {JiraTicket}
    - Acceptance Criteria, Definition of Done, and User Persona
    - Existing sub-tasks (to check if `"QA Testing Antigravity"` already exists)
 4. **Domain Grounding**: Read `context_docs/application_knowledge.md` to evaluate the ticket against known entity relationships, roles, routes, and business rules.
+5. Emit completion telemetry for `jira-fetch` and `blueprint-read`, and `in_progress` for `testcase-design`:
+   ```bash
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent plan-agent --stage DEFINE --step jira-fetch --status passed --message "Fetched {JiraTicket} requirements & sub-tasks"
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent plan-agent --stage DEFINE --step blueprint-read --status passed --artifact "context_docs/application_knowledge.md" --message "Grounded domain rules from context_docs/application_knowledge.md"
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent plan-agent --stage DEFINE --step testcase-design --status in_progress --message "Designing Positive, Negative, and Edge/BVA test scenarios"
+   ```
 
 ### Step 2: Analyze Requirements & Design Test Cases
 Apply formal QA test engineering techniques:

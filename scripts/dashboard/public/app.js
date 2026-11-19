@@ -116,7 +116,12 @@
     const statusText = document.getElementById('globalStatusText');
     const wfState = t.workflowState || 'completed';
 
-    if (wfState === 'in_progress') {
+    if (wfState === 'failed') {
+      chip.className = 'status-chip failed';
+      statusText.textContent = 'Halted • Bug / Failure';
+      document.getElementById('modeBadge').textContent = '● live stream';
+      document.getElementById('recordedStateLabel').textContent = `WORKFLOW HALTED • BUG OR BLOCKER DETECTED ON ${t.ticket}`;
+    } else if (wfState === 'in_progress') {
       chip.className = 'status-chip running';
       statusText.textContent = 'Live Running';
       document.getElementById('modeBadge').textContent = '● live stream';
@@ -139,47 +144,220 @@
     const events = state.events || [];
 
     document.getElementById('ticketSubtitle').textContent = `${t.ticket}: ${t.title}`;
+    const triggerPill = document.getElementById('humanTriggerPill');
+    if (triggerPill) {
+      triggerPill.textContent = `→ Implement Test ${t.ticket}`;
+    }
 
-    // Map latest event per step
+    // Map latest event per step and track chronological step order
     const stepMap = {};
+    const stepOrderMap = {};
+    let seqCounter = 1;
     for (const evt of events) {
+      if (evt.step && evt.step !== 'orchestrator-start' && evt.step !== 'orchestrator-complete' && evt.step !== 'orchestrator-halt') {
+        if (!stepOrderMap[evt.step]) {
+          stepOrderMap[evt.step] = seqCounter++;
+        }
+      }
       stepMap[evt.step] = evt;
     }
 
     // Orchestrator state
     const lastEvt = events[events.length - 1];
+    const orchNode = document.getElementById('orchestratorNode');
     const orchBadge = document.getElementById('orchStateBadge');
     const orchSub = document.getElementById('orchSubtext');
     const wfState = t.workflowState || 'completed';
-    if (lastEvt && wfState === 'in_progress') {
-      orchBadge.textContent = `Active: ${lastEvt.agent}`;
-      orchSub.textContent = `↓ executing ${lastEvt.stage}:${lastEvt.step} — ${lastEvt.message}`;
+
+    if (wfState === 'failed') {
+      if (orchNode) orchNode.className = 'orchestrator-box orch-failed';
+      orchBadge.textContent = `✗ Halted (${lastEvt ? lastEvt.step : 'Blocker'})`;
+      orchSub.textContent = `⚠ Workflow stopped by qa-orchestrator-agent — ${lastEvt ? lastEvt.message : 'Bug or test failure detected'}`;
+    } else if (lastEvt && wfState === 'in_progress') {
+      if (orchNode) orchNode.className = 'orchestrator-box orch-running';
+      orchBadge.textContent = `⚡ Active → ${lastEvt.agent}`;
+      orchSub.textContent = `⇢ Delegating ${lastEvt.stage}:${lastEvt.step} — ${lastEvt.message}`;
     } else if (wfState === 'pr_raised') {
+      if (orchNode) orchNode.className = 'orchestrator-box orch-running';
       orchBadge.textContent = `PR Raised (${t.prNumber})`;
-      orchSub.textContent = `↓ ${t.testsAutomated}/${t.testsTotal} automated tests passed in ${t.totalAgentMin} min (${t.dryReusePct}% corpus reuse) • Next: CL ${t.ticket}`;
+      orchSub.textContent = `⇢ ${t.testsAutomated}/${t.testsTotal} automated tests passed in ${t.totalAgentMin} min (${t.dryReusePct}% corpus reuse) • Next: jira-agent (CL ${t.ticket})`;
     } else {
-      orchBadge.textContent = 'Completed';
-      orchSub.textContent = `↓ 4 agents completed ${t.testsAutomated}/${t.testsTotal} automated tests in ${t.totalAgentMin} min (${t.dryReusePct}% corpus reuse)`;
+      if (orchNode) orchNode.className = 'orchestrator-box orch-completed';
+      orchBadge.textContent = '✓ Completed E2E';
+      orchSub.textContent = `⇢ qa-orchestrator-agent completed all 5 stages (${t.testsAutomated}/${t.testsTotal} tests passed in ${t.totalAgentMin} min • ${t.dryReusePct}% corpus reuse)`;
     }
 
-    // Render 5 Swimlanes
-    const swimlanesEl = document.getElementById('swimlanesContainer');
-    swimlanesEl.innerHTML = SWIMLANE_SCHEMA.map((lane) => {
+    // Compute per-swimlane status so both the orchestrator delegation chain and dotted SVG connector tree reflect live stage state
+    const laneStates = SWIMLANE_SCHEMA.map((lane, idx) => {
       const laneEvents = lane.steps.map((s) => stepMap[s.step]).filter(Boolean);
+      const anyFailed = laneEvents.some((e) => e.status === 'failed');
       const anyInProgress = laneEvents.some((e) => e.status === 'in_progress');
-      const allDone = laneEvents.length === lane.steps.length && !anyInProgress;
-      const stageStatus = anyInProgress ? 'in_progress' : allDone ? 'passed' : 'waiting';
+      const allDone = laneEvents.length === lane.steps.length && !anyInProgress && !anyFailed;
+      const someDone = laneEvents.length > 0 && !anyInProgress && !anyFailed && !allDone;
+      const stageStatus = anyFailed
+        ? 'failed'
+        : anyInProgress || someDone
+        ? 'in_progress'
+        : allDone
+        ? 'passed'
+        : 'waiting';
+      return {
+        index: idx,
+        stage: lane.stage,
+        title: lane.title,
+        status: stageStatus,
+        anyFailed,
+        anyInProgress,
+        allDone
+      };
+    });
+
+    // Render Skill Delegation Chain inside QA Orchestrator Agent
+    const delegationEl = document.getElementById('orchDelegationChain');
+    if (delegationEl) {
+      const chainNodes = [
+        { label: 'git-agent (CB)', stage: 'BRANCH', status: laneStates[1].status },
+        { label: 'plan-agent (Test Plan)', stage: 'DEFINE', status: laneStates[0].status },
+        { label: 'script-agent (Build)', stage: 'BUILD', status: laneStates[2].status },
+        { label: 'script-agent (Verify/RCA)', stage: 'VERIFY', status: laneStates[3].status },
+        { label: 'git & jira-agent (PR & Close)', stage: 'SHIP', status: laneStates[4].status }
+      ];
+      delegationEl.innerHTML = chainNodes
+        .map((node, i) => {
+          const icon =
+            node.status === 'passed'
+              ? '✓'
+              : node.status === 'in_progress'
+              ? '⟳'
+              : node.status === 'failed'
+              ? '✗'
+              : '○';
+          const arrow =
+            i < chainNodes.length - 1
+              ? `<span class="chain-dotted-arrow status-${node.status}">┄┄▸</span>`
+              : '';
+          return `
+            <span class="chain-pill status-${node.status}">
+              <span class="chain-icon">${icon}</span> ${node.label}
+            </span>
+            ${arrow}
+          `;
+        })
+        .join('');
+    }
+
+    // Render SVG Dotted Arrow Routing Tree from QA Orchestrator Agent to the 5 Swimlanes
+    const treeEl = document.getElementById('orchestratorConnectorTree');
+    if (treeEl) {
+      const xPositions = [100, 300, 500, 700, 900];
+      const strokeForStatus = (st) =>
+        st === 'passed'
+          ? '#109868'
+          : st === 'in_progress'
+          ? '#6336f5'
+          : st === 'failed'
+          ? '#dc2626'
+          : '#94a3b8';
+      const markerForStatus = (st) =>
+        st === 'passed'
+          ? 'url(#arrow-passed)'
+          : st === 'in_progress'
+          ? 'url(#arrow-active)'
+          : st === 'failed'
+          ? 'url(#arrow-failed)'
+          : 'url(#arrow-waiting)';
+
+      const trunkStatus =
+        wfState === 'failed'
+          ? 'failed'
+          : wfState === 'in_progress' || wfState === 'pr_raised'
+          ? 'in_progress'
+          : 'passed';
+
+      const branchesSvg = laneStates
+        .map((ls, idx) => {
+          const x = xPositions[idx];
+          const color = strokeForStatus(ls.status);
+          const marker = markerForStatus(ls.status);
+          const animClass = ls.status === 'in_progress' ? 'dotted-path-active' : '';
+          const badgeLabel =
+            ls.status === 'passed'
+              ? `✓ ${ls.stage}`
+              : ls.status === 'in_progress'
+              ? `⚡ ${ls.stage}`
+              : ls.status === 'failed'
+              ? `✗ ${ls.stage}`
+              : `${ls.stage}`;
+          return `
+            <!-- Dotted branch from center trunk (500,20) to column (${x},20) and down to (${x},60) -->
+            <path d="M 500 20 L ${x} 20 L ${x} 58"
+                  fill="none"
+                  stroke="${color}"
+                  stroke-width="${ls.status === 'in_progress' ? '2.6' : '2'}"
+                  stroke-dasharray="5,4"
+                  class="${animClass}"
+                  marker-end="${marker}" />
+            <circle cx="${x}" cy="20" r="3.5" fill="${color}" />
+            <g transform="translate(${x}, 37)">
+              <rect x="-42" y="-9" width="84" height="17" rx="8" fill="#ffffff" stroke="${color}" stroke-width="1.3" />
+              <text x="0" y="3" text-anchor="middle" font-size="9.5" font-weight="700" fill="${color}">${badgeLabel}</text>
+            </g>
+          `;
+        })
+        .join('');
+
+      treeEl.innerHTML = `
+        <svg class="orch-tree-svg" viewBox="0 0 1000 66" preserveAspectRatio="none" aria-label="QA Orchestrator Agent Dotted Workflow Tree">
+          <defs>
+            <marker id="arrow-passed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#109868" />
+            </marker>
+            <marker id="arrow-active" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#6336f5" />
+            </marker>
+            <marker id="arrow-failed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+            </marker>
+            <marker id="arrow-waiting" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#94a3b8" />
+            </marker>
+          </defs>
+          <!-- Center trunk descending from QA Orchestrator Agent -->
+          <path d="M 500 0 L 500 20"
+                fill="none"
+                stroke="${strokeForStatus(trunkStatus)}"
+                stroke-width="2.5"
+                stroke-dasharray="4,3"
+                class="${trunkStatus === 'in_progress' ? 'dotted-path-active' : ''}" />
+          <circle cx="500" cy="4" r="4" fill="${strokeForStatus(trunkStatus)}" />
+          ${branchesSvg}
+        </svg>
+      `;
+    }
+
+    // Render 5 Swimlanes with One-by-One Step Dotted Arrow Connectors
+    const swimlanesEl = document.getElementById('swimlanesContainer');
+    swimlanesEl.innerHTML = SWIMLANE_SCHEMA.map((lane, laneIdx) => {
+      const ls = laneStates[laneIdx];
+      const stageStatus = ls.status;
       const stageLabel =
         stageStatus === 'passed'
           ? '✓ Passed'
           : stageStatus === 'in_progress'
           ? '⟳ Active'
+          : stageStatus === 'failed'
+          ? '✗ Halted'
           : 'Waiting';
 
       const cardsHtml = lane.steps
-        .map((sDef) => {
+        .map((sDef, stepIdx) => {
           const ev = stepMap[sDef.step];
           const status = ev ? ev.status : 'waiting';
+          const execOrder = stepOrderMap[sDef.step];
+          const orderPill = execOrder
+            ? `<span class="step-order-pill status-${status}" title="Execution order #${execOrder}">#${execOrder}</span>`
+            : `<span class="step-order-pill status-waiting">•</span>`;
+
           const badgeText =
             status === 'passed'
               ? '✓ Passed'
@@ -211,6 +389,10 @@
               ? `<div class="repaired-chip" style="background:#f1f5f9;color:#475569;border-color:#cbd5e1;">⏭ ${
                   ev?.reason || 'Skipped (not needed)'
                 }</div>`
+              : status === 'failed'
+              ? `<div class="repaired-chip" style="background:#fef2f2;color:#dc2626;border-color:#fca5a5;">✗ ${
+                  ev?.message || 'Halted on failure'
+                }</div>`
               : '';
 
           const payloadJson = encodeURIComponent(
@@ -226,10 +408,35 @@
             )
           );
 
+          // Render vertical dotted arrow connector to the next step inside this swimlane
+          let nextConnectorHtml = '';
+          if (stepIdx < lane.steps.length - 1) {
+            const nextStepDef = lane.steps[stepIdx + 1];
+            const nextEv = stepMap[nextStepDef.step];
+            const nextStatus = nextEv ? nextEv.status : 'waiting';
+            const connStatus =
+              nextStatus === 'in_progress'
+                ? 'in_progress'
+                : nextStatus === 'passed' || nextStatus === 'repaired' || nextStatus === 'skipped'
+                ? 'passed'
+                : nextStatus === 'failed'
+                ? 'failed'
+                : 'waiting';
+            nextConnectorHtml = `
+              <div class="step-dotted-connector status-${connStatus}" title="Next step: ${nextStepDef.label}">
+                <span class="dotted-stem"></span>
+                <span class="dotted-arrowhead">▾</span>
+              </div>
+            `;
+          }
+
           return `
             <div class="step-card status-${status}" data-step-payload="${payloadJson}">
               <div class="step-top">
-                <span class="step-name">${sDef.label}</span>
+                <div class="step-name-wrap">
+                  ${orderPill}
+                  <span class="step-name">${sDef.label}</span>
+                </div>
                 <span class="step-badge ${status}">${badgeText}</span>
               </div>
               <div class="step-meta">
@@ -238,12 +445,15 @@
               </div>
               ${repairChip}
             </div>
+            ${nextConnectorHtml}
           `;
         })
         .join('');
 
       return `
-        <div class="swimlane ${allDone ? 'stage-passed' : anyInProgress ? 'stage-active' : ''}">
+        <div class="swimlane ${
+          ls.allDone ? 'stage-passed' : ls.anyFailed ? 'stage-failed' : ls.anyInProgress ? 'stage-active' : ''
+        }">
           <div class="swimlane-header">
             <span class="swimlane-title">${lane.title}</span>
             <span class="stage-pill ${stageStatus}">${stageLabel}</span>
