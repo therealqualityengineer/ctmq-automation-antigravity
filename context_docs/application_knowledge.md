@@ -37,7 +37,10 @@ CTMQ is a healthcare staffing and facility management platform managing temps (h
 ## 3. Core Business Rules & Entity Lifecycles
 
 ### A. Temps Lifecycle & Validation
-- **Required Fields**: First Name, Last Name, Email, Phone, Primary Specialty.
+- **Required Fields (10 Mandatory Fields)**: `First Name`, `Last Name`, `Cell Phone`, `Email`, `Address`, `City`, `State`, `ZIP`, `Certification`, and `Specialty`.
+  - Both Add Temp (`/temp/new`) and View/Edit Temp (`/temp/:id`) display a red asterisk (`*`, `text-red-600`) adjacent to all 10 mandatory field labels via `FieldRow`.
+  - Non-marked fields (`County`, `Status`, `Date of Birth`, `Gender`, `Marital Status`) do **not** display a red asterisk.
+  - Both frontend forms and backend endpoints (`POST /api/temps`, `PUT /api/temps/{id}`) enforce required validation for all 10 fields (returning `400 Bad Request` when missing/whitespace), and validate that `Specialty` is an active specialty mapped to the selected active `Certification`.
 - **Unique Constraints**: Email and SSN/Tax ID must be unique across all temps.
 - **Status Lifecycle**: `Applicant` $\rightarrow$ `Interviewing` $\rightarrow$ `Active` $\rightarrow$ `On Assignment` $\rightarrow$ `Inactive` $\rightarrow$ `Terminated`.
 - **Certifications & Specialties**: A temp cannot be assigned to specialized clinical shifts without active, non-expired certifications matching the shift requirements.

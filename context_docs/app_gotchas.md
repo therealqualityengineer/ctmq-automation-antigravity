@@ -90,7 +90,17 @@ This living register records practical DOM quirks, timing workarounds, locator p
 
 ---
 
-## 8. How to Add New Learnings Here
+## 8. Admin Certifications `mappedSpecialties` API Shape & `FieldRow` Required Asterisk (`CTMQ-78`)
+- **Symptom / Quirk**:
+  1. `GET /api/admin/certifications` returns `mappedSpecialties` as a comma-separated string (e.g. `"Cardiology, Pediatrics"` or `""`) rather than a JSON array, and uses `status: "Active" | "Inactive"`. Calling `.filter()` directly on `cert.mappedSpecialties` throws a `TypeError`.
+  2. On `/temp/new` and `/temp/:id`, mandatory field labels render their red asterisk via `FieldRow` as `<span class="ml-0.5 text-red-600" aria-hidden="true">*</span>` inside the label element.
+- **Solution**:
+  - Use `BaseTempFormPage.getActiveMappedCertAndSpecialtyViaApi()` (which normalizes both comma-separated strings and arrays and filters active records) to dynamically select valid mapped Certification/Specialty pairs.
+  - Use `BaseTempFormPage.getFieldLabel(label)` and `BaseTempFormPage.getRequiredAsterisk(label)` for asserting red asterisk presence/absence across Add and Edit Temp pages.
+
+---
+
+## 9. How to Add New Learnings Here
 When you complete RCA on a failed test or discover an application quirk:
 1. Provide a clear **Symptom / Quirk** description.
 2. Provide the verified **Solution / Workaround** implemented in Page Objects or fixtures.

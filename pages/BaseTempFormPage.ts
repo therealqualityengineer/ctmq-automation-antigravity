@@ -29,9 +29,11 @@ export abstract class BaseTempFormPage extends BasePage {
   readonly genderOtherRadio: Locator;
   readonly maritalStatusSelect: Locator;
 
-  // Common Actions
+  // Common Actions & Feedback
   readonly saveButton: Locator;
   readonly cancelButton: Locator;
+  readonly feedbackErrorBanner: Locator;
+  readonly feedbackSuccessBanner: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -61,9 +63,11 @@ export abstract class BaseTempFormPage extends BasePage {
     this.genderOtherRadio = page.locator('input[name="gender"][value="Other"]');
     this.maritalStatusSelect = page.locator('#maritalStatus');
 
-    // Action Buttons
+    // Action Buttons & Feedback
     this.saveButton = page.getByRole('button', { name: 'Save', exact: true });
     this.cancelButton = page.getByRole('button', { name: 'Cancel', exact: true });
+    this.feedbackErrorBanner = page.locator('[role="alert"]');
+    this.feedbackSuccessBanner = page.locator('[role="status"]');
   }
 
   async fillForm(data: Partial<TempPayload>): Promise<void> {
@@ -245,5 +249,81 @@ export abstract class BaseTempFormPage extends BasePage {
       ? this.getFormFields()
       : this.getFormFields().filter((f) => f !== this.specialtySelect);
     return await super.areAllFieldsEnabled(fieldsToCheck);
+  }
+
+  getFieldLabel(labelText: string): Locator {
+    const escaped = labelText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return this.page
+      .locator('form label, form span')
+      .filter({ hasText: new RegExp(`^\\s*${escaped}\\s*\\*?\\s*$`) })
+      .first();
+  }
+
+  getRequiredAsterisk(labelText: string): Locator {
+    return this.getFieldLabel(labelText).locator('span.text-red-600', { hasText: '*' });
+  }
+
+  async clearSelect(locator: Locator): Promise<void> {
+    await locator.selectOption('');
+  }
+
+  async getTempViaApi(id: number | string): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.get(`/api/temps/${id}`);
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    return { status: response.status(), body };
+  }
+
+  async getActiveMappedCertAndSpecialtyViaApi(): Promise<{
+    certification: string;
+    specialty: string;
+    unmappedSpecialty?: string;
+  }> {
+    const certsRes = await this.page.request.get('/api/admin/certifications?pageSize=200');
+    const certsJson = await certsRes.json();
+    const certs: any[] = Array.isArray(certsJson) ? certsJson : certsJson.items ?? certsJson.data ?? [];
+
+    const specsRes = await this.page.request.get('/api/admin/specialties?pageSize=200');
+    const specsJson = await specsRes.json();
+    const specs: any[] = Array.isArray(specsJson) ? specsJson : specsJson.items ?? specsJson.data ?? [];
+
+    const isActiveRecord = (r: any) =>
+      (r.status ? String(r.status).toLowerCase() === 'active' : true) && r.isActive !== false;
+
+    const activeSpecs = specs.filter(isActiveRecord);
+    const activeSpecNames = new Set(activeSpecs.map((s) => String(s.name).toLowerCase()));
+    const activeCerts = certs.filter(isActiveRecord);
+
+    for (const cert of activeCerts) {
+      const rawMapped = cert.specialties ?? cert.mappedSpecialties ?? [];
+      let mappedNames: string[] = [];
+      if (typeof rawMapped === 'string') {
+        mappedNames = rawMapped
+          .split(',')
+          .map((s) => s.trim())
+          .filter((name) => name.length > 0 && (activeSpecNames.size === 0 || activeSpecNames.has(name.toLowerCase())));
+      } else if (Array.isArray(rawMapped)) {
+        mappedNames = rawMapped
+          .filter((s: any) => typeof s === 'string' || isActiveRecord(s))
+          .map((s: any) => (typeof s === 'string' ? s.trim() : String(s.name).trim()))
+          .filter(Boolean);
+      }
+
+      if (mappedNames.length > 0) {
+        const mappedSet = new Set(mappedNames.map((n) => n.toLowerCase()));
+        const unmapped = activeSpecs.find((s) => !mappedSet.has(String(s.name).toLowerCase()));
+        return {
+          certification: cert.name,
+          specialty: mappedNames[0],
+          unmappedSpecialty: unmapped?.name,
+        };
+      }
+    }
+
+    throw new Error('No active Certification with a mapped active Specialty found in Admin Masters.');
   }
 }
