@@ -27,11 +27,18 @@ export const clientData = {
     active: 'Active',
     inactive: 'Inactive',
   },
+  mandatoryLabels: ['Full Name', 'Email', 'Address', 'City', 'State', 'ZIP'] as const,
+  nonMarkedLabels: ['County', 'Status'] as const,
+  invalidValues: {
+    empty: '',
+    whitespace: '   ',
+  },
   messages: {
     createSuccess: 'Client created successfully.',
     saveSuccess: 'Client saved successfully.',
     noCountyFound: 'No county found for this ZIP — please check the ZIP.',
     noRecordsFound: 'No records found.',
+    requiredErrorPattern: /required|must be|missing|select|cannot be empty|invalid/i,
   },
   zipLookups: {
     singleMatchNewYork: {

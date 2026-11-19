@@ -46,8 +46,11 @@ CTMQ is a healthcare staffing and facility management platform managing temps (h
 - **Certifications & Specialties**: A temp cannot be assigned to specialized clinical shifts without active, non-expired certifications matching the shift requirements.
 
 ### B. Clients Lifecycle & Validation
-- **Required Fields**: Facility Name, Billing Address, Primary Contact Name, Phone, and Email.
-- **Client Status**: `Lead` $\rightarrow$ `Active Contract` $\rightarrow$ `On Hold` $\rightarrow$ `Terminated`. Only `Active Contract` clients can request shifts.
+- **Required Fields (6 Mandatory Fields)**: `Full Name`, `Email`, `Address`, `City`, `State`, and `ZIP`.
+  - Both Add Client (`/client/new`) and View/Edit Client (`/client/:id`) display a red asterisk (`*`, `text-red-600`) adjacent to all 6 mandatory field labels via `FieldRow`.
+  - Non-marked fields (`County`, `Status`) do **not** display a red asterisk.
+  - Both frontend forms (`AddClientPage` and `ClientEditPage`) and backend endpoints (`POST /api/clients`, `PUT /api/clients/{id}`) enforce required validation for all 6 fields (returning `400 Bad Request` when missing or whitespace-only).
+- **Client Status**: `Lead` $\rightarrow$ `Active Contract` $\rightarrow$ `On Hold` $\rightarrow$ `Terminated` (or dynamic active Admin Status Options for `Client`). Only `Active` / `Active Contract` clients can request shifts.
 
 ### C. Admin Master Configurations (Status Options, Certifications, Specialties, Shifts, Order Types)
 - **Status Options**: Can be tagged specifically for `Client` or `Temp`. Creating a duplicate status code/name within the same target type is blocked with a validation toast/error dialog. Baseline `Active` and `Inactive` status options are seeded for both `Temp` and `Client`.

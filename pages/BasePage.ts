@@ -126,4 +126,20 @@ export abstract class BasePage {
   async getHeadingCount(level: number = 1): Promise<number> {
     return await this.page.locator(`h${level}`).count();
   }
+
+  getFieldLabel(labelText: string): Locator {
+    const escaped = labelText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return this.page
+      .locator('form label, form span')
+      .filter({ hasText: new RegExp(`^\\s*${escaped}\\s*\\*?\\s*$`) })
+      .first();
+  }
+
+  getRequiredAsterisk(labelText: string): Locator {
+    return this.getFieldLabel(labelText).locator('span.text-red-600', { hasText: '*' });
+  }
+
+  async clearSelect(locator: Locator): Promise<void> {
+    await locator.selectOption('');
+  }
 }

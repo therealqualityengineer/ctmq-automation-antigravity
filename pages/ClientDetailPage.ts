@@ -39,6 +39,8 @@ export class ClientDetailPage extends BasePage {
   readonly deleteSuccessBanner: Locator;
   readonly serverErrorBanner: Locator;
   readonly deleteErrorBanner: Locator;
+  readonly feedbackErrorBanner: Locator;
+  readonly feedbackSuccessBanner: Locator;
   readonly noCountyFoundMessage: Locator;
 
   constructor(page: Page) {
@@ -79,6 +81,8 @@ export class ClientDetailPage extends BasePage {
     this.deleteSuccessBanner = page.getByText('Client deleted successfully.');
     this.serverErrorBanner = page.locator('p.text-red-700, [role="alert"]').filter({ hasText: /Internal Server Error|failed|error/i });
     this.deleteErrorBanner = page.locator('[role="alert"], p.text-red-600, p.text-red-700, span.text-red-600');
+    this.feedbackErrorBanner = page.locator('[role="alert"]');
+    this.feedbackSuccessBanner = page.locator('[role="status"]');
     this.noCountyFoundMessage = page.getByText('No county found for this ZIP — please check the ZIP.');
   }
 
@@ -278,6 +282,50 @@ export class ClientDetailPage extends BasePage {
   async deleteClientViaApi(id: number | string): Promise<any> {
     const response = await this.page.request.delete(`/api/clients/${id}`);
     return response.status();
+  }
+
+  async clearFullName(): Promise<void> {
+    await this.fullNameInput.clear();
+  }
+
+  async clearEmail(): Promise<void> {
+    await this.emailInput.clear();
+  }
+
+  async clearAddress(): Promise<void> {
+    await this.addressInput.clear();
+  }
+
+  async clearCity(): Promise<void> {
+    await this.cityInput.clear();
+  }
+
+  async clearState(): Promise<void> {
+    await this.clearSelect(this.stateSelect);
+  }
+
+  async getClientViaApi(id: number | string): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.get(`/api/clients/${id}`);
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    return { status: response.status(), body };
+  }
+
+  async getClientsListViaApi(): Promise<{ status: number; body: any; items: any[]; totalCount: number }> {
+    const response = await this.page.request.get('/api/clients?pageSize=200');
+    let body: any = {};
+    try {
+      body = await response.json();
+    } catch {
+      body = { rawText: await response.text() };
+    }
+    const items: any[] = Array.isArray(body) ? body : body.items ?? body.data ?? [];
+    const totalCount = typeof body.totalCount === 'number' ? body.totalCount : items.length;
+    return { status: response.status(), body, items, totalCount };
   }
 }
 

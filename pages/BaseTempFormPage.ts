@@ -251,22 +251,6 @@ export abstract class BaseTempFormPage extends BasePage {
     return await super.areAllFieldsEnabled(fieldsToCheck);
   }
 
-  getFieldLabel(labelText: string): Locator {
-    const escaped = labelText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return this.page
-      .locator('form label, form span')
-      .filter({ hasText: new RegExp(`^\\s*${escaped}\\s*\\*?\\s*$`) })
-      .first();
-  }
-
-  getRequiredAsterisk(labelText: string): Locator {
-    return this.getFieldLabel(labelText).locator('span.text-red-600', { hasText: '*' });
-  }
-
-  async clearSelect(locator: Locator): Promise<void> {
-    await locator.selectOption('');
-  }
-
   async getTempViaApi(id: number | string): Promise<{ status: number; body: any }> {
     const response = await this.page.request.get(`/api/temps/${id}`);
     let body: any = {};
