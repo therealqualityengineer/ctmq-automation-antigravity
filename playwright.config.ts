@@ -12,7 +12,8 @@ export default defineConfig({
   workers: 2,
   reporter: [
     ['list'],
-    ['html', { outputFolder: 'playwright-report', open: 'never' }]
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
+    ['./utils/telemetryReporter.ts']
   ],
   use: {
     headless: false,

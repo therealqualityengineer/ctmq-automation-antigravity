@@ -98,3 +98,10 @@ To give clear visibility into ongoing work without forcing the user to expand co
   - **Knowledge Sync**: Status of `code-corpus.json` and gotchas updates
   - **Next Step**: Immediate next trigger (e.g., `Raise PR`).
 
+## 9. QA-SDLC Live Dashboard & Real-Time Telemetry (`http://127.0.0.1:5174`)
+- **Port Separation**: The CTMQ application under test runs on `http://localhost:5173`. The **QA-SDLC Live Dashboard** runs on `http://127.0.0.1:5174` (`npm run dashboard`) or inside VS Code Simple Browser.
+- **Live Telemetry Emission**:
+  - Each agent (`plan-agent`, `git-agent`, `script-agent`, `jira-agent`) must emit structured telemetry events to `.context/telemetry/<JiraTicket>.jsonl` via `npm run telemetry:emit -- --ticket <Ticket> --agent <agent> --stage <DEFINE|BRANCH|BUILD|VERIFY|SHIP> --step <step> --status <in_progress|passed|skipped|failed|repaired> --message "<detail>"` at major workflow transitions (including when a step is skipped or when RCA repairs a failure).
+  - Playwright test runs automatically stream test-level telemetry via `utils/telemetryReporter.ts` registered in `playwright.config.ts`.
+
+
