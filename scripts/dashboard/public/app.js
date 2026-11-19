@@ -108,28 +108,29 @@
       (sm.corpus || 0) + (sm.authoring || 0)
     );
     document.getElementById('hdrVerifyTime').textContent = formatMinToClock(
-      (sm.playwright || 0) + (sm.rca || 0)
+      (sm.playwright || 0) + (sm.rca || 0) + (sm.ship || 0)
     );
     document.getElementById('hdrTotalTime').textContent = formatMinToClock(t.totalAgentMin || 0);
 
     const chip = document.getElementById('globalStatusChip');
     const statusText = document.getElementById('globalStatusText');
-    const simBtn = document.getElementById('simulateBtn');
+    const wfState = t.workflowState || 'completed';
 
-    if (state.simulationRunning) {
+    if (wfState === 'in_progress') {
       chip.className = 'status-chip running';
       statusText.textContent = 'Live Running';
-      simBtn.disabled = true;
-      simBtn.textContent = '⟳ Agent Running...';
       document.getElementById('modeBadge').textContent = '● live stream';
       document.getElementById('recordedStateLabel').textContent = 'LIVE TELEMETRY STREAM • ACTIVE';
+    } else if (wfState === 'pr_raised') {
+      chip.className = 'status-chip running';
+      statusText.textContent = `PR Raised (${t.prNumber || 'PR'}) • Awaiting Close`;
+      document.getElementById('modeBadge').textContent = '● live stream';
+      document.getElementById('recordedStateLabel').textContent = `LIVE WORKFLOW • PR RAISED (${t.prNumber || 'PR'}) — AWAITING CL ${t.ticket}`;
     } else {
       chip.className = 'status-chip completed';
       statusText.textContent = `Completed (${t.prNumber || 'PR'})`;
-      simBtn.disabled = false;
-      simBtn.textContent = '▶ Simulate Live Run';
       document.getElementById('modeBadge').textContent = '⑂ snapshot';
-      document.getElementById('recordedStateLabel').textContent = `RECORDED STATE • COMPLETED (${t.era.toUpperCase()})`;
+      document.getElementById('recordedStateLabel').textContent = `RECORDED STATE • COMPLETED (${(t.era || '').toUpperCase()})`;
     }
   }
 
@@ -149,9 +150,13 @@
     const lastEvt = events[events.length - 1];
     const orchBadge = document.getElementById('orchStateBadge');
     const orchSub = document.getElementById('orchSubtext');
-    if (lastEvt && state.simulationRunning) {
+    const wfState = t.workflowState || 'completed';
+    if (lastEvt && wfState === 'in_progress') {
       orchBadge.textContent = `Active: ${lastEvt.agent}`;
       orchSub.textContent = `↓ executing ${lastEvt.stage}:${lastEvt.step} — ${lastEvt.message}`;
+    } else if (wfState === 'pr_raised') {
+      orchBadge.textContent = `PR Raised (${t.prNumber})`;
+      orchSub.textContent = `↓ ${t.testsAutomated}/${t.testsTotal} automated tests passed in ${t.totalAgentMin} min (${t.dryReusePct}% corpus reuse) • Next: CL ${t.ticket}`;
     } else {
       orchBadge.textContent = 'Completed';
       orchSub.textContent = `↓ 4 agents completed ${t.testsAutomated}/${t.testsTotal} automated tests in ${t.totalAgentMin} min (${t.dryReusePct}% corpus reuse)`;
@@ -189,11 +194,15 @@
               : 'Waiting';
 
           const durText =
-            ev && ev.durationSec !== undefined
+            ev && ev.durationSec !== undefined && ev.durationSec !== null
               ? `~${ev.durationSec}s`
               : status === 'skipped'
               ? '0s (skipped)'
-              : 'pending';
+              : status === 'in_progress'
+              ? 'running...'
+              : status === 'passed' || status === 'repaired'
+              ? 'completed'
+              : 'waiting';
 
           const repairChip =
             status === 'repaired'
@@ -819,12 +828,6 @@
     fetchDashboardState(selectedTicketId);
   });
 
-  document.getElementById('simulateBtn').addEventListener('click', async () => {
-    const ticket = selectedTicketId || 'CTMQ-75';
-    await fetch(`/api/simulate?ticket=${encodeURIComponent(ticket)}`, { method: 'POST' });
-    fetchDashboardState(ticket);
-  });
-
   document.getElementById('modalCloseBtn').addEventListener('click', () => {
     document.getElementById('stepModal').classList.add('hidden');
   });
@@ -837,10 +840,15 @@
 
   // Connect Server-Sent Events (SSE) for real-time updates
   const evtSource = new EventSource('/api/stream');
-  evtSource.addEventListener('telemetry-update', () => {
-    fetchDashboardState(selectedTicketId);
-  });
-  evtSource.addEventListener('simulation-complete', () => {
+  evtSource.addEventListener('telemetry-update', (evt) => {
+    try {
+      const payload = JSON.parse(evt.data || '{}');
+      if (payload.activeTicket && payload.activeTicket !== selectedTicketId) {
+        selectedTicketId = payload.activeTicket;
+      }
+    } catch {
+      // ignore
+    }
     fetchDashboardState(selectedTicketId);
   });
 

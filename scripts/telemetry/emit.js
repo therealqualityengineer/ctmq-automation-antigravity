@@ -4,14 +4,14 @@
  *
  * Usage:
  *   node scripts/telemetry/emit.js \
- *     --ticket CTMQ-75 \
+ *     --ticket CTMQ-78 \
  *     --agent script-agent \
  *     --stage BUILD \
  *     --step corpus-query \
  *     --status passed \
  *     --duration 12 \
- *     --message "Matched StatusOptionsPage, BaseTempFormPage, ClientDetailPage" \
- *     --reused 8 \
+ *     --message "Matched BaseTempFormPage, AddTempPage, TempDetailPage" \
+ *     --reused 14 \
  *     --artifact ".context/code-corpus.json"
  */
 
@@ -21,6 +21,22 @@ const { execSync } = require('child_process');
 
 const ROOT_DIR = path.resolve(__dirname, '../..');
 const TELEMETRY_DIR = path.join(ROOT_DIR, '.context', 'telemetry');
+
+const STEP_LABELS = {
+  'jira-fetch': 'Jira Fetch & Story Analysis',
+  'blueprint-read': 'Domain Blueprint Grounding',
+  'testcase-design': 'QA Test Case Design (EP/BVA)',
+  'subtask-sync': 'Sync "QA Testing Antigravity"',
+  'branch-create': 'Safe Branch Creation (CB)',
+  'corpus-query': 'Code Corpus Query & Deduplication',
+  'gotchas-check': 'Gotchas Memory Check',
+  'code-author': 'Page Object & Spec Authoring',
+  'playwright-run': 'Playwright Suite Execution',
+  'rca-heal': 'RCA & Probe Auto-Fix',
+  'corpus-sync': 'AST Corpus & Gotchas Auto-Sync',
+  'raise-pr': 'Commit & Raise Pull Request',
+  'jira-close': 'Complete Sub-task & Close Ticket (CL)'
+};
 
 function parseArgs(argv) {
   const args = {};
@@ -58,6 +74,45 @@ function inferTicketFromBranch(branch) {
   return match ? match[1].toUpperCase() : 'CTMQ-LIVE';
 }
 
+function readExistingEvents(ledgerFile) {
+  if (!fs.existsSync(ledgerFile)) return [];
+  return fs
+    .readFileSync(ledgerFile, 'utf8')
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => {
+      try {
+        return JSON.parse(line);
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+}
+
+function computeElapsedSeconds(existingEvents, step, nowIso) {
+  const nowMs = new Date(nowIso).getTime();
+  if (Number.isNaN(nowMs) || existingEvents.length === 0) return 15;
+
+  // Prefer matching in_progress event for the same step
+  for (let i = existingEvents.length - 1; i >= 0; i--) {
+    const prev = existingEvents[i];
+    if (prev.step === step && prev.status === 'in_progress' && prev.timestamp) {
+      const diffSec = Math.round((nowMs - new Date(prev.timestamp).getTime()) / 1000);
+      if (diffSec > 0 && diffSec < 1800) return diffSec;
+    }
+  }
+
+  // Otherwise use elapsed time since the most recent completed event
+  const lastEvt = existingEvents[existingEvents.length - 1];
+  if (lastEvt && lastEvt.timestamp) {
+    const diffSec = Math.round((nowMs - new Date(lastEvt.timestamp).getTime()) / 1000);
+    if (diffSec > 0 && diffSec < 1800) return diffSec;
+  }
+
+  return 15;
+}
+
 function emitEvent(rawInput = {}) {
   if (!fs.existsSync(TELEMETRY_DIR)) {
     fs.mkdirSync(TELEMETRY_DIR, { recursive: true });
@@ -65,18 +120,33 @@ function emitEvent(rawInput = {}) {
 
   const branch = rawInput.branch || getCurrentBranch();
   const ticket = (rawInput.ticket || process.env.TICKET_ID || inferTicketFromBranch(branch)).toUpperCase();
+  const ledgerFile = path.join(TELEMETRY_DIR, `${ticket}.jsonl`);
+  const existingEvents = readExistingEvents(ledgerFile);
+
+  const timestamp = rawInput.timestamp || new Date().toISOString();
+  const step = rawInput.step || 'step-update';
+  const status = rawInput.status || 'passed'; // in_progress | passed | skipped | failed | repaired | waiting
+
+  let durationSec;
+  if (rawInput.duration !== undefined) {
+    durationSec = Number(rawInput.duration);
+  } else if (status === 'skipped') {
+    durationSec = 0;
+  } else if (status === 'passed' || status === 'repaired' || status === 'failed') {
+    durationSec = computeElapsedSeconds(existingEvents, step, timestamp);
+  }
 
   const event = {
     id: `evt_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-    timestamp: rawInput.timestamp || new Date().toISOString(),
+    timestamp,
     ticket,
     branch,
     agent: rawInput.agent || 'script-agent',
     stage: (rawInput.stage || 'BUILD').toUpperCase(),
-    step: rawInput.step || 'step-update',
-    label: rawInput.label || rawInput.step || 'Step Update',
-    status: rawInput.status || 'passed', // in_progress | passed | skipped | failed | repaired | waiting
-    durationSec: rawInput.duration !== undefined ? Number(rawInput.duration) : undefined,
+    step,
+    label: rawInput.label || STEP_LABELS[step] || step,
+    status,
+    durationSec,
     message: rawInput.message || '',
     reason: rawInput.reason || '',
     reusedCount: rawInput.reused !== undefined ? Number(rawInput.reused) : undefined,
@@ -93,7 +163,6 @@ function emitEvent(rawInput = {}) {
       : []
   };
 
-  const ledgerFile = path.join(TELEMETRY_DIR, `${ticket}.jsonl`);
   fs.appendFileSync(ledgerFile, JSON.stringify(event) + '\n', 'utf8');
 
   // Update active state pointer so dashboard knows the most recently active ticket
@@ -120,4 +189,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { emitEvent, TELEMETRY_DIR };
+module.exports = { emitEvent, TELEMETRY_DIR, STEP_LABELS };

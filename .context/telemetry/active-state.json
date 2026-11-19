@@ -1,9 +1,9 @@
 {
   "activeTicket": "CTMQ-78",
   "activeBranch": "CTMQ-78-Testing",
-  "lastAgent": "script-agent",
-  "lastStage": "VERIFY",
-  "lastStep": "corpus-sync",
+  "lastAgent": "git-agent",
+  "lastStage": "SHIP",
+  "lastStep": "raise-pr",
   "lastStatus": "passed",
-  "updatedAt": "2026-11-19T04:58:15.697Z"
+  "updatedAt": "2026-11-19T05:01:17.138Z"
 }
