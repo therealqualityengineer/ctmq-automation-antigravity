@@ -77,6 +77,10 @@ flowchart TD
 Emit milestone check-in:
 > 🌿 *Phase 1: Verifying Git branch state and ensuring dedicated ticket branch for `{TicketNumber}` (`git-agent`)*
 
+0. Emit `in_progress` telemetry so the **QA-SDLC Live Dashboard** (`http://127.0.0.1:5174`) activates the dotted arrow from `qa-orchestrator-agent` to `BRANCH:branch-create`:
+   ```bash
+   npm run telemetry:emit -- --ticket {TicketNumber} --agent git-agent --stage BRANCH --step branch-create --status in_progress --message "Checking active Git branch and ensuring dedicated branch for {TicketNumber}"
+   ```
 1. Read and follow **Workflow 1 (`CB {TicketNumber}`)** in [`.agents/skills/git-agent/SKILL.md`](../skills/git-agent/SKILL.md).
 2. Inspect the current active branch:
    ```bash
@@ -101,7 +105,7 @@ Emit milestone check-in:
        ```bash
        npm run telemetry:emit -- --ticket {TicketNumber} --agent git-agent --stage BRANCH --step branch-create --status passed --message "Created and switched to dedicated ticket branch for {TicketNumber}"
        ```
-4. **Halt Condition**: If a merge conflict, dirty working tree lock, or Git error prevents switching off `main`/`master`, halt immediately and inform the user.
+4. **Halt Condition**: If a merge conflict, dirty working tree lock, or Git error prevents switching off `main`/`master`, emit `--step branch-create --status failed`, halt immediately, and inform the user.
 
 ---
 
@@ -110,17 +114,34 @@ Emit milestone check-in:
 Emit milestone check-in:
 > 📋 *Phase 2: Designing QA test cases and syncing `"QA Testing Antigravity"` Jira sub-task (`plan-agent`)*
 
-1. Read and follow [`.agents/skills/plan-agent/SKILL.md`](../skills/plan-agent/SKILL.md) (`Add Testcase {TicketNumber}`).
+1. Read and follow [`.agents/skills/plan-agent/SKILL.md`](../skills/plan-agent/SKILL.md) (`Add Testcase {TicketNumber}`), emitting step-by-step telemetry (`in_progress` $\rightarrow$ `passed`) so the QA-SDLC Live Dashboard dotted arrow advances one step at a time:
+   - **Step 2.1 (`jira-fetch`)**:
+     ```bash
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent plan-agent --stage DEFINE --step jira-fetch --status in_progress --message "Fetching {TicketNumber} requirements & sub-tasks from Jira"
+     ```
+     *(After fetching Jira issue)*:
+     ```bash
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent plan-agent --stage DEFINE --step jira-fetch --status passed --message "Fetched {TicketNumber} summary, acceptance criteria, and sub-tasks"
+     ```
+   - **Step 2.2 (`blueprint-read` & `testcase-design`)**:
+     ```bash
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent plan-agent --stage DEFINE --step blueprint-read --status passed --artifact "context_docs/application_knowledge.md" --message "Grounded domain rules from context_docs/application_knowledge.md"
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent plan-agent --stage DEFINE --step testcase-design --status in_progress --message "Designing Positive, Negative, and Edge/BVA test scenarios"
+     ```
 2. **Strict Role Boundary During Planning**:
    - Focus purely on business requirements, acceptance criteria, and domain logic from `context_docs/application_knowledge.md`.
    - Design Positive, Negative, and Edge/Boundary test scenarios using Equivalence Partitioning (EP), Boundary Value Analysis (BVA), State Transition, and Decision Table techniques.
-3. **Sync with Jira & Local Artifact**:
+3. **Sync with Jira & Local Artifact (`subtask-sync`)**:
    - Check sub-tasks of `{TicketNumber}` for `"QA Testing Antigravity"`.
    - Create `"QA Testing Antigravity"` (via `createJiraIssue`) or update its description (via `editJiraIssue`) with the complete Markdown test plan.
    - Save the identical test plan locally to `test-plans/{TicketNumber}.md`.
    - Update `context_docs/application_knowledge.md` with any newly discovered domain rules.
-   - Emit `DEFINE` stage telemetry (`jira-fetch`, `blueprint-read`, `testcase-design`, `subtask-sync`).
-4. **Halt Condition**: If `{TicketNumber}` cannot be found in Jira, Atlassian MCP authentication is disconnected, or the ticket lacks actionable requirements, emit failure telemetry, halt the workflow, and alert the user.
+   - Emit completion telemetry:
+     ```bash
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent plan-agent --stage DEFINE --step testcase-design --status passed --message "Designed structured test scenarios for {TicketNumber}"
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent plan-agent --stage DEFINE --step subtask-sync --status passed --artifact "test-plans/{TicketNumber}.md" --message "Updated QA Testing Antigravity sub-task & saved test-plans/{TicketNumber}.md"
+     ```
+4. **Halt Condition**: If `{TicketNumber}` cannot be found in Jira, Atlassian MCP authentication is disconnected, or the ticket lacks actionable requirements, emit `--status failed` telemetry, halt the workflow, and alert the user.
 
 ---
 
@@ -130,26 +151,52 @@ Emit milestone check-in:
 > 🛠️ *Phase 3: Querying Code Corpus, authoring Playwright tests, and verifying 100% pass rate (`script-agent`)*
 
 1. Read and follow [`.agents/skills/script-agent/SKILL.md`](../skills/script-agent/SKILL.md) (`Write test {TicketNumber}`).
-2. **Code Corpus & Gotchas Retrieval**:
-   - Query the AST Code Corpus first:
+2. **Code Corpus & Gotchas Retrieval (`corpus-query` & `gotchas-check`)**:
+   - Emit `in_progress` for `corpus-query`:
+     ```bash
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage BUILD --step corpus-query --status in_progress --message "Querying AST code corpus for reusable Page Objects & scenarios"
+     ```
+   - Query the AST Code Corpus:
      ```bash
      npm run corpus:query -- "<feature keywords>"
      ```
    - Deduplicate scenarios against existing `tests/*.spec.ts` and reuse existing Page Objects, fixtures, and `test-data/` exports.
    - Follow the **No Full-File Reads (`#L1-end`)** rule on files returned by `corpus:query` (always use targeted `StartLine`/`EndLine` ranges).
    - Consult `context_docs/app_gotchas.md` for known timing, modal, or selector traps.
-3. **Layered Automation Implementation**:
+   - Emit `passed` for `corpus-query` and `gotchas-check`, and `in_progress` for `code-author`:
+     ```bash
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage BUILD --step corpus-query --status passed --reused <count> --message "Queried code-corpus.json and checked deduplication"
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage BUILD --step gotchas-check --status passed --artifact "context_docs/app_gotchas.md" --message "Verified UI timing and selector guardrails in app_gotchas.md"
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage BUILD --step code-author --status in_progress --message "Authoring Page Objects, test data, and Playwright spec"
+     ```
+3. **Layered Automation Implementation (`code-author`)**:
    - Extend or create Page Objects under `pages/` (extending `BasePage`), register fixtures in `fixtures/customFixtures.ts`, place test data in `test-data/`, and author clean Playwright specs in `tests/*.spec.ts`.
-4. **Mandatory Test Execution & RCA Auto-Fix Loop**:
-   - Run the Playwright spec:
+   - Emit `passed` for `code-author`:
+     ```bash
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage BUILD --step code-author --status passed --artifact "tests/<feature>.spec.ts" --message "Authored Page Objects and Playwright spec"
+     ```
+4. **Mandatory Test Execution & RCA Auto-Fix Loop (`playwright-run` & `rca-heal`)**:
+   - Run the Playwright spec (`utils/telemetryReporter.ts` automatically streams `VERIFY:playwright-run` telemetry in real time):
      ```bash
      npx playwright test tests/<feature>.spec.ts
      ```
    - If any test fails due to an automation bug (locator mismatch, timing, fixture state, test data):
+     - Emit `in_progress` for `rca-heal`:
+       ```bash
+       npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage VERIFY --step rca-heal --status in_progress --message "Running RCA diagnosis & auto-healing automation failure"
+       ```
      - Diagnose the root cause (using `scratch/` probes if helpful), fix the automation code without weakening assertions, and re-run the test suite.
+     - Once repaired and passing, emit `repaired` for `rca-heal`:
+       ```bash
+       npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage VERIFY --step rca-heal --status repaired --rcaAttempt 1 --message "Diagnosed and fixed failure; verified 100% pass"
+       ```
+   - If 100% of tests pass on the first run, emit `skipped` for `rca-heal`:
+     ```bash
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage VERIFY --step rca-heal --status skipped --reason "Skipped: 100% first-run pass rate"
+     ```
 5. **CRITICAL HALT GATE — Application Bug or Unfixable Test Failure**:
    - If a test continues to fail because of an **application bug/defect**, missing backend behavior, broken environment (`http://localhost:5173` down), or any issue that cannot be resolved without weakening business assertions:
-     1. Emit failure telemetry:
+     1. Emit failure telemetry (which turns the QA-SDLC Live Dashboard dotted arrow and status badge crimson red `Halted • Bug / Failure`):
         ```bash
         npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage VERIFY --step rca-heal --status failed --message "Halted due to application bug / unfixable test failure"
         ```
@@ -161,13 +208,16 @@ Emit milestone check-in:
         - **Expected vs. Actual Behavior**: Business expectation from Jira vs. observed application behavior
         - **Root Cause Analysis & Evidence**: Error output, DOM state, or API failure details
         - **Next Options**: Ask the user how they would like to proceed (e.g., log a defect, skip the blocked scenario, or re-run after an app fix).
-6. **Post-Pass Knowledge Sync** (Only when 100% of tests pass):
+6. **Post-Pass Knowledge Sync (`corpus-sync`)** (Only when 100% of tests pass):
    - Update `test-plans/{TicketNumber}.md` and `context_docs/app_gotchas.md`.
    - Rebuild the AST Code Corpus:
      ```bash
      npm run build:corpus
      ```
-   - Emit `BUILD` and `VERIFY` telemetry events (`corpus-query`, `code-author`, `rca-heal`, `corpus-sync`).
+   - Emit `VERIFY:corpus-sync`:
+     ```bash
+     npm run telemetry:emit -- --ticket {TicketNumber} --agent script-agent --stage VERIFY --step corpus-sync --status passed --artifact ".context/code-corpus.json" --message "Synchronized AST code corpus and app_gotchas.md"
+     ```
 
 ---
 
@@ -178,6 +228,10 @@ Emit milestone check-in:
 
 *(Executed **only** after Phase 3 achieves a 100% test pass rate.)*
 
+0. Emit `in_progress` for `SHIP:raise-pr`:
+   ```bash
+   npm run telemetry:emit -- --ticket {TicketNumber} --agent git-agent --stage SHIP --step raise-pr --status in_progress --message "Staging verified assets, committing, and raising Pull Request"
+   ```
 1. Read and follow **Workflow 2 (`Raise PR`)** in [`.agents/skills/git-agent/SKILL.md`](../skills/git-agent/SKILL.md).
 2. Verify current branch is not `main` or `master` (`git branch --show-current`).
 3. Inspect `git status` and `git diff --stat` to ensure only clean automation assets (`pages/`, `fixtures/`, `tests/`, `test-data/`, `test-plans/`, `context_docs/`, `.context/code-corpus.json`) are staged and no temporary probe files or secrets are included.
@@ -199,7 +253,7 @@ Emit milestone check-in:
    ```bash
    npm run telemetry:emit -- --ticket {TicketNumber} --agent git-agent --stage SHIP --step raise-pr --status passed --message "Committed changes and raised Pull Request for {TicketNumber}"
    ```
-8. **Halt Condition**: If `git commit` or `git push` fails due to a repository error or merge conflict, halt and report the Git error to the user before closing the Jira ticket.
+8. **Halt Condition**: If `git commit` or `git push` fails due to a repository error or merge conflict, emit `--step raise-pr --status failed`, halt, and report the Git error to the user before closing the Jira ticket.
 
 ---
 
@@ -210,6 +264,10 @@ Emit milestone check-in:
 
 *(Executed **only** after Phase 4 succeeds.)*
 
+0. Emit `in_progress` for `SHIP:jira-close`:
+   ```bash
+   npm run telemetry:emit -- --ticket {TicketNumber} --agent jira-agent --stage SHIP --step jira-close --status in_progress --message "Completing QA Testing Antigravity sub-task and auditing sibling sub-tasks"
+   ```
 1. Read and follow [`.agents/skills/jira-agent/SKILL.md`](../skills/jira-agent/SKILL.md) (`CL {TicketNumber}`).
 2. **Self-Assignment**:
    - Fetch current user (`atlassianUserInfo`) and ensure both `{TicketNumber}` and `"QA Testing Antigravity"` are assigned to the active user.
@@ -219,7 +277,7 @@ Emit milestone check-in:
    - Inspect all other sub-tasks under `{TicketNumber}`.
    - **Halt Condition**: If **any** sibling sub-task is still open or in progress (`statusCategory.key !== "done"`):
      - Do **NOT** close the parent ticket `{TicketNumber}`.
-     - Emit telemetry noting the sibling sub-task block and output the table of incomplete sibling sub-tasks to the user.
+     - Emit `--step jira-close --status failed --message "Completed QA sub-task; parent closure halted due to open sibling sub-tasks"` and output the table of incomplete sibling sub-tasks to the user.
    - **If all sibling sub-tasks are completed**:
      - Transition the parent ticket `{TicketNumber}` to **Completed / Done**.
      - Emit telemetry:

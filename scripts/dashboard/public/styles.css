@@ -245,6 +245,12 @@ body {
   border: 1px solid var(--amber-border);
 }
 
+.status-chip.failed {
+  background: var(--red-soft);
+  color: var(--red-primary);
+  border: 1px solid var(--red-border);
+}
+
 .status-dot {
   width: 8px;
   height: 8px;
@@ -412,54 +418,95 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 18px;
+  gap: 10px;
+  margin-bottom: 2px;
+  flex-wrap: wrap;
+}
+
+.trigger-entry-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .human-trigger-pill {
-  position: absolute;
-  left: 8px;
-  top: 6px;
   background: #fef3c7;
   color: #b45309;
-  border: 1px solid #fcd34d;
-  font-size: 11px;
+  border: 1.5px dashed #f59e0b;
+  font-size: 11.5px;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 999px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.trigger-dotted-arrow {
+  color: #7c3aed;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: -1px;
 }
 
 .orchestrator-box {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   background: linear-gradient(135deg, #5e2ced, #7b4dff);
   color: #fff;
-  padding: 11px 20px;
+  padding: 12px 18px;
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(94, 44, 237, 0.26);
-  min-width: 390px;
+  min-width: 540px;
+  max-width: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  transition: all 0.2s ease;
+}
+
+.orchestrator-box.orch-running {
+  box-shadow: 0 0 0 4px rgba(123, 77, 255, 0.22), 0 8px 22px rgba(94, 44, 237, 0.34);
+}
+
+.orchestrator-box.orch-failed {
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.22), 0 8px 22px rgba(185, 28, 28, 0.32);
+}
+
+.orch-body {
+  flex: 1;
 }
 
 .orch-icon {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 17px;
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .orch-title-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .orch-name {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.orch-code-id {
+  font-size: 11px;
   font-weight: 700;
-  font-size: 13.5px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.28);
+  color: #e9d5ff;
 }
 
 .orch-tag {
@@ -473,17 +520,99 @@ body {
 .orch-state-badge {
   font-size: 11px;
   font-weight: 700;
-  padding: 2px 9px;
+  padding: 2.5px 10px;
   border-radius: 999px;
   background: #fff;
   color: #5e2ced;
   margin-left: auto;
 }
 
+.orchestrator-box.orch-failed .orch-state-badge {
+  color: #dc2626;
+}
+
 .orch-subtext {
   font-size: 11.5px;
-  opacity: 0.9;
-  margin-top: 3px;
+  opacity: 0.94;
+  margin-top: 4px;
+}
+
+.orch-delegation-chain {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+  padding-top: 7px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.28);
+}
+
+.chain-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2.5px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.chain-pill.status-passed {
+  background: rgba(16, 185, 129, 0.28);
+  border-color: #6ee7b7;
+  color: #ecfdf5;
+}
+
+.chain-pill.status-in_progress {
+  background: #ffffff;
+  color: #5e2ced;
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.chain-pill.status-failed {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fca5a5;
+}
+
+.chain-dotted-arrow {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: -1px;
+}
+
+/* SVG Dotted Arrow Routing Tree from QA Orchestrator Agent to 5 Swimlanes */
+.orch-connector-tree {
+  width: 100%;
+  height: 62px;
+  margin: 0 0 4px 0;
+}
+
+.orch-tree-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes dashMarch {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+.dotted-path-active {
+  animation: dashMarch 0.75s linear infinite;
+}
+
+@media (max-width: 1380px) {
+  .orch-connector-tree {
+    display: none;
+  }
 }
 
 .swimlanes-grid {
@@ -505,7 +634,7 @@ body {
   background: #fbfcff;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 4px;
 }
 
 .swimlane.stage-passed {
@@ -518,11 +647,17 @@ body {
   background: #faf7ff;
 }
 
+.swimlane.stage-failed {
+  border-color: #fca5a5;
+  background: #fff5f5;
+}
+
 .swimlane-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: 6px;
+  margin-bottom: 4px;
   border-bottom: 1px solid var(--border-light);
 }
 
@@ -550,9 +685,93 @@ body {
   color: var(--purple-primary);
 }
 
+.stage-pill.failed {
+  background: var(--red-soft);
+  color: var(--red-primary);
+}
+
 .stage-pill.waiting {
   background: #f1f5f9;
   color: #64748b;
+}
+
+.step-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.step-order-pill {
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: #f1f5f9;
+  color: #475569;
+  flex-shrink: 0;
+}
+
+.step-order-pill.status-passed,
+.step-order-pill.status-repaired {
+  background: var(--green-soft);
+  color: var(--green-primary);
+}
+
+.step-order-pill.status-in_progress {
+  background: var(--purple-primary);
+  color: #fff;
+}
+
+.step-order-pill.status-failed {
+  background: var(--red-soft);
+  color: var(--red-primary);
+}
+
+/* Vertical Dotted Arrow Connector Between Steps Inside Swimlane */
+.step-dotted-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  margin: -1px 0;
+}
+
+.step-dotted-connector .dotted-stem {
+  width: 0;
+  height: 11px;
+  border-left: 2px dashed #cbd5e1;
+}
+
+.step-dotted-connector .dotted-arrowhead {
+  font-size: 10px;
+  line-height: 7px;
+  color: #94a3b8;
+  margin-top: -2px;
+}
+
+.step-dotted-connector.status-passed .dotted-stem {
+  border-left-color: #109868;
+}
+
+.step-dotted-connector.status-passed .dotted-arrowhead {
+  color: #109868;
+}
+
+.step-dotted-connector.status-in_progress .dotted-stem {
+  border-left-color: #6336f5;
+}
+
+.step-dotted-connector.status-in_progress .dotted-arrowhead {
+  color: #6336f5;
+}
+
+.step-dotted-connector.status-failed .dotted-stem {
+  border-left-color: #dc2626;
+}
+
+.step-dotted-connector.status-failed .dotted-arrowhead {
+  color: #dc2626;
 }
 
 .step-card {

@@ -97,7 +97,11 @@ Evaluate the input argument `{Branch Name/Ticket number}`:
    ```bash
    git branch --show-current
    ```
-2. Output a clear status summary to the user:
+2. Emit `BRANCH:branch-create` telemetry so the **QA-SDLC Live Dashboard** (`http://127.0.0.1:5174`) marks branch creation as completed and lights up the dotted arrow flow:
+   ```bash
+   npm run telemetry:emit -- --ticket {JiraTicket} --agent git-agent --stage BRANCH --step branch-create --status passed --message "Pulled latest origin/main and checked out <branch-name>"
+   ```
+3. Output a clear status summary to the user:
    - **Active Branch**: `<branch-name>`
    - **Base Branch**: `main` (up-to-date with `origin/main` at commit `<sha>`)
    - **Status**: Ready for test planning, Page Object authoring, or test execution.
