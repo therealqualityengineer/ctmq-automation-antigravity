@@ -1,9 +1,9 @@
 {
   "activeTicket": "CTMQ-80",
   "activeBranch": "CTMQ-80-Testing",
-  "lastAgent": "git-agent",
+  "lastAgent": "jira-agent",
   "lastStage": "SHIP",
-  "lastStep": "raise-pr",
-  "lastStatus": "in_progress",
-  "updatedAt": "2026-11-19T07:00:22.369Z"
+  "lastStep": "jira-close",
+  "lastStatus": "passed",
+  "updatedAt": "2026-11-19T07:12:29.274Z"
 }
