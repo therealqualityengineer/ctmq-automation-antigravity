@@ -29,13 +29,24 @@ These rules govern how AI agents generate test plans and automation code in this
 
 ## 5. Agent Roles, Separation of Concerns & Trigger Prompts
 
-| Agent | Trigger Prompt | Example | Primary Responsibility |
-| :--- | :--- | :--- | :--- |
-| **`plan-agent`** | `Add Testcase {JiraTicket}` | `Add Testcase CTMQ-10` | Design QA test cases & update `"QA Testing Antigravity"` sub-task |
-| **`script-agent`** | `Write test {JiraTicket}` | `Write test CTMQ-10` | Generate & run Playwright tests, execute RCA / auto-fix |
-| **`git-agent`** | `CB {Branch Name/Ticket number}`<br>`Raise PR` | `CB CTMQ-10`<br>`Raise PR` | Safe branch creation from updated main & PR creation |
-| **`jira-agent`** | `CL {JiraTicket}` | `CL CTMQ-10` | Self-assignment, complete QA sub-task, audit & close parent ticket |
+| Agent / Skill | Type | Trigger Prompt | Example | Primary Responsibility |
+| :--- | :--- | :--- | :--- | :--- |
+| **`qa-orchestrator-agent`** | **Agent / Sub-agent** (`.agents/agents/qa-orchestrator-agent.md`) | `Implement Test {TicketNumber}` | `Implement Test CTMQ-10` | Autonomous end-to-end orchestration: Branch (`git-agent`) $\rightarrow$ Plan (`plan-agent`) $\rightarrow$ Write & Verify (`script-agent`) $\rightarrow$ Raise PR (`git-agent`) $\rightarrow$ Close Ticket (`jira-agent`) |
+| **`plan-agent`** | Skill (`.agents/skills/plan-agent/`) | `Add Testcase {JiraTicket}` | `Add Testcase CTMQ-10` | Design QA test cases & update `"QA Testing Antigravity"` sub-task |
+| **`script-agent`** | Skill (`.agents/skills/script-agent/`) | `Write test {JiraTicket}` | `Write test CTMQ-10` | Generate & run Playwright tests, execute RCA / auto-fix |
+| **`git-agent`** | Skill (`.agents/skills/git-agent/`) | `CB {Branch Name/Ticket number}`<br>`Raise PR` | `CB CTMQ-10`<br>`Raise PR` | Safe branch creation from updated main & PR creation |
+| **`jira-agent`** | Skill (`.agents/skills/jira-agent/`) | `CL {JiraTicket}` | `CL CTMQ-10` | Self-assignment, complete QA sub-task, audit & close parent ticket |
 
+- **`qa-orchestrator-agent` (Master of End-to-End Autonomous QA Implementation)**:
+  - **Definition**: `.agents/agents/qa-orchestrator-agent.md` (Custom Agent & Sub-agent)
+  - **Trigger Prompt**: `Implement Test {TicketNumber}` (e.g., `Implement Test CTMQ-10`)
+  - Executes the complete QA lifecycle autonomously without requesting user input between phases:
+    1. **Branch Setup (`git-agent`)**: Checks if the current branch is `main`/`master` or if the ticket branch is missing; creates and switches to a dedicated ticket branch off updated `main`.
+    2. **Test Case Planning (`plan-agent`)**: Generates QA test scenarios and updates the `"QA Testing Antigravity"` Jira sub-task and `test-plans/{TicketNumber}.md`.
+    3. **Test Writing & Execution (`script-agent`)**: Queries the code corpus, authors Playwright specs/Page Objects, executes tests, and performs RCA auto-fixes.
+    4. **Pull Request Creation (`git-agent`)**: Commits changes with Conventional Commits, pushes the branch, and raises a Pull Request.
+    5. **Jira Closure (`jira-agent`)**: Self-assigns, completes the `"QA Testing Antigravity"` sub-task, audits sibling sub-tasks, and closes the parent ticket.
+  - **Strict Halt-on-Failure Guardrail**: If any test fails due to an application bug, unfixable defect, environment blocker, or open sibling sub-task, `qa-orchestrator-agent` immediately stops the workflow (before raising a PR or closing Jira) and reports the detailed failure/blocker analysis to the user.
 - **`plan-agent` (Master of Testcase Design)**:
   - **Trigger Prompt**: `Add Testcase {JiraTicket}` (e.g., `Add Testcase CTMQ-10`)
   - Focuses solely on business logic, requirement interpretation, test scenario design, and QA testing methodologies.
