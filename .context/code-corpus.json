@@ -1,15 +1,15 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-18T02:34:39.177Z",
+    "generatedAt": "2026-11-19T04:58:07.783Z",
     "generator": "AST Symbol Chunker v1.1",
-    "totalFilesScanned": 72,
-    "totalChunks": 793,
+    "totalFilesScanned": 74,
+    "totalChunks": 811,
     "stats": {
       "pageObjects": 19,
-      "methods": 370,
-      "tests": 360,
-      "testData": 44,
-      "filesProcessed": 72
+      "methods": 375,
+      "tests": 371,
+      "testData": 46,
+      "filesProcessed": 74
     }
   },
   "chunks": [
@@ -1388,7 +1388,7 @@
       "parent": "BasePage",
       "name": "BaseTempFormPage",
       "startLine": 5,
-      "endLine": 249,
+      "endLine": 329,
       "properties": [
         "leftBox",
         "rightBox",
@@ -1412,7 +1412,9 @@
         "genderOtherRadio",
         "maritalStatusSelect",
         "saveButton",
-        "cancelButton"
+        "cancelButton",
+        "feedbackErrorBanner",
+        "feedbackSuccessBanner"
       ],
       "locatorsDefined": [
         "page.locator('form > div > div').first()",
@@ -1438,158 +1440,190 @@
         "page.locator('input[name=\"gender\"][value=\"Other\"]')",
         "page.locator('#maritalStatus')",
         "page.getByRole('button', { name: 'Save', exact: true })",
-        "page.getByRole('button', { name: 'Cancel', exact: true })"
+        "page.getByRole('button', { name: 'Cancel', exact: true })",
+        "page.locator('[role=\"alert\"]')",
+        "page.locator('[role=\"status\"]')"
       ],
       "methodsSummary": [
         {
           "name": "fillForm",
           "signature": "async fillForm(data: Partial<TempPayload>)",
-          "startLine": 69,
-          "endLine": 99
+          "startLine": 73,
+          "endLine": 103
         },
         {
           "name": "clickSave",
           "signature": "async clickSave()",
-          "startLine": 101,
-          "endLine": 103
-        },
-        {
-          "name": "clickCancel",
-          "signature": "async clickCancel()",
           "startLine": 105,
           "endLine": 107
         },
         {
+          "name": "clickCancel",
+          "signature": "async clickCancel()",
+          "startLine": 109,
+          "endLine": 111
+        },
+        {
           "name": "isTwoColumnLayout",
           "signature": "async isTwoColumnLayout()",
-          "startLine": 109,
-          "endLine": 114
+          "startLine": 113,
+          "endLine": 118
         },
         {
           "name": "isStackedLayout",
           "signature": "async isStackedLayout()",
-          "startLine": 116,
-          "endLine": 121
+          "startLine": 120,
+          "endLine": 125
         },
         {
           "name": "fillZip",
           "signature": "async fillZip(zip: string)",
-          "startLine": 123,
-          "endLine": 126
+          "startLine": 127,
+          "endLine": 130
         },
         {
           "name": "clearZip",
           "signature": "async clearZip()",
-          "startLine": 128,
-          "endLine": 131
+          "startLine": 132,
+          "endLine": 135
         },
         {
           "name": "getSelectedCounty",
           "signature": "async getSelectedCounty()",
-          "startLine": 133,
-          "endLine": 135
+          "startLine": 137,
+          "endLine": 139
         },
         {
           "name": "getSelectedCountyText",
           "signature": "async getSelectedCountyText()",
-          "startLine": 137,
-          "endLine": 142
+          "startLine": 141,
+          "endLine": 146
         },
         {
           "name": "isCountyFieldEditable",
           "signature": "async isCountyFieldEditable()",
-          "startLine": 144,
-          "endLine": 152
+          "startLine": 148,
+          "endLine": 156
         },
         {
           "name": "getStateOptionValues",
           "signature": "async getStateOptionValues()",
-          "startLine": 154,
-          "endLine": 157
+          "startLine": 158,
+          "endLine": 161
         },
         {
           "name": "getCountyOptionTexts",
           "signature": "async getCountyOptionTexts()",
-          "startLine": 159,
-          "endLine": 161
+          "startLine": 163,
+          "endLine": 165
         },
         {
           "name": "selectCertification",
           "signature": "async selectCertification(valueOrLabel: string)",
-          "startLine": 163,
-          "endLine": 169
+          "startLine": 167,
+          "endLine": 173
         },
         {
           "name": "selectSpecialty",
           "signature": "async selectSpecialty(valueOrLabel: string)",
-          "startLine": 171,
-          "endLine": 177
+          "startLine": 175,
+          "endLine": 181
         },
         {
           "name": "getCertificationOptionTexts",
           "signature": "async getCertificationOptionTexts()",
-          "startLine": 179,
-          "endLine": 182
+          "startLine": 183,
+          "endLine": 186
         },
         {
           "name": "getSpecialtyOptionTexts",
           "signature": "async getSpecialtyOptionTexts()",
-          "startLine": 184,
-          "endLine": 186
-        },
-        {
-          "name": "getSelectedCertification",
-          "signature": "async getSelectedCertification()",
           "startLine": 188,
           "endLine": 190
         },
         {
-          "name": "getSelectedSpecialty",
-          "signature": "async getSelectedSpecialty()",
+          "name": "getSelectedCertification",
+          "signature": "async getSelectedCertification()",
           "startLine": 192,
           "endLine": 194
         },
         {
+          "name": "getSelectedSpecialty",
+          "signature": "async getSelectedSpecialty()",
+          "startLine": 196,
+          "endLine": 198
+        },
+        {
           "name": "getStatusOptionTexts",
           "signature": "async getStatusOptionTexts()",
-          "startLine": 196,
-          "endLine": 200
+          "startLine": 200,
+          "endLine": 204
         },
         {
           "name": "getSelectedStatus",
           "signature": "async getSelectedStatus()",
-          "startLine": 202,
-          "endLine": 205
+          "startLine": 206,
+          "endLine": 209
         },
         {
           "name": "selectStatus",
           "signature": "async selectStatus(status: string)",
-          "startLine": 207,
-          "endLine": 209
-        },
-        {
-          "name": "fillAddress",
-          "signature": "async fillAddress(address: string)",
           "startLine": 211,
           "endLine": 213
         },
         {
+          "name": "fillAddress",
+          "signature": "async fillAddress(address: string)",
+          "startLine": 215,
+          "endLine": 217
+        },
+        {
           "name": "getFormFields",
           "signature": "getFormFields()",
-          "startLine": 215,
-          "endLine": 235
+          "startLine": 219,
+          "endLine": 239
         },
         {
           "name": "areAllTempFieldsDisabled",
           "signature": "async areAllTempFieldsDisabled()",
-          "startLine": 237,
-          "endLine": 239
+          "startLine": 241,
+          "endLine": 243
         },
         {
           "name": "areAllTempFieldsEnabled",
           "signature": "async areAllTempFieldsEnabled()",
-          "startLine": 241,
-          "endLine": 248
+          "startLine": 245,
+          "endLine": 252
+        },
+        {
+          "name": "getFieldLabel",
+          "signature": "getFieldLabel(labelText: string)",
+          "startLine": 254,
+          "endLine": 260
+        },
+        {
+          "name": "getRequiredAsterisk",
+          "signature": "getRequiredAsterisk(labelText: string)",
+          "startLine": 262,
+          "endLine": 264
+        },
+        {
+          "name": "clearSelect",
+          "signature": "async clearSelect(locator: Locator)",
+          "startLine": 266,
+          "endLine": 268
+        },
+        {
+          "name": "getTempViaApi",
+          "signature": "async getTempViaApi(id: number | string)",
+          "startLine": 270,
+          "endLine": 279
+        },
+        {
+          "name": "getActiveMappedCertAndSpecialtyViaApi",
+          "signature": "async getActiveMappedCertAndSpecialtyViaApi()",
+          "startLine": 281,
+          "endLine": 328
         }
       ],
       "signature": "class BaseTempFormPage extends BasePage",
@@ -1601,8 +1635,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "fillForm",
-      "startLine": 69,
-      "endLine": 99,
+      "startLine": 73,
+      "endLine": 103,
       "signature": "async fillForm(data: Partial<TempPayload>)",
       "locatorsUsed": [],
       "code": "async fillForm(data: Partial<TempPayload>): Promise<void> {\n    if (data.firstName !== undefined) await this.firstNameInput.fill(data.firstName);\n    if (data.lastName !== undefined) await this.lastNameInput.fill(data.lastName);\n    if (data.cellPhone !== undefined) await this.cellPhoneInput.fill(data.cellPhone);\n    if (data.email !== undefined) await this.emailInput.fill(data.email);\n    if (data.address !== undefined) await this.addressInput.fill(data.address);\n    if (data.city !== undefined) await this.cityInput.fill(data.city);\n    if (data.state !== undefined) await this.stateSelect.selectOption(data.state);\n    if (data.zip !== undefined) {\n      await this.zipInput.fill(data.zip);\n      await this.page.waitForTimeout(300);\n    }\n    if (data.county !== undefined && data.county !== '') {\n      await this.countySelect.selectOption(data.county);\n    }\n    if (data.status !== undefined) await this.statusSelect.selectOption(data.status);\n    if (data.certification !== undefined) {\n      await this.selectCertification(data.certification);\n      await this.page.waitForTimeout(200);\n    }\n    if (data.specialty !== undefined) {\n      await this.selectSpecialty(data.specialty);\n    }\n    if (data.dateOfBirth !== undefined) await this.dateOfBirthInput.fill(data.dateOfBirth);\n    if (data.gender) {\n      if (data.gender === 'Male') await this.genderMaleRadio.check();\n      else if (data.gender === 'Female') await this.genderFemaleRadio.check();\n      else if (data.gender === 'Other') await this.genderOtherRadio.check();\n    }\n    if (data.maritalStatus !== undefined) await this.maritalStatusSelect.selectOption(data.maritalStatus);\n  }"
@@ -1613,8 +1647,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "clickSave",
-      "startLine": 101,
-      "endLine": 103,
+      "startLine": 105,
+      "endLine": 107,
       "signature": "async clickSave()",
       "locatorsUsed": [],
       "code": "async clickSave(): Promise<void> {\n    await this.saveButton.click();\n  }"
@@ -1625,8 +1659,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "clickCancel",
-      "startLine": 105,
-      "endLine": 107,
+      "startLine": 109,
+      "endLine": 111,
       "signature": "async clickCancel()",
       "locatorsUsed": [],
       "code": "async clickCancel(): Promise<void> {\n    await this.cancelButton.click();\n  }"
@@ -1637,8 +1671,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "isTwoColumnLayout",
-      "startLine": 109,
-      "endLine": 114,
+      "startLine": 113,
+      "endLine": 118,
       "signature": "async isTwoColumnLayout()",
       "locatorsUsed": [],
       "code": "async isTwoColumnLayout(): Promise<boolean> {\n    const leftBox = await this.leftBox.boundingBox();\n    const rightBox = await this.rightBox.boundingBox();\n    if (!leftBox || !rightBox) return false;\n    return leftBox.y === rightBox.y && leftBox.x < rightBox.x;\n  }"
@@ -1649,8 +1683,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "isStackedLayout",
-      "startLine": 116,
-      "endLine": 121,
+      "startLine": 120,
+      "endLine": 125,
       "signature": "async isStackedLayout()",
       "locatorsUsed": [],
       "code": "async isStackedLayout(): Promise<boolean> {\n    const leftBox = await this.leftBox.boundingBox();\n    const rightBox = await this.rightBox.boundingBox();\n    if (!leftBox || !rightBox) return false;\n    return leftBox.y + leftBox.height <= rightBox.y;\n  }"
@@ -1661,8 +1695,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "fillZip",
-      "startLine": 123,
-      "endLine": 126,
+      "startLine": 127,
+      "endLine": 130,
       "signature": "async fillZip(zip: string)",
       "locatorsUsed": [],
       "code": "async fillZip(zip: string): Promise<void> {\n    await this.zipInput.fill(zip);\n    await this.page.waitForTimeout(300);\n  }"
@@ -1673,8 +1707,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "clearZip",
-      "startLine": 128,
-      "endLine": 131,
+      "startLine": 132,
+      "endLine": 135,
       "signature": "async clearZip()",
       "locatorsUsed": [],
       "code": "async clearZip(): Promise<void> {\n    await this.zipInput.clear();\n    await this.page.waitForTimeout(300);\n  }"
@@ -1685,8 +1719,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getSelectedCounty",
-      "startLine": 133,
-      "endLine": 135,
+      "startLine": 137,
+      "endLine": 139,
       "signature": "async getSelectedCounty()",
       "locatorsUsed": [],
       "code": "async getSelectedCounty(): Promise<string> {\n    return await this.countySelect.inputValue();\n  }"
@@ -1697,8 +1731,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getSelectedCountyText",
-      "startLine": 137,
-      "endLine": 142,
+      "startLine": 141,
+      "endLine": 146,
       "signature": "async getSelectedCountyText()",
       "locatorsUsed": [],
       "code": "async getSelectedCountyText(): Promise<string> {\n    return await this.countySelect.evaluate((select: HTMLSelectElement) => {\n      const selectedOption = select.options[select.selectedIndex];\n      return selectedOption ? selectedOption.text.trim() : '';\n    });\n  }"
@@ -1709,8 +1743,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "isCountyFieldEditable",
-      "startLine": 144,
-      "endLine": 152,
+      "startLine": 148,
+      "endLine": 156,
       "signature": "async isCountyFieldEditable()",
       "locatorsUsed": [],
       "code": "async isCountyFieldEditable(): Promise<boolean> {\n    const tagName = await this.countySelect.evaluate((el) => el.tagName.toLowerCase());\n    if (tagName === 'input') {\n      const type = await this.countySelect.getAttribute('type');\n      const isReadOnly = await this.countySelect.evaluate((el: any) => el.readOnly || el.disabled);\n      return type !== 'hidden' && !isReadOnly;\n    }\n    return false;\n  }"
@@ -1721,8 +1755,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getStateOptionValues",
-      "startLine": 154,
-      "endLine": 157,
+      "startLine": 158,
+      "endLine": 161,
       "signature": "async getStateOptionValues()",
       "locatorsUsed": [
         "this.stateSelect.locator('option[value=\"AL\"]').waitFor({ state: 'attached' })",
@@ -1736,8 +1770,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getCountyOptionTexts",
-      "startLine": 159,
-      "endLine": 161,
+      "startLine": 163,
+      "endLine": 165,
       "signature": "async getCountyOptionTexts()",
       "locatorsUsed": [],
       "code": "async getCountyOptionTexts(): Promise<string[]> {\n    return await this.getSelectOptionTexts(this.countySelect);\n  }"
@@ -1748,8 +1782,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "selectCertification",
-      "startLine": 163,
-      "endLine": 169,
+      "startLine": 167,
+      "endLine": 173,
       "signature": "async selectCertification(valueOrLabel: string)",
       "locatorsUsed": [],
       "code": "async selectCertification(valueOrLabel: string): Promise<void> {\n    if (valueOrLabel === '') {\n      await this.certificationSelect.selectOption('');\n    } else {\n      await this.certificationSelect.selectOption({ label: valueOrLabel });\n    }\n  }"
@@ -1760,8 +1794,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "selectSpecialty",
-      "startLine": 171,
-      "endLine": 177,
+      "startLine": 175,
+      "endLine": 181,
       "signature": "async selectSpecialty(valueOrLabel: string)",
       "locatorsUsed": [],
       "code": "async selectSpecialty(valueOrLabel: string): Promise<void> {\n    if (valueOrLabel === '') {\n      await this.specialtySelect.selectOption('');\n    } else {\n      await this.specialtySelect.selectOption({ label: valueOrLabel });\n    }\n  }"
@@ -1772,8 +1806,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getCertificationOptionTexts",
-      "startLine": 179,
-      "endLine": 182,
+      "startLine": 183,
+      "endLine": 186,
       "signature": "async getCertificationOptionTexts()",
       "locatorsUsed": [
         "this.certificationSelect.locator('option').nth(1).waitFor({ state: 'attached', timeout: 5000 }).catch(() => {})",
@@ -1789,8 +1823,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getSpecialtyOptionTexts",
-      "startLine": 184,
-      "endLine": 186,
+      "startLine": 188,
+      "endLine": 190,
       "signature": "async getSpecialtyOptionTexts()",
       "locatorsUsed": [],
       "code": "async getSpecialtyOptionTexts(): Promise<string[]> {\n    return await this.getSelectOptionTexts(this.specialtySelect);\n  }"
@@ -1801,8 +1835,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getSelectedCertification",
-      "startLine": 188,
-      "endLine": 190,
+      "startLine": 192,
+      "endLine": 194,
       "signature": "async getSelectedCertification()",
       "locatorsUsed": [],
       "code": "async getSelectedCertification(): Promise<string> {\n    return await this.certificationSelect.inputValue();\n  }"
@@ -1813,8 +1847,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getSelectedSpecialty",
-      "startLine": 192,
-      "endLine": 194,
+      "startLine": 196,
+      "endLine": 198,
       "signature": "async getSelectedSpecialty()",
       "locatorsUsed": [],
       "code": "async getSelectedSpecialty(): Promise<string> {\n    return await this.specialtySelect.inputValue();\n  }"
@@ -1825,8 +1859,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getStatusOptionTexts",
-      "startLine": 196,
-      "endLine": 200,
+      "startLine": 200,
+      "endLine": 204,
       "signature": "async getStatusOptionTexts()",
       "locatorsUsed": [
         "this.statusSelect.locator('option').first().waitFor({ state: 'attached', timeout: 5000 }).catch(() => {})",
@@ -1842,8 +1876,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getSelectedStatus",
-      "startLine": 202,
-      "endLine": 205,
+      "startLine": 206,
+      "endLine": 209,
       "signature": "async getSelectedStatus()",
       "locatorsUsed": [],
       "code": "async getSelectedStatus(): Promise<string> {\n    await this.page.waitForLoadState('networkidle').catch(() => {});\n    return await this.statusSelect.inputValue();\n  }"
@@ -1854,8 +1888,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "selectStatus",
-      "startLine": 207,
-      "endLine": 209,
+      "startLine": 211,
+      "endLine": 213,
       "signature": "async selectStatus(status: string)",
       "locatorsUsed": [],
       "code": "async selectStatus(status: string): Promise<void> {\n    await this.statusSelect.selectOption(status);\n  }"
@@ -1866,8 +1900,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "fillAddress",
-      "startLine": 211,
-      "endLine": 213,
+      "startLine": 215,
+      "endLine": 217,
       "signature": "async fillAddress(address: string)",
       "locatorsUsed": [],
       "code": "async fillAddress(address: string): Promise<void> {\n    await this.addressInput.fill(address);\n  }"
@@ -1878,8 +1912,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "getFormFields",
-      "startLine": 215,
-      "endLine": 235,
+      "startLine": 219,
+      "endLine": 239,
       "signature": "getFormFields()",
       "locatorsUsed": [],
       "code": "getFormFields(): Locator[] {\n    return [\n      this.firstNameInput,\n      this.lastNameInput,\n      this.cellPhoneInput,\n      this.emailInput,\n      this.addressInput,\n      this.cityInput,\n      this.stateSelect,\n      this.zipInput,\n      this.countySelect,\n      this.statusSelect,\n      this.certificationSelect,\n      this.specialtySelect,\n      this.dateOfBirthInput,\n      this.genderMaleRadio,\n      this.genderFemaleRadio,\n      this.genderOtherRadio,\n      this.maritalStatusSelect,\n    ];\n  }"
@@ -1890,8 +1924,8 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "areAllTempFieldsDisabled",
-      "startLine": 237,
-      "endLine": 239,
+      "startLine": 241,
+      "endLine": 243,
       "signature": "async areAllTempFieldsDisabled()",
       "locatorsUsed": [],
       "code": "async areAllTempFieldsDisabled(): Promise<boolean> {\n    return await super.areAllFieldsDisabled(this.getFormFields());\n  }"
@@ -1902,11 +1936,79 @@
       "kind": "method",
       "parent": "BaseTempFormPage",
       "name": "areAllTempFieldsEnabled",
-      "startLine": 241,
-      "endLine": 248,
+      "startLine": 245,
+      "endLine": 252,
       "signature": "async areAllTempFieldsEnabled()",
       "locatorsUsed": [],
       "code": "async areAllTempFieldsEnabled(): Promise<boolean> {\n    // Specialty is conditionally enabled based on certification selection\n    const certVal = await this.certificationSelect.inputValue().catch(() => '');\n    const fieldsToCheck = certVal\n      ? this.getFormFields()\n      : this.getFormFields().filter((f) => f !== this.specialtySelect);\n    return await super.areAllFieldsEnabled(fieldsToCheck);\n  }"
+    },
+    {
+      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getFieldLabel",
+      "file": "pages/BaseTempFormPage.ts",
+      "kind": "method",
+      "parent": "BaseTempFormPage",
+      "name": "getFieldLabel",
+      "startLine": 254,
+      "endLine": 260,
+      "signature": "getFieldLabel(labelText: string)",
+      "locatorsUsed": [
+        "this.page\n      .locator('form label, form span')\n      .filter({ hasText: new RegExp(`^\\\\s*${escaped}\\\\s*\\\\*?\\\\s*$`) })\n      .first()",
+        "this.page\n      .locator('form label, form span')\n      .filter({ hasText: new RegExp(`^\\\\s*${escaped}\\\\s*\\\\*?\\\\s*$`) })",
+        "this.page\n      .locator('form label, form span')"
+      ],
+      "code": "getFieldLabel(labelText: string): Locator {\n    const escaped = labelText.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n    return this.page\n      .locator('form label, form span')\n      .filter({ hasText: new RegExp(`^\\\\s*${escaped}\\\\s*\\\\*?\\\\s*$`) })\n      .first();\n  }"
+    },
+    {
+      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getRequiredAsterisk",
+      "file": "pages/BaseTempFormPage.ts",
+      "kind": "method",
+      "parent": "BaseTempFormPage",
+      "name": "getRequiredAsterisk",
+      "startLine": 262,
+      "endLine": 264,
+      "signature": "getRequiredAsterisk(labelText: string)",
+      "locatorsUsed": [
+        "this.getFieldLabel(labelText).locator('span.text-red-600', { hasText: '*' })"
+      ],
+      "code": "getRequiredAsterisk(labelText: string): Locator {\n    return this.getFieldLabel(labelText).locator('span.text-red-600', { hasText: '*' });\n  }"
+    },
+    {
+      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.clearSelect",
+      "file": "pages/BaseTempFormPage.ts",
+      "kind": "method",
+      "parent": "BaseTempFormPage",
+      "name": "clearSelect",
+      "startLine": 266,
+      "endLine": 268,
+      "signature": "async clearSelect(locator: Locator)",
+      "locatorsUsed": [
+        "locator.selectOption('')"
+      ],
+      "code": "async clearSelect(locator: Locator): Promise<void> {\n    await locator.selectOption('');\n  }"
+    },
+    {
+      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getTempViaApi",
+      "file": "pages/BaseTempFormPage.ts",
+      "kind": "method",
+      "parent": "BaseTempFormPage",
+      "name": "getTempViaApi",
+      "startLine": 270,
+      "endLine": 279,
+      "signature": "async getTempViaApi(id: number | string)",
+      "locatorsUsed": [],
+      "code": "async getTempViaApi(id: number | string): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.get(`/api/temps/${id}`);\n    let body: any = {};\n    try {\n      body = await response.json();\n    } catch {\n      body = { rawText: await response.text() };\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
+      "id": "pages/BaseTempFormPage.ts#BaseTempFormPage.getActiveMappedCertAndSpecialtyViaApi",
+      "file": "pages/BaseTempFormPage.ts",
+      "kind": "method",
+      "parent": "BaseTempFormPage",
+      "name": "getActiveMappedCertAndSpecialtyViaApi",
+      "startLine": 281,
+      "endLine": 328,
+      "signature": "async getActiveMappedCertAndSpecialtyViaApi()",
+      "locatorsUsed": [],
+      "code": "async getActiveMappedCertAndSpecialtyViaApi(): Promise<{\n    certification: string;\n    specialty: string;\n    unmappedSpecialty?: string;\n  }> {\n    const certsRes = await this.page.request.get('/api/admin/certifications?pageSize=200');\n    const certsJson = await certsRes.json();\n    const certs: any[] = Array.isArray(certsJson) ? certsJson : certsJson.items ?? certsJson.data ?? [];\n\n    const specsRes = await this.page.request.get('/api/admin/specialties?pageSize=200');\n    const specsJson = await specsRes.json();\n    const specs: any[] = Array.isArray(specsJson) ? specsJson : specsJson.items ?? specsJson.data ?? [];\n\n    const isActiveRecord = (r: any) =>\n      (r.status ? String(r.status).toLowerCase() === 'active' : true) && r.isActive !== false;\n\n    const activeSpecs = specs.filter(isActiveRecord);\n    const activeSpecNames = new Set(activeSpecs.map((s) => String(s.name).toLowerCase()));\n    const activeCerts = certs.filter(isActiveRecord);\n\n    for (const cert of activeCerts) {\n      const rawMapped = cert.specialties ?? cert.mappedSpecialties ?? [];\n      let mappedNames: string[] = [];\n      if (typeof rawMapped === 'string') {\n        mappedNames = rawMapped\n          .split(',')\n          .map((s) => s.trim())\n          .filter((name) => name.length > 0 && (activeSpecNames.size === 0 || activeSpecNames.has(name.toLowerCase())));\n      } else if (Array.isArray(rawMapped)) {\n        mappedNames = rawMapped\n          .filter((s: any) => typeof s === 'string' || isActiveRecord(s))\n          .map((s: any) => (typeof s === 'string' ? s.trim() : String(s.name).trim()))\n          .filter(Boolean);\n      }\n\n      if (mappedNames.length > 0) {\n        const mappedSet = new Set(mappedNames.map((n) => n.toLowerCase()));\n        const unmapped = activeSpecs.find((s) => !mappedSet.has(String(s.name).toLowerCase()));\n        return {\n          certification: cert.name,\n          specialty: mappedNames[0],\n          unmappedSpecialty: unmapped?.name,\n        };\n      }\n    }\n\n    throw new Error('No active Certification with a mapped active Specialty found in Admin Masters.');\n  }"
     },
     {
       "id": "pages/CertificationsPage.ts#CertificationsPage",
@@ -12539,6 +12641,170 @@
       "code": "test('TC-20 - Responsive two-box vertical stacking on narrow viewports', async ({\n    authenticatedTempDetailPage,\n  }) => {\n    const seedRecord = await authenticatedTempDetailPage.createTempViaApi(\n      tempDetailData.generateTemp('tc20')\n    );\n    await authenticatedTempDetailPage.setViewport(\n      tempDetailData.viewports.mobile.width,\n      tempDetailData.viewports.mobile.height\n    );\n    await authenticatedTempDetailPage.gotoTempDetail(seedRecord.id);\n\n    // Stacking in View mode\n    await expect(authenticatedTempDetailPage.pageHeading).toHaveText(tempDetailData.headings.viewTemp);\n    const viewStacked = await authenticatedTempDetailPage.isStackedLayout();\n    expect(viewStacked).toBe(true);\n\n    // Stacking in Edit mode\n    await authenticatedTempDetailPage.clickEdit();\n    await expect(authenticatedTempDetailPage.pageHeading).toHaveText(tempDetailData.headings.editTemp);\n    const editStacked = await authenticatedTempDetailPage.isStackedLayout();\n    expect(editStacked).toBe(true);\n  })"
     },
     {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-01_-_Red_asterisk_____displayed_for_all_10_mand",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-01 - Red asterisk (*) displayed for all 10 mandatory fields on Add Temp (/temp/new)",
+      "startLine": 5,
+      "endLine": 18,
+      "fixtures": [
+        "authenticatedAddTempPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-01 - Red asterisk (*) displayed for all 10 mandatory fields on Add Temp (/temp/new)', async ({\n    authenticatedAddTempPage,\n  }) => {\n    await expect(authenticatedAddTempPage.pageHeading).toBeVisible();\n\n    for (const label of tempMandatoryFieldsData.mandatoryLabels) {\n      const labelLocator = authenticatedAddTempPage.getFieldLabel(label);\n      const asteriskLocator = authenticatedAddTempPage.getRequiredAsterisk(label);\n\n      await expect(labelLocator, `Label \"${label}\" should be visible`).toBeVisible();\n      await expect(asteriskLocator, `Mandatory field \"${label}\" should display a red asterisk (*)`).toBeVisible();\n      await expect(asteriskLocator).toHaveText('*');\n    }\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-02_-_No_red_asterisk_displayed_on_non-marked_fi",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-02 - No red asterisk displayed on non-marked fields on Add Temp (/temp/new)",
+      "startLine": 20,
+      "endLine": 35,
+      "fixtures": [
+        "authenticatedAddTempPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-02 - No red asterisk displayed on non-marked fields on Add Temp (/temp/new)', async ({\n    authenticatedAddTempPage,\n  }) => {\n    await expect(authenticatedAddTempPage.pageHeading).toBeVisible();\n\n    for (const label of tempMandatoryFieldsData.nonMarkedLabels) {\n      const labelLocator = authenticatedAddTempPage.getFieldLabel(label);\n      const asteriskLocator = authenticatedAddTempPage.getRequiredAsterisk(label);\n\n      await expect(labelLocator, `Label \"${label}\" should be visible`).toBeVisible();\n      await expect(\n        asteriskLocator,\n        `Non-marked field \"${label}\" should NOT display a red asterisk (*)`\n      ).toHaveCount(0);\n    }\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-03_-_Red_asterisk_indicator_parity_on_View_Edit",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-03 - Red asterisk indicator parity on View/Edit Temp (/temp/:id) in View and Edit modes",
+      "startLine": 37,
+      "endLine": 83,
+      "fixtures": [
+        "authenticatedAddTempPage",
+        "tempDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-03 - Red asterisk indicator parity on View/Edit Temp (/temp/:id) in View and Edit modes', async ({\n    authenticatedAddTempPage,\n    tempDetailPage,\n  }) => {\n    const { certification, specialty } = await authenticatedAddTempPage.getActiveMappedCertAndSpecialtyViaApi();\n    const payload = tempMandatoryFieldsData.generateValidTemp('tc03', certification, specialty);\n    const created = await tempDetailPage.createTempViaApi(payload);\n    expect(created.id).toBeTruthy();\n\n    try {\n      await tempDetailPage.gotoTempDetail(created.id);\n      await expect(tempDetailPage.editButton).toBeVisible();\n\n      // View mode parity\n      for (const label of tempMandatoryFieldsData.mandatoryLabels) {\n        await expect(\n          tempDetailPage.getRequiredAsterisk(label),\n          `View mode: mandatory field \"${label}\" should display red asterisk`\n        ).toBeVisible();\n      }\n      for (const label of tempMandatoryFieldsData.nonMarkedLabels) {\n        await expect(\n          tempDetailPage.getRequiredAsterisk(label),\n          `View mode: non-marked field \"${label}\" should NOT display red asterisk`\n        ).toHaveCount(0);\n      }\n\n      // Edit mode parity\n      await tempDetailPage.clickEdit();\n      await expect(tempDetailPage.saveButton).toBeVisible();\n\n      for (const label of tempMandatoryFieldsData.mandatoryLabels) {\n        await expect(\n          tempDetailPage.getRequiredAsterisk(label),\n          `Edit mode: mandatory field \"${label}\" should display red asterisk`\n        ).toBeVisible();\n      }\n      for (const label of tempMandatoryFieldsData.nonMarkedLabels) {\n        await expect(\n          tempDetailPage.getRequiredAsterisk(label),\n          `Edit mode: non-marked field \"${label}\" should NOT display red asterisk`\n        ).toHaveCount(0);\n      }\n    } finally {\n      await tempDetailPage.deleteTempViaApi(created.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-04_-_Create_Temp_succeeds_with_all_10_mandatory",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-04 - Create Temp succeeds with all 10 mandatory fields populated",
+      "startLine": 85,
+      "endLine": 108,
+      "fixtures": [
+        "authenticatedAddTempPage",
+        "tempDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-04 - Create Temp succeeds with all 10 mandatory fields populated', async ({\n    authenticatedAddTempPage,\n    tempDetailPage,\n  }) => {\n    const { certification, specialty } = await authenticatedAddTempPage.getActiveMappedCertAndSpecialtyViaApi();\n    const payload = tempMandatoryFieldsData.generateValidTemp('tc04', certification, specialty);\n\n    await authenticatedAddTempPage.fillForm(payload);\n    const apiRes = await authenticatedAddTempPage.saveAndInterceptApiResponse();\n\n    expect(apiRes.status).toBe(201);\n    expect(apiRes.body?.id).toBeTruthy();\n    await expect(authenticatedAddTempPage.successBanner).toBeVisible();\n\n    try {\n      expect(apiRes.body.firstName).toBe(payload.firstName);\n      expect(apiRes.body.certification).toBe(certification);\n      expect(apiRes.body.specialty).toBe(specialty);\n    } finally {\n      if (apiRes.body?.id) {\n        await tempDetailPage.deleteTempViaApi(apiRes.body.id);\n      }\n    }\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-05_-_Add_Temp_blocks_save_when_Certification_or",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-05 - Add Temp blocks save when Certification or Specialty is unselected",
+      "startLine": 110,
+      "endLine": 135,
+      "fixtures": [
+        "authenticatedAddTempPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-05 - Add Temp blocks save when Certification or Specialty is unselected', async ({\n    authenticatedAddTempPage,\n  }) => {\n    const { certification } = await authenticatedAddTempPage.getActiveMappedCertAndSpecialtyViaApi();\n    const partialPayload = tempMandatoryFieldsData.generateValidTemp('tc05', certification, '');\n    const { certification: _c, specialty: _s, ...textOnlyPayload } = partialPayload;\n\n    // 1. Missing Certification (and Specialty)\n    await authenticatedAddTempPage.fillForm(textOnlyPayload);\n    await authenticatedAddTempPage.clickSave();\n\n    const certInvalid = await authenticatedAddTempPage.isFieldInvalid(authenticatedAddTempPage.certificationSelect);\n    const errorBannerVisibleAfterCert = await authenticatedAddTempPage.feedbackErrorBanner.isVisible().catch(() => false);\n    expect(certInvalid || errorBannerVisibleAfterCert).toBe(true);\n    await expect(authenticatedAddTempPage.successBanner).toHaveCount(0);\n\n    // 2. Certification selected, Specialty left unselected\n    await authenticatedAddTempPage.selectCertification(certification);\n    await expect(authenticatedAddTempPage.specialtySelect).toBeEnabled();\n    await authenticatedAddTempPage.clickSave();\n\n    const specInvalid = await authenticatedAddTempPage.isFieldInvalid(authenticatedAddTempPage.specialtySelect);\n    const errorBannerVisibleAfterSpec = await authenticatedAddTempPage.feedbackErrorBanner.isVisible().catch(() => false);\n    expect(specInvalid || errorBannerVisibleAfterSpec).toBe(true);\n    await expect(authenticatedAddTempPage.successBanner).toHaveCount(0);\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-06_-_Add_Temp_blocks_save_when_any_required_tex",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-06 - Add Temp blocks save when any required text field is empty",
+      "startLine": 137,
+      "endLine": 166,
+      "fixtures": [
+        "authenticatedAddTempPage"
+      ],
+      "locatorsUsed": [
+        "field.locator.clear()",
+        "field.locator.fill(field.restore)"
+      ],
+      "code": "test('TC-06 - Add Temp blocks save when any required text field is empty', async ({\n    authenticatedAddTempPage,\n  }) => {\n    const { certification, specialty } = await authenticatedAddTempPage.getActiveMappedCertAndSpecialtyViaApi();\n    const basePayload = tempMandatoryFieldsData.generateValidTemp('tc06', certification, specialty);\n\n    await authenticatedAddTempPage.fillForm(basePayload);\n\n    const requiredTextFields = [\n      { name: 'First Name', locator: authenticatedAddTempPage.firstNameInput, restore: basePayload.firstName },\n      { name: 'Last Name', locator: authenticatedAddTempPage.lastNameInput, restore: basePayload.lastName },\n      { name: 'Cell Phone', locator: authenticatedAddTempPage.cellPhoneInput, restore: basePayload.cellPhone },\n      { name: 'Email', locator: authenticatedAddTempPage.emailInput, restore: basePayload.email },\n      { name: 'Address', locator: authenticatedAddTempPage.addressInput, restore: basePayload.address },\n      { name: 'City', locator: authenticatedAddTempPage.cityInput, restore: basePayload.city },\n      { name: 'ZIP', locator: authenticatedAddTempPage.zipInput, restore: basePayload.zip },\n    ];\n\n    for (const field of requiredTextFields) {\n      await field.locator.clear();\n      await authenticatedAddTempPage.clickSave();\n\n      const isInvalid = await authenticatedAddTempPage.isFieldInvalid(field.locator);\n      const isAlertVisible = await authenticatedAddTempPage.feedbackErrorBanner.isVisible().catch(() => false);\n      expect(isInvalid || isAlertVisible, `Empty \"${field.name}\" should block form submission`).toBe(true);\n      await expect(authenticatedAddTempPage.successBanner).toHaveCount(0);\n\n      await field.locator.fill(field.restore);\n    }\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-07_-_Edit_Temp_blocks_save_and_displays_Feedbac",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-07 - Edit Temp blocks save and displays FeedbackBanner error when mandatory fields are cleared",
+      "startLine": 168,
+      "endLine": 213,
+      "fixtures": [
+        "authenticatedAddTempPage",
+        "tempDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-07 - Edit Temp blocks save and displays FeedbackBanner error when mandatory fields are cleared', async ({\n    authenticatedAddTempPage,\n    tempDetailPage,\n  }) => {\n    const { certification, specialty } = await authenticatedAddTempPage.getActiveMappedCertAndSpecialtyViaApi();\n    const payload = tempMandatoryFieldsData.generateValidTemp('tc07', certification, specialty);\n    const created = await tempDetailPage.createTempViaApi(payload);\n    expect(created.id).toBeTruthy();\n\n    try {\n      await tempDetailPage.gotoTempDetail(created.id);\n      await tempDetailPage.clickEdit();\n\n      // 1. Clear First Name and attempt save\n      await tempDetailPage.clearFirstName();\n      await tempDetailPage.clickSave();\n      await expect(tempDetailPage.feedbackErrorBanner).toBeVisible();\n      await expect(tempDetailPage.feedbackErrorBanner).toContainText(tempMandatoryFieldsData.messages.requiredErrorPattern);\n\n      // Restore First Name, clear Specialty and attempt save\n      await tempDetailPage.firstNameInput.fill(payload.firstName);\n      await tempDetailPage.clearSelect(tempDetailPage.specialtySelect);\n      await tempDetailPage.clickSave();\n      await expect(tempDetailPage.feedbackErrorBanner).toBeVisible();\n      await expect(tempDetailPage.feedbackErrorBanner).toContainText(\n        tempMandatoryFieldsData.messages.certOrSpecialtyErrorPattern\n      );\n\n      // Clear Certification and attempt save\n      await tempDetailPage.clearSelect(tempDetailPage.certificationSelect);\n      await tempDetailPage.clickSave();\n      await expect(tempDetailPage.feedbackErrorBanner).toBeVisible();\n      await expect(tempDetailPage.feedbackErrorBanner).toContainText(\n        tempMandatoryFieldsData.messages.certOrSpecialtyErrorPattern\n      );\n\n      // Verify persisted record remains intact (Zero Data Loss)\n      const fetched = await tempDetailPage.getTempViaApi(created.id);\n      expect(fetched.status).toBe(200);\n      expect(fetched.body.firstName).toBe(payload.firstName);\n      expect(fetched.body.certification).toBe(certification);\n      expect(fetched.body.specialty).toBe(specialty);\n    } finally {\n      await tempDetailPage.deleteTempViaApi(created.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-08_-_Edit_Temp_saves_cleanly_when_all_10_mandat",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-08 - Edit Temp saves cleanly when all 10 mandatory fields are valid",
+      "startLine": 215,
+      "endLine": 243,
+      "fixtures": [
+        "authenticatedAddTempPage",
+        "tempDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-08 - Edit Temp saves cleanly when all 10 mandatory fields are valid', async ({\n    authenticatedAddTempPage,\n    tempDetailPage,\n  }) => {\n    const { certification, specialty } = await authenticatedAddTempPage.getActiveMappedCertAndSpecialtyViaApi();\n    const payload = tempMandatoryFieldsData.generateValidTemp('tc08', certification, specialty);\n    const created = await tempDetailPage.createTempViaApi(payload);\n    expect(created.id).toBeTruthy();\n\n    try {\n      await tempDetailPage.gotoTempDetail(created.id);\n      await tempDetailPage.clickEdit();\n\n      const updatedFirstName = `${payload.firstName}_Updated`;\n      await tempDetailPage.firstNameInput.fill(updatedFirstName);\n\n      const putRes = await tempDetailPage.saveAndInterceptPutResponse();\n      expect(putRes.status).toBe(200);\n      await expect(tempDetailPage.feedbackSuccessBanner).toBeVisible();\n\n      const fetched = await tempDetailPage.getTempViaApi(created.id);\n      expect(fetched.status).toBe(200);\n      expect(fetched.body.firstName).toBe(updatedFirstName);\n      expect(fetched.body.certification).toBe(certification);\n      expect(fetched.body.specialty).toBe(specialty);\n    } finally {\n      await tempDetailPage.deleteTempViaApi(created.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-09_-_Backend_POST__api_temps_rejects_missing_or",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-09 - Backend POST /api/temps rejects missing or whitespace mandatory fields with 400",
+      "startLine": 245,
+      "endLine": 275,
+      "fixtures": [
+        "authenticatedAddTempPage",
+        "tempDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-09 - Backend POST /api/temps rejects missing or whitespace mandatory fields with 400', async ({\n    authenticatedAddTempPage,\n    tempDetailPage,\n  }) => {\n    const { certification, specialty } = await authenticatedAddTempPage.getActiveMappedCertAndSpecialtyViaApi();\n    const validBase = tempMandatoryFieldsData.generateValidTemp('tc09', certification, specialty);\n\n    // Missing Certification\n    const resNoCert = await tempDetailPage.createTempRawViaApi({\n      ...validBase,\n      email: `ctmq78_nocert_${Date.now()}@example.com`,\n      certification: tempMandatoryFieldsData.invalidValues.empty,\n    });\n    expect(resNoCert.status).toBe(400);\n\n    // Missing Specialty\n    const resNoSpec = await tempDetailPage.createTempRawViaApi({\n      ...validBase,\n      email: `ctmq78_nospec_${Date.now()}@example.com`,\n      specialty: tempMandatoryFieldsData.invalidValues.empty,\n    });\n    expect(resNoSpec.status).toBe(400);\n\n    // Whitespace-only FirstName\n    const resBlankName = await tempDetailPage.createTempRawViaApi({\n      ...validBase,\n      email: `ctmq78_blankname_${Date.now()}@example.com`,\n      firstName: tempMandatoryFieldsData.invalidValues.whitespace,\n    });\n    expect(resBlankName.status).toBe(400);\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-10_-_Backend_PUT__api_temps__id__rejects_missin",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-10 - Backend PUT /api/temps/{id} rejects missing mandatory fields without data loss",
+      "startLine": 277,
+      "endLine": 317,
+      "fixtures": [
+        "authenticatedAddTempPage",
+        "tempDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-10 - Backend PUT /api/temps/{id} rejects missing mandatory fields without data loss', async ({\n    authenticatedAddTempPage,\n    tempDetailPage,\n  }) => {\n    const { certification, specialty } = await authenticatedAddTempPage.getActiveMappedCertAndSpecialtyViaApi();\n    const validBase = tempMandatoryFieldsData.generateValidTemp('tc10', certification, specialty);\n    const created = await tempDetailPage.createTempViaApi(validBase);\n    expect(created.id).toBeTruthy();\n\n    try {\n      // PUT with blank Certification\n      const putNoCert = await tempDetailPage.updateTempRawViaApi(created.id, {\n        ...validBase,\n        certification: tempMandatoryFieldsData.invalidValues.empty,\n      });\n      expect(putNoCert.status).toBe(400);\n\n      // PUT with blank Specialty\n      const putNoSpec = await tempDetailPage.updateTempRawViaApi(created.id, {\n        ...validBase,\n        specialty: tempMandatoryFieldsData.invalidValues.whitespace,\n      });\n      expect(putNoSpec.status).toBe(400);\n\n      // PUT with blank LastName\n      const putNoLast = await tempDetailPage.updateTempRawViaApi(created.id, {\n        ...validBase,\n        lastName: tempMandatoryFieldsData.invalidValues.empty,\n      });\n      expect(putNoLast.status).toBe(400);\n\n      // Confirm original data untouched\n      const fetched = await tempDetailPage.getTempViaApi(created.id);\n      expect(fetched.status).toBe(200);\n      expect(fetched.body.lastName).toBe(validBase.lastName);\n      expect(fetched.body.certification).toBe(certification);\n      expect(fetched.body.specialty).toBe(specialty);\n    } finally {\n      await tempDetailPage.deleteTempViaApi(created.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/tempMandatoryFields.spec.ts#TC-11_-_Backend_rejects_unmapped_Specialty_for_sel",
+      "file": "tests/tempMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-78 - Temp Mandatory Fields & Red Asterisk Indicators",
+      "name": "TC-11 - Backend rejects unmapped Specialty for selected active Certification on POST and PUT",
+      "startLine": 319,
+      "endLine": 349,
+      "fixtures": [
+        "authenticatedAddTempPage",
+        "tempDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-11 - Backend rejects unmapped Specialty for selected active Certification on POST and PUT', async ({\n    authenticatedAddTempPage,\n    tempDetailPage,\n  }) => {\n    const { certification, specialty, unmappedSpecialty } =\n      await authenticatedAddTempPage.getActiveMappedCertAndSpecialtyViaApi();\n    const invalidSpecialty = unmappedSpecialty ?? tempMandatoryFieldsData.invalidValues.unmappedFallbackSpecialty;\n    const validBase = tempMandatoryFieldsData.generateValidTemp('tc11', certification, specialty);\n\n    // POST with unmapped specialty\n    const postRes = await tempDetailPage.createTempRawViaApi({\n      ...validBase,\n      email: `ctmq78_unmapped_${Date.now()}@example.com`,\n      specialty: invalidSpecialty,\n    });\n    expect(postRes.status).toBe(400);\n\n    // PUT with unmapped specialty on valid temp\n    const created = await tempDetailPage.createTempViaApi(validBase);\n    expect(created.id).toBeTruthy();\n\n    try {\n      const putRes = await tempDetailPage.updateTempRawViaApi(created.id, {\n        ...validBase,\n        specialty: invalidSpecialty,\n      });\n      expect(putRes.status).toBe(400);\n    } finally {\n      await tempDetailPage.deleteTempViaApi(created.id);\n    }\n  })"
+    },
+    {
       "id": "tests/tempNavigation.spec.ts#TC-01_-_Primary_navigation_tab_order_and_visibilit",
       "file": "tests/tempNavigation.spec.ts",
       "kind": "test",
@@ -13879,6 +14145,36 @@
       "properties": [],
       "signature": "const timestamp ()",
       "code": "const timestamp = Date.now();"
+    },
+    {
+      "id": "test-data/tempMandatoryFieldsData.ts#tempMandatoryFieldsData",
+      "file": "test-data/tempMandatoryFieldsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "tempMandatoryFieldsData",
+      "startLine": 3,
+      "endLine": 58,
+      "properties": [
+        "mandatoryLabels",
+        "nonMarkedLabels",
+        "messages",
+        "invalidValues",
+        "generateValidTemp"
+      ],
+      "signature": "const tempMandatoryFieldsData (mandatoryLabels, nonMarkedLabels, messages, invalidValues, generateValidTemp)",
+      "code": "export const tempMandatoryFieldsData = {\n  mandatoryLabels: [\n    'First Name',\n    'Last Name',\n    'Cell Phone',\n    'Email',\n    'Address',\n    'City',\n    'State',\n    'ZIP',\n    'Certification',\n    'Specialty',\n  ] as const,\n\n  nonMarkedLabels: [\n    'County',\n    'Status',\n    'Date of Birth',\n    'Gender',\n    'Marital Status',\n  ] as const,\n\n  messages: {\n    tempCreated: 'Temp created su"
+    },
+    {
+      "id": "test-data/tempMandatoryFieldsData.ts#unique",
+      "file": "test-data/tempMandatoryFieldsData.ts",
+      "kind": "data",
+      "parent": "const",
+      "name": "unique",
+      "startLine": 39,
+      "endLine": 39,
+      "properties": [],
+      "signature": "const unique ()",
+      "code": "const unique = `${tag}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;"
     },
     {
       "id": "test-data/tempNavData.ts#tempNavData",
