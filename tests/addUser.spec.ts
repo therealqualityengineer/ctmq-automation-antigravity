@@ -115,7 +115,7 @@ test.describe('CTMQ-6 - Add User Functionality Suite', () => {
 
     expect(isFullNameValid).toBe(false);
     expect(isUsernameValid).toBe(false);
-    expect(isTitleValid).toBe(false);
+    expect(isTitleValid).toBe(true);
     expect(isEmailValid).toBe(false);
     expect(isPasswordValid).toBe(false);
     expect(isConfirmPasswordValid).toBe(false);
@@ -140,13 +140,10 @@ test.describe('CTMQ-6 - Add User Functionality Suite', () => {
     await authenticatedAddUserPage.clickSave();
     expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.usernameInput)).toBe(false);
 
-    // Omit Title
+    // Omit Email (Title is optional per CTMQ-82)
     await authenticatedAddUserPage.fillUsername(newUser.username);
     await authenticatedAddUserPage.clearTitle();
-    await authenticatedAddUserPage.clickSave();
-    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.titleInput)).toBe(false);
-
-    // Omit Email
+    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.titleInput)).toBe(true);
     await authenticatedAddUserPage.fillTitle(newUser.title);
     await authenticatedAddUserPage.clearEmail();
     await authenticatedAddUserPage.clickSave();

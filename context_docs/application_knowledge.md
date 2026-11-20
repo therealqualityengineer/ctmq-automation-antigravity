@@ -69,6 +69,18 @@ CTMQ is a healthcare staffing and facility management platform managing temps (h
   - When no mapping exists, both tables display a fallback hyphen (`-`).
   - Association and dissociation (unmapping) operations on either view must remain synchronized across both configuration tables and backend persistence.
 
+### D. User Management Lifecycle & Validation (`/admin/users`)
+- **Required Fields & Indicators (`*`)**:
+  - On **Add User** (`/admin/users/new`): 5 mandatory fields (`Full Name`, `User Name`, `E-Mail`, `Password`, `Confirm Password`) display a red asterisk (`*`, `text-red-600`) via `FieldRow`.
+  - On **View/Edit User** (`/admin/users/:id`): 3 mandatory fields (`Full Name`, `User Name`, `E-Mail`) display a red asterisk (`*`, `text-red-600`) in both View and Edit modes.
+- **Uniform Optional `Title`**:
+  - `Title` is optional on both Add User and View/Edit User (no mandatory `*` indicator and no HTML `required` attribute).
+  - Creating or updating a user with an empty/whitespace `Title` succeeds (`201 Created` / `200 OK`) and normalizes `title` to `null` in persistence.
+- **Validation Feedback & Guards**:
+  - Missing required fields on Add User or Edit User block submission and surface validation feedback in **both** the top `FeedbackBanner` and inline beneath the offending field(s).
+  - On Add User, mismatched **Password** and **Confirm Password** blocks submission and displays `"Password and Confirm Password must match."` in both the top `FeedbackBanner` and inline beneath `Confirm Password`; typing in either password field clears the mismatch error.
+  - Duplicate `userName` or `email` returns `409 Conflict`; self-deactivation and self-deletion guards remain enforced.
+
 ---
 
 ## 4. Test Data & State Dependencies
