@@ -41,8 +41,12 @@ export const userDetailData = {
     cannotDeleteSelf: 'You cannot delete your own account.',
     usernameAlreadyInUse: 'That username is already in use.',
     emailAlreadyInUse: 'That email address is already in use.',
-    fullNameRequired: 'The Full Name field is required.',
+    fullNameRequired: 'Full Name is required.',
+    userNameRequired: 'User Name is required.',
+    emailRequired: 'E-Mail is required.',
   },
+  mandatoryLabels: ['Full Name', 'User Name', 'E-Mail'] as const,
+  nonMandatoryLabels: ['Title', 'Status'] as const,
   modal: {
     title: 'Delete User',
     prompt: "Are you sure? This can't be undone.",

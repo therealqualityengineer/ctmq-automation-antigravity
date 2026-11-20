@@ -26,6 +26,8 @@ export class AddUserPage extends BasePage {
   readonly usernameInUseError: Locator;
   readonly emailInUseError: Locator;
   readonly passwordMismatchError: Locator;
+  readonly feedbackBanner: Locator;
+  readonly userCreatedSuccessBanner: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -43,6 +45,8 @@ export class AddUserPage extends BasePage {
     this.usernameInUseError = page.getByText('That username is already in use.');
     this.emailInUseError = page.getByText('That email address is already in use.');
     this.passwordMismatchError = page.getByText('Password and Confirm Password must match.');
+    this.feedbackBanner = page.locator('[role="alert"], [role="status"]').first();
+    this.userCreatedSuccessBanner = page.getByText('User created successfully.');
   }
 
   async gotoAddUser(): Promise<void> {
@@ -150,5 +154,47 @@ export class AddUserPage extends BasePage {
 
   async getSelectedStatus(): Promise<string> {
     return await this.statusSelect.inputValue();
+  }
+
+  getInlineFieldError(
+    fieldSelector:
+      | '#fullName'
+      | '#username'
+      | '#title'
+      | '#email'
+      | '#password'
+      | '#confirmPassword'
+  ): Locator {
+    return this.page.locator(`div:has(> ${fieldSelector}) p.text-red-700`);
+  }
+
+  async disableNativeFormValidation(): Promise<void> {
+    await this.page.locator('form').evaluate((form: HTMLFormElement) => {
+      form.noValidate = true;
+    });
+  }
+
+  async isTitleRequiredAttrPresent(): Promise<boolean> {
+    return (await this.titleInput.getAttribute('required')) !== null;
+  }
+
+  async postCreateUserRawViaApi(
+    payload: Record<string, any>
+  ): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.post('/api/admin/users', {
+      data: payload,
+    });
+    let body: any = null;
+    try {
+      body = await response.json();
+    } catch {
+      body = await response.text();
+    }
+    return { status: response.status(), body };
+  }
+
+  async deleteUserViaApi(id: number | string): Promise<number> {
+    const response = await this.page.request.delete(`/api/admin/users/${id}`);
+    return response.status();
   }
 }

@@ -66,7 +66,7 @@ export class UserDetailPage extends BasePage {
     this.modalConfirmDeleteButton = this.deleteModal.getByRole('button', { name: 'Delete', exact: true });
 
     // Feedback
-    this.feedbackBanner = page.locator('div[role="alert"], p[role="status"]').first();
+    this.feedbackBanner = page.locator('[role="alert"], [role="status"]').first();
     this.saveSuccessBanner = page.getByText('User saved successfully.');
     this.deleteSuccessBanner = page.getByText('User deleted successfully.');
     this.errorBanner = page.locator('[role="alert"], p.text-red-600, p.text-red-700, span.text-red-600');
@@ -74,7 +74,7 @@ export class UserDetailPage extends BasePage {
     this.selfDeletionError = page.getByText('You cannot delete your own account.');
     this.duplicateUsernameError = page.getByText('That username is already in use.');
     this.duplicateEmailError = page.getByText('That email address is already in use.');
-    this.fullNameRequiredError = page.getByText('The Full Name field is required.');
+    this.fullNameRequiredError = page.getByText(/Full Name.*is required\./i).first();
   }
 
   async gotoUserDetail(id: number | string): Promise<void> {
@@ -178,5 +178,71 @@ export class UserDetailPage extends BasePage {
   async deleteUserViaApi(id: number | string): Promise<any> {
     const response = await this.page.request.delete(`/api/admin/users/${id}`);
     return response.status();
+  }
+
+  getInlineFieldError(
+    fieldSelector: '#fullName' | '#username' | '#title' | '#email'
+  ): Locator {
+    return this.page.locator(`div:has(> ${fieldSelector}) p.text-red-700`);
+  }
+
+  async isTitleRequiredAttrPresent(): Promise<boolean> {
+    return (await this.titleInput.getAttribute('required')) !== null;
+  }
+
+  async clearFullName(): Promise<void> {
+    await this.fullNameInput.clear();
+  }
+
+  async clearUsername(): Promise<void> {
+    await this.usernameInput.clear();
+  }
+
+  async clearTitle(): Promise<void> {
+    await this.titleInput.clear();
+  }
+
+  async clearEmail(): Promise<void> {
+    await this.emailInput.clear();
+  }
+
+  async putUpdateUserRawViaApi(
+    id: number | string,
+    payload: Record<string, any>
+  ): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.put(`/api/admin/users/${id}`, {
+      data: payload,
+    });
+    let body: any = null;
+    try {
+      body = await response.json();
+    } catch {
+      body = await response.text();
+    }
+    return { status: response.status(), body };
+  }
+
+  async getUserViaApi(
+    id: number | string
+  ): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.get(`/api/admin/users/${id}`);
+    let body: any = null;
+    try {
+      body = await response.json();
+    } catch {
+      body = await response.text();
+    }
+    return { status: response.status(), body };
+  }
+
+  async listUsersViaApi(): Promise<{ status: number; body: any }> {
+    const response = await this.page.request.get('/api/admin/users?pageSize=200');
+    let body: any = null;
+    try {
+      body = await response.json();
+    } catch {
+      body = await response.text();
+    }
+    return { status: response.status(), body };
   }
 }

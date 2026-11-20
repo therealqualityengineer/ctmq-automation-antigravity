@@ -102,7 +102,17 @@ This living register records practical DOM quirks, timing workarounds, locator p
 
 ---
 
-## 9. How to Add New Learnings Here
+## 9. User Management `FeedbackBanner` Tag (`<p role="alert">`) & Native HTML5 `required` (`CTMQ-82`)
+- **Symptom / Quirk**:
+  1. On `/admin/users/new` and `/admin/users/:id`, `FeedbackBanner` renders as `<p role="alert">` (or `<p role="status">`) rather than `<div role="alert">`. Locators scoped strictly to `div[role="alert"]` fail to match error banners on User pages.
+  2. On `/admin/users/new`, the 5 mandatory `<input>` elements carry the HTML5 `required` attribute, which intercepts empty form submission via browser-native validity before React's `handleSubmit()` runs unless either whitespace is entered or `form.noValidate = true` (`AddUserPage.disableNativeFormValidation()`) is set when testing React's custom `FeedbackBanner` and inline `<p class="mt-1 text-xs text-red-700">` error messages.
+- **Solution**:
+  - Use `page.locator('[role="alert"], [role="status"]').first()` for `feedbackBanner` on both `AddUserPage` and `UserDetailPage`.
+  - Use `AddUserPage.disableNativeFormValidation()` when verifying React's dual `FeedbackBanner` + inline field error messages across all 5 mandatory fields on `/admin/users/new`.
+
+---
+
+## 10. How to Add New Learnings Here
 When you complete RCA on a failed test or discover an application quirk:
 1. Provide a clear **Symptom / Quirk** description.
 2. Provide the verified **Solution / Workaround** implemented in Page Objects or fixtures.

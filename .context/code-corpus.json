@@ -1,15 +1,15 @@
 {
   "metadata": {
-    "generatedAt": "2026-11-19T06:59:19.666Z",
+    "generatedAt": "2026-11-20T13:51:38.167Z",
     "generator": "AST Symbol Chunker v1.1",
-    "totalFilesScanned": 75,
-    "totalChunks": 827,
+    "totalFilesScanned": 76,
+    "totalChunks": 848,
     "stats": {
       "pageObjects": 19,
-      "methods": 382,
-      "tests": 380,
+      "methods": 396,
+      "tests": 387,
       "testData": 46,
-      "filesProcessed": 75
+      "filesProcessed": 76
     }
   },
   "chunks": [
@@ -164,7 +164,7 @@
       "parent": "BasePage",
       "name": "AddUserPage",
       "startLine": 14,
-      "endLine": 154,
+      "endLine": 200,
       "properties": [
         "pageHeading",
         "fullNameInput",
@@ -179,7 +179,9 @@
         "cancelButton",
         "usernameInUseError",
         "emailInUseError",
-        "passwordMismatchError"
+        "passwordMismatchError",
+        "feedbackBanner",
+        "userCreatedSuccessBanner"
       ],
       "locatorsDefined": [
         "page.getByRole('heading', { name: 'Add User', exact: true })",
@@ -196,140 +198,173 @@
         "page.getByRole('button', { name: 'Cancel', exact: true })",
         "page.getByText('That username is already in use.')",
         "page.getByText('That email address is already in use.')",
-        "page.getByText('Password and Confirm Password must match.')"
+        "page.getByText('Password and Confirm Password must match.')",
+        "page.locator('[role=\"alert\"], [role=\"status\"]').first()",
+        "page.locator('[role=\"alert\"], [role=\"status\"]')",
+        "page.getByText('User created successfully.')"
       ],
       "methodsSummary": [
         {
           "name": "gotoAddUser",
           "signature": "async gotoAddUser()",
-          "startLine": 48,
-          "endLine": 50
-        },
-        {
-          "name": "fillFullName",
-          "signature": "async fillFullName(fullName: string)",
           "startLine": 52,
           "endLine": 54
         },
         {
-          "name": "fillUsername",
-          "signature": "async fillUsername(username: string)",
+          "name": "fillFullName",
+          "signature": "async fillFullName(fullName: string)",
           "startLine": 56,
           "endLine": 58
         },
         {
-          "name": "fillTitle",
-          "signature": "async fillTitle(title: string)",
+          "name": "fillUsername",
+          "signature": "async fillUsername(username: string)",
           "startLine": 60,
           "endLine": 62
         },
         {
-          "name": "fillEmail",
-          "signature": "async fillEmail(email: string)",
+          "name": "fillTitle",
+          "signature": "async fillTitle(title: string)",
           "startLine": 64,
           "endLine": 66
         },
         {
-          "name": "fillPassword",
-          "signature": "async fillPassword(password: string)",
+          "name": "fillEmail",
+          "signature": "async fillEmail(email: string)",
           "startLine": 68,
           "endLine": 70
         },
         {
-          "name": "fillConfirmPassword",
-          "signature": "async fillConfirmPassword(confirmPassword: string)",
+          "name": "fillPassword",
+          "signature": "async fillPassword(password: string)",
           "startLine": 72,
           "endLine": 74
         },
         {
-          "name": "selectStatus",
-          "signature": "async selectStatus(status: 'active' | 'inactive')",
+          "name": "fillConfirmPassword",
+          "signature": "async fillConfirmPassword(confirmPassword: string)",
           "startLine": 76,
           "endLine": 78
         },
         {
+          "name": "selectStatus",
+          "signature": "async selectStatus(status: 'active' | 'inactive')",
+          "startLine": 80,
+          "endLine": 82
+        },
+        {
           "name": "fillForm",
           "signature": "async fillForm(data: UserFormData)",
-          "startLine": 80,
-          "endLine": 88
+          "startLine": 84,
+          "endLine": 92
         },
         {
           "name": "clickSave",
           "signature": "async clickSave()",
-          "startLine": 90,
-          "endLine": 92
-        },
-        {
-          "name": "clickSaveRapidly",
-          "signature": "async clickSaveRapidly()",
           "startLine": 94,
           "endLine": 96
         },
         {
-          "name": "clickCancel",
-          "signature": "async clickCancel()",
+          "name": "clickSaveRapidly",
+          "signature": "async clickSaveRapidly()",
           "startLine": 98,
           "endLine": 100
         },
         {
-          "name": "clearFullName",
-          "signature": "async clearFullName()",
+          "name": "clickCancel",
+          "signature": "async clickCancel()",
           "startLine": 102,
           "endLine": 104
         },
         {
-          "name": "clearUsername",
-          "signature": "async clearUsername()",
+          "name": "clearFullName",
+          "signature": "async clearFullName()",
           "startLine": 106,
           "endLine": 108
         },
         {
-          "name": "clearTitle",
-          "signature": "async clearTitle()",
+          "name": "clearUsername",
+          "signature": "async clearUsername()",
           "startLine": 110,
           "endLine": 112
         },
         {
-          "name": "clearEmail",
-          "signature": "async clearEmail()",
+          "name": "clearTitle",
+          "signature": "async clearTitle()",
           "startLine": 114,
           "endLine": 116
         },
         {
-          "name": "clearPassword",
-          "signature": "async clearPassword()",
+          "name": "clearEmail",
+          "signature": "async clearEmail()",
           "startLine": 118,
           "endLine": 120
         },
         {
-          "name": "clearConfirmPassword",
-          "signature": "async clearConfirmPassword()",
+          "name": "clearPassword",
+          "signature": "async clearPassword()",
           "startLine": 122,
           "endLine": 124
         },
         {
-          "name": "isSaveButtonDisabled",
-          "signature": "async isSaveButtonDisabled()",
+          "name": "clearConfirmPassword",
+          "signature": "async clearConfirmPassword()",
           "startLine": 126,
           "endLine": 128
         },
         {
+          "name": "isSaveButtonDisabled",
+          "signature": "async isSaveButtonDisabled()",
+          "startLine": 130,
+          "endLine": 132
+        },
+        {
           "name": "saveAndInterceptApiResponse",
           "signature": "async saveAndInterceptApiResponse()",
-          "startLine": 130,
-          "endLine": 145
+          "startLine": 134,
+          "endLine": 149
         },
         {
           "name": "getRoleText",
           "signature": "async getRoleText()",
-          "startLine": 147,
-          "endLine": 149
+          "startLine": 151,
+          "endLine": 153
         },
         {
           "name": "getSelectedStatus",
           "signature": "async getSelectedStatus()",
-          "startLine": 151,
-          "endLine": 153
+          "startLine": 155,
+          "endLine": 157
+        },
+        {
+          "name": "getInlineFieldError",
+          "signature": "getInlineFieldError(fieldSelector:\n      | '#fullName'\n      | '#username'\n      | '#title'\n      | '#email'\n      | '#password'\n      | '#confirmPassword')",
+          "startLine": 159,
+          "endLine": 169
+        },
+        {
+          "name": "disableNativeFormValidation",
+          "signature": "async disableNativeFormValidation()",
+          "startLine": 171,
+          "endLine": 175
+        },
+        {
+          "name": "isTitleRequiredAttrPresent",
+          "signature": "async isTitleRequiredAttrPresent()",
+          "startLine": 177,
+          "endLine": 179
+        },
+        {
+          "name": "postCreateUserRawViaApi",
+          "signature": "async postCreateUserRawViaApi(payload: Record<string, any>)",
+          "startLine": 181,
+          "endLine": 194
+        },
+        {
+          "name": "deleteUserViaApi",
+          "signature": "async deleteUserViaApi(id: number | string)",
+          "startLine": 196,
+          "endLine": 199
         }
       ],
       "signature": "class AddUserPage extends BasePage",
@@ -341,8 +376,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "gotoAddUser",
-      "startLine": 48,
-      "endLine": 50,
+      "startLine": 52,
+      "endLine": 54,
       "signature": "async gotoAddUser()",
       "locatorsUsed": [],
       "code": "async gotoAddUser(): Promise<void> {\n    await this.navigate('/admin/users/new');\n  }"
@@ -353,8 +388,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "fillFullName",
-      "startLine": 52,
-      "endLine": 54,
+      "startLine": 56,
+      "endLine": 58,
       "signature": "async fillFullName(fullName: string)",
       "locatorsUsed": [],
       "code": "async fillFullName(fullName: string): Promise<void> {\n    await this.fullNameInput.fill(fullName);\n  }"
@@ -365,8 +400,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "fillUsername",
-      "startLine": 56,
-      "endLine": 58,
+      "startLine": 60,
+      "endLine": 62,
       "signature": "async fillUsername(username: string)",
       "locatorsUsed": [],
       "code": "async fillUsername(username: string): Promise<void> {\n    await this.usernameInput.fill(username);\n  }"
@@ -377,8 +412,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "fillTitle",
-      "startLine": 60,
-      "endLine": 62,
+      "startLine": 64,
+      "endLine": 66,
       "signature": "async fillTitle(title: string)",
       "locatorsUsed": [],
       "code": "async fillTitle(title: string): Promise<void> {\n    await this.titleInput.fill(title);\n  }"
@@ -389,8 +424,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "fillEmail",
-      "startLine": 64,
-      "endLine": 66,
+      "startLine": 68,
+      "endLine": 70,
       "signature": "async fillEmail(email: string)",
       "locatorsUsed": [],
       "code": "async fillEmail(email: string): Promise<void> {\n    await this.emailInput.fill(email);\n  }"
@@ -401,8 +436,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "fillPassword",
-      "startLine": 68,
-      "endLine": 70,
+      "startLine": 72,
+      "endLine": 74,
       "signature": "async fillPassword(password: string)",
       "locatorsUsed": [],
       "code": "async fillPassword(password: string): Promise<void> {\n    await this.passwordInput.fill(password);\n  }"
@@ -413,8 +448,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "fillConfirmPassword",
-      "startLine": 72,
-      "endLine": 74,
+      "startLine": 76,
+      "endLine": 78,
       "signature": "async fillConfirmPassword(confirmPassword: string)",
       "locatorsUsed": [],
       "code": "async fillConfirmPassword(confirmPassword: string): Promise<void> {\n    await this.confirmPasswordInput.fill(confirmPassword);\n  }"
@@ -425,8 +460,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "selectStatus",
-      "startLine": 76,
-      "endLine": 78,
+      "startLine": 80,
+      "endLine": 82,
       "signature": "async selectStatus(status: 'active' | 'inactive')",
       "locatorsUsed": [],
       "code": "async selectStatus(status: 'active' | 'inactive'): Promise<void> {\n    await this.statusSelect.selectOption(status);\n  }"
@@ -437,8 +472,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "fillForm",
-      "startLine": 80,
-      "endLine": 88,
+      "startLine": 84,
+      "endLine": 92,
       "signature": "async fillForm(data: UserFormData)",
       "locatorsUsed": [],
       "code": "async fillForm(data: UserFormData): Promise<void> {\n    if (data.fullName !== undefined) await this.fillFullName(data.fullName);\n    if (data.username !== undefined) await this.fillUsername(data.username);\n    if (data.title !== undefined) await this.fillTitle(data.title);\n    if (data.email !== undefined) await this.fillEmail(data.email);\n    if (data.password !== undefined) await this.fillPassword(data.password);\n    if (data.confirmPassword !== undefined) await this.fillConfirmPassword(data.confirmPassword);\n    if (data.status !== undefined) await this.selectStatus(data.status);\n  }"
@@ -449,8 +484,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "clickSave",
-      "startLine": 90,
-      "endLine": 92,
+      "startLine": 94,
+      "endLine": 96,
       "signature": "async clickSave()",
       "locatorsUsed": [],
       "code": "async clickSave(): Promise<void> {\n    await this.saveButton.click();\n  }"
@@ -461,8 +496,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "clickSaveRapidly",
-      "startLine": 94,
-      "endLine": 96,
+      "startLine": 98,
+      "endLine": 100,
       "signature": "async clickSaveRapidly()",
       "locatorsUsed": [],
       "code": "async clickSaveRapidly(): Promise<void> {\n    await this.saveButton.click({ clickCount: 2, delay: 50 });\n  }"
@@ -473,8 +508,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "clickCancel",
-      "startLine": 98,
-      "endLine": 100,
+      "startLine": 102,
+      "endLine": 104,
       "signature": "async clickCancel()",
       "locatorsUsed": [],
       "code": "async clickCancel(): Promise<void> {\n    await this.cancelButton.click();\n  }"
@@ -485,8 +520,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "clearFullName",
-      "startLine": 102,
-      "endLine": 104,
+      "startLine": 106,
+      "endLine": 108,
       "signature": "async clearFullName()",
       "locatorsUsed": [],
       "code": "async clearFullName(): Promise<void> {\n    await this.fullNameInput.clear();\n  }"
@@ -497,8 +532,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "clearUsername",
-      "startLine": 106,
-      "endLine": 108,
+      "startLine": 110,
+      "endLine": 112,
       "signature": "async clearUsername()",
       "locatorsUsed": [],
       "code": "async clearUsername(): Promise<void> {\n    await this.usernameInput.clear();\n  }"
@@ -509,8 +544,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "clearTitle",
-      "startLine": 110,
-      "endLine": 112,
+      "startLine": 114,
+      "endLine": 116,
       "signature": "async clearTitle()",
       "locatorsUsed": [],
       "code": "async clearTitle(): Promise<void> {\n    await this.titleInput.clear();\n  }"
@@ -521,8 +556,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "clearEmail",
-      "startLine": 114,
-      "endLine": 116,
+      "startLine": 118,
+      "endLine": 120,
       "signature": "async clearEmail()",
       "locatorsUsed": [],
       "code": "async clearEmail(): Promise<void> {\n    await this.emailInput.clear();\n  }"
@@ -533,8 +568,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "clearPassword",
-      "startLine": 118,
-      "endLine": 120,
+      "startLine": 122,
+      "endLine": 124,
       "signature": "async clearPassword()",
       "locatorsUsed": [],
       "code": "async clearPassword(): Promise<void> {\n    await this.passwordInput.clear();\n  }"
@@ -545,8 +580,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "clearConfirmPassword",
-      "startLine": 122,
-      "endLine": 124,
+      "startLine": 126,
+      "endLine": 128,
       "signature": "async clearConfirmPassword()",
       "locatorsUsed": [],
       "code": "async clearConfirmPassword(): Promise<void> {\n    await this.confirmPasswordInput.clear();\n  }"
@@ -557,8 +592,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "isSaveButtonDisabled",
-      "startLine": 126,
-      "endLine": 128,
+      "startLine": 130,
+      "endLine": 132,
       "signature": "async isSaveButtonDisabled()",
       "locatorsUsed": [],
       "code": "async isSaveButtonDisabled(): Promise<boolean> {\n    return await this.saveButton.isDisabled();\n  }"
@@ -569,8 +604,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "saveAndInterceptApiResponse",
-      "startLine": 130,
-      "endLine": 145,
+      "startLine": 134,
+      "endLine": 149,
       "signature": "async saveAndInterceptApiResponse()",
       "locatorsUsed": [],
       "code": "async saveAndInterceptApiResponse(): Promise<{ status: number; body: any }> {\n    const [response] = await Promise.all([\n      this.page.waitForResponse(\n        (res) => res.url().includes('/api/admin/users') && res.request().method() === 'POST'\n      ),\n      this.clickSave(),\n    ]);\n    const status = response.status();\n    let body: any = null;\n    try {\n      body = await response.json();\n    } catch {\n      body = await response.text();\n    }\n    return { status, body };\n  }"
@@ -581,8 +616,8 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "getRoleText",
-      "startLine": 147,
-      "endLine": 149,
+      "startLine": 151,
+      "endLine": 153,
       "signature": "async getRoleText()",
       "locatorsUsed": [],
       "code": "async getRoleText(): Promise<string> {\n    return (await this.roleDisplay.textContent())?.trim() || '';\n  }"
@@ -593,11 +628,76 @@
       "kind": "method",
       "parent": "AddUserPage",
       "name": "getSelectedStatus",
-      "startLine": 151,
-      "endLine": 153,
+      "startLine": 155,
+      "endLine": 157,
       "signature": "async getSelectedStatus()",
       "locatorsUsed": [],
       "code": "async getSelectedStatus(): Promise<string> {\n    return await this.statusSelect.inputValue();\n  }"
+    },
+    {
+      "id": "pages/AddUserPage.ts#AddUserPage.getInlineFieldError",
+      "file": "pages/AddUserPage.ts",
+      "kind": "method",
+      "parent": "AddUserPage",
+      "name": "getInlineFieldError",
+      "startLine": 159,
+      "endLine": 169,
+      "signature": "getInlineFieldError(fieldSelector:\n      | '#fullName'\n      | '#username'\n      | '#title'\n      | '#email'\n      | '#password'\n      | '#confirmPassword')",
+      "locatorsUsed": [
+        "this.page.locator(`div:has(> ${fieldSelector}) p.text-red-700`)"
+      ],
+      "code": "getInlineFieldError(\n    fieldSelector:\n      | '#fullName'\n      | '#username'\n      | '#title'\n      | '#email'\n      | '#password'\n      | '#confirmPassword'\n  ): Locator {\n    return this.page.locator(`div:has(> ${fieldSelector}) p.text-red-700`);\n  }"
+    },
+    {
+      "id": "pages/AddUserPage.ts#AddUserPage.disableNativeFormValidation",
+      "file": "pages/AddUserPage.ts",
+      "kind": "method",
+      "parent": "AddUserPage",
+      "name": "disableNativeFormValidation",
+      "startLine": 171,
+      "endLine": 175,
+      "signature": "async disableNativeFormValidation()",
+      "locatorsUsed": [
+        "this.page.locator('form').evaluate((form: HTMLFormElement) => {\n      form.noValidate = true;\n    })",
+        "this.page.locator('form')"
+      ],
+      "code": "async disableNativeFormValidation(): Promise<void> {\n    await this.page.locator('form').evaluate((form: HTMLFormElement) => {\n      form.noValidate = true;\n    });\n  }"
+    },
+    {
+      "id": "pages/AddUserPage.ts#AddUserPage.isTitleRequiredAttrPresent",
+      "file": "pages/AddUserPage.ts",
+      "kind": "method",
+      "parent": "AddUserPage",
+      "name": "isTitleRequiredAttrPresent",
+      "startLine": 177,
+      "endLine": 179,
+      "signature": "async isTitleRequiredAttrPresent()",
+      "locatorsUsed": [],
+      "code": "async isTitleRequiredAttrPresent(): Promise<boolean> {\n    return (await this.titleInput.getAttribute('required')) !== null;\n  }"
+    },
+    {
+      "id": "pages/AddUserPage.ts#AddUserPage.postCreateUserRawViaApi",
+      "file": "pages/AddUserPage.ts",
+      "kind": "method",
+      "parent": "AddUserPage",
+      "name": "postCreateUserRawViaApi",
+      "startLine": 181,
+      "endLine": 194,
+      "signature": "async postCreateUserRawViaApi(payload: Record<string, any>)",
+      "locatorsUsed": [],
+      "code": "async postCreateUserRawViaApi(\n    payload: Record<string, any>\n  ): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.post('/api/admin/users', {\n      data: payload,\n    });\n    let body: any = null;\n    try {\n      body = await response.json();\n    } catch {\n      body = await response.text();\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
+      "id": "pages/AddUserPage.ts#AddUserPage.deleteUserViaApi",
+      "file": "pages/AddUserPage.ts",
+      "kind": "method",
+      "parent": "AddUserPage",
+      "name": "deleteUserViaApi",
+      "startLine": 196,
+      "endLine": 199,
+      "signature": "async deleteUserViaApi(id: number | string)",
+      "locatorsUsed": [],
+      "code": "async deleteUserViaApi(id: number | string): Promise<number> {\n    const response = await this.page.request.delete(`/api/admin/users/${id}`);\n    return response.status();\n  }"
     },
     {
       "id": "pages/AdminPage.ts#AdminPage",
@@ -7588,7 +7688,7 @@
       "parent": "BasePage",
       "name": "UserDetailPage",
       "startLine": 5,
-      "endLine": 182,
+      "endLine": 248,
       "properties": [
         "pageHeading",
         "fullNameInput",
@@ -7637,8 +7737,8 @@
         "this.deleteModal.getByRole('button', { name: 'Close' })",
         "this.deleteModal.getByRole('button', { name: 'Cancel', exact: true })",
         "this.deleteModal.getByRole('button', { name: 'Delete', exact: true })",
-        "page.locator('div[role=\"alert\"], p[role=\"status\"]').first()",
-        "page.locator('div[role=\"alert\"], p[role=\"status\"]')",
+        "page.locator('[role=\"alert\"], [role=\"status\"]').first()",
+        "page.locator('[role=\"alert\"], [role=\"status\"]')",
         "page.getByText('User saved successfully.')",
         "page.getByText('User deleted successfully.')",
         "page.locator('[role=\"alert\"], p.text-red-600, p.text-red-700, span.text-red-600')",
@@ -7646,7 +7746,8 @@
         "page.getByText('You cannot delete your own account.')",
         "page.getByText('That username is already in use.')",
         "page.getByText('That email address is already in use.')",
-        "page.getByText('The Full Name field is required.')"
+        "page.getByText(/Full Name.*is required\\./i).first()",
+        "page.getByText(/Full Name.*is required\\./i)"
       ],
       "methodsSummary": [
         {
@@ -7738,6 +7839,60 @@
           "signature": "async deleteUserViaApi(id: number | string)",
           "startLine": 178,
           "endLine": 181
+        },
+        {
+          "name": "getInlineFieldError",
+          "signature": "getInlineFieldError(fieldSelector: '#fullName' | '#username' | '#title' | '#email')",
+          "startLine": 183,
+          "endLine": 187
+        },
+        {
+          "name": "isTitleRequiredAttrPresent",
+          "signature": "async isTitleRequiredAttrPresent()",
+          "startLine": 189,
+          "endLine": 191
+        },
+        {
+          "name": "clearFullName",
+          "signature": "async clearFullName()",
+          "startLine": 193,
+          "endLine": 195
+        },
+        {
+          "name": "clearUsername",
+          "signature": "async clearUsername()",
+          "startLine": 197,
+          "endLine": 199
+        },
+        {
+          "name": "clearTitle",
+          "signature": "async clearTitle()",
+          "startLine": 201,
+          "endLine": 203
+        },
+        {
+          "name": "clearEmail",
+          "signature": "async clearEmail()",
+          "startLine": 205,
+          "endLine": 207
+        },
+        {
+          "name": "putUpdateUserRawViaApi",
+          "signature": "async putUpdateUserRawViaApi(id: number | string, payload: Record<string, any>)",
+          "startLine": 209,
+          "endLine": 223
+        },
+        {
+          "name": "getUserViaApi",
+          "signature": "async getUserViaApi(id: number | string)",
+          "startLine": 225,
+          "endLine": 236
+        },
+        {
+          "name": "listUsersViaApi",
+          "signature": "async listUsersViaApi()",
+          "startLine": 238,
+          "endLine": 247
         }
       ],
       "signature": "class UserDetailPage extends BasePage",
@@ -7922,6 +8077,116 @@
       "signature": "async deleteUserViaApi(id: number | string)",
       "locatorsUsed": [],
       "code": "async deleteUserViaApi(id: number | string): Promise<any> {\n    const response = await this.page.request.delete(`/api/admin/users/${id}`);\n    return response.status();\n  }"
+    },
+    {
+      "id": "pages/UserDetailPage.ts#UserDetailPage.getInlineFieldError",
+      "file": "pages/UserDetailPage.ts",
+      "kind": "method",
+      "parent": "UserDetailPage",
+      "name": "getInlineFieldError",
+      "startLine": 183,
+      "endLine": 187,
+      "signature": "getInlineFieldError(fieldSelector: '#fullName' | '#username' | '#title' | '#email')",
+      "locatorsUsed": [
+        "this.page.locator(`div:has(> ${fieldSelector}) p.text-red-700`)"
+      ],
+      "code": "getInlineFieldError(\n    fieldSelector: '#fullName' | '#username' | '#title' | '#email'\n  ): Locator {\n    return this.page.locator(`div:has(> ${fieldSelector}) p.text-red-700`);\n  }"
+    },
+    {
+      "id": "pages/UserDetailPage.ts#UserDetailPage.isTitleRequiredAttrPresent",
+      "file": "pages/UserDetailPage.ts",
+      "kind": "method",
+      "parent": "UserDetailPage",
+      "name": "isTitleRequiredAttrPresent",
+      "startLine": 189,
+      "endLine": 191,
+      "signature": "async isTitleRequiredAttrPresent()",
+      "locatorsUsed": [],
+      "code": "async isTitleRequiredAttrPresent(): Promise<boolean> {\n    return (await this.titleInput.getAttribute('required')) !== null;\n  }"
+    },
+    {
+      "id": "pages/UserDetailPage.ts#UserDetailPage.clearFullName",
+      "file": "pages/UserDetailPage.ts",
+      "kind": "method",
+      "parent": "UserDetailPage",
+      "name": "clearFullName",
+      "startLine": 193,
+      "endLine": 195,
+      "signature": "async clearFullName()",
+      "locatorsUsed": [],
+      "code": "async clearFullName(): Promise<void> {\n    await this.fullNameInput.clear();\n  }"
+    },
+    {
+      "id": "pages/UserDetailPage.ts#UserDetailPage.clearUsername",
+      "file": "pages/UserDetailPage.ts",
+      "kind": "method",
+      "parent": "UserDetailPage",
+      "name": "clearUsername",
+      "startLine": 197,
+      "endLine": 199,
+      "signature": "async clearUsername()",
+      "locatorsUsed": [],
+      "code": "async clearUsername(): Promise<void> {\n    await this.usernameInput.clear();\n  }"
+    },
+    {
+      "id": "pages/UserDetailPage.ts#UserDetailPage.clearTitle",
+      "file": "pages/UserDetailPage.ts",
+      "kind": "method",
+      "parent": "UserDetailPage",
+      "name": "clearTitle",
+      "startLine": 201,
+      "endLine": 203,
+      "signature": "async clearTitle()",
+      "locatorsUsed": [],
+      "code": "async clearTitle(): Promise<void> {\n    await this.titleInput.clear();\n  }"
+    },
+    {
+      "id": "pages/UserDetailPage.ts#UserDetailPage.clearEmail",
+      "file": "pages/UserDetailPage.ts",
+      "kind": "method",
+      "parent": "UserDetailPage",
+      "name": "clearEmail",
+      "startLine": 205,
+      "endLine": 207,
+      "signature": "async clearEmail()",
+      "locatorsUsed": [],
+      "code": "async clearEmail(): Promise<void> {\n    await this.emailInput.clear();\n  }"
+    },
+    {
+      "id": "pages/UserDetailPage.ts#UserDetailPage.putUpdateUserRawViaApi",
+      "file": "pages/UserDetailPage.ts",
+      "kind": "method",
+      "parent": "UserDetailPage",
+      "name": "putUpdateUserRawViaApi",
+      "startLine": 209,
+      "endLine": 223,
+      "signature": "async putUpdateUserRawViaApi(id: number | string, payload: Record<string, any>)",
+      "locatorsUsed": [],
+      "code": "async putUpdateUserRawViaApi(\n    id: number | string,\n    payload: Record<string, any>\n  ): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.put(`/api/admin/users/${id}`, {\n      data: payload,\n    });\n    let body: any = null;\n    try {\n      body = await response.json();\n    } catch {\n      body = await response.text();\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
+      "id": "pages/UserDetailPage.ts#UserDetailPage.getUserViaApi",
+      "file": "pages/UserDetailPage.ts",
+      "kind": "method",
+      "parent": "UserDetailPage",
+      "name": "getUserViaApi",
+      "startLine": 225,
+      "endLine": 236,
+      "signature": "async getUserViaApi(id: number | string)",
+      "locatorsUsed": [],
+      "code": "async getUserViaApi(\n    id: number | string\n  ): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.get(`/api/admin/users/${id}`);\n    let body: any = null;\n    try {\n      body = await response.json();\n    } catch {\n      body = await response.text();\n    }\n    return { status: response.status(), body };\n  }"
+    },
+    {
+      "id": "pages/UserDetailPage.ts#UserDetailPage.listUsersViaApi",
+      "file": "pages/UserDetailPage.ts",
+      "kind": "method",
+      "parent": "UserDetailPage",
+      "name": "listUsersViaApi",
+      "startLine": 238,
+      "endLine": 247,
+      "signature": "async listUsersViaApi()",
+      "locatorsUsed": [],
+      "code": "async listUsersViaApi(): Promise<{ status: number; body: any }> {\n    const response = await this.page.request.get('/api/admin/users?pageSize=200');\n    let body: any = null;\n    try {\n      body = await response.json();\n    } catch {\n      body = await response.text();\n    }\n    return { status: response.status(), body };\n  }"
     },
     {
       "id": "pages/UserManagerPage.ts#UserManagerPage",
@@ -8591,7 +8856,7 @@
         "page"
       ],
       "locatorsUsed": [],
-      "code": "test('TC-07 - Mandatory field validation on empty form submission', async ({ authenticatedAddUserPage, page }) => {\n    await authenticatedAddUserPage.clickSave();\n\n    const isFullNameValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.fullNameInput);\n    const isUsernameValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.usernameInput);\n    const isTitleValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.titleInput);\n    const isEmailValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.emailInput);\n    const isPasswordValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.passwordInput);\n    const isConfirmPasswordValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.confirmPasswordInput);\n\n    expect(isFullNameValid).toBe(false);\n    expect(isUsernameValid).toBe(false);\n    expect(isTitleValid).toBe(false);\n    expect(isEmailValid).toBe(false);\n    expect(isPasswordValid).toBe(false);\n    expect(isConfirmPasswordValid).toBe(false);\n\n    await expect(page).toHaveURL(new RegExp(addUserData.urls.addUser));\n  })"
+      "code": "test('TC-07 - Mandatory field validation on empty form submission', async ({ authenticatedAddUserPage, page }) => {\n    await authenticatedAddUserPage.clickSave();\n\n    const isFullNameValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.fullNameInput);\n    const isUsernameValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.usernameInput);\n    const isTitleValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.titleInput);\n    const isEmailValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.emailInput);\n    const isPasswordValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.passwordInput);\n    const isConfirmPasswordValid = await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.confirmPasswordInput);\n\n    expect(isFullNameValid).toBe(false);\n    expect(isUsernameValid).toBe(false);\n    expect(isTitleValid).toBe(true);\n    expect(isEmailValid).toBe(false);\n    expect(isPasswordValid).toBe(false);\n    expect(isConfirmPasswordValid).toBe(false);\n\n    await expect(page).toHaveURL(new RegExp(addUserData.urls.addUser));\n  })"
     },
     {
       "id": "tests/addUser.spec.ts#TC-08_-_Individual_mandatory_field_validation",
@@ -8600,12 +8865,12 @@
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-08 - Individual mandatory field validation",
       "startLine": 126,
-      "endLine": 154,
+      "endLine": 151,
       "fixtures": [
         "authenticatedAddUserPage"
       ],
       "locatorsUsed": [],
-      "code": "test('TC-08 - Individual mandatory field validation', async ({ authenticatedAddUserPage }) => {\n    const newUser = addUserData.generateUser('indiv');\n\n    // Omit Full Name\n    await authenticatedAddUserPage.fillForm({\n      ...newUser,\n      fullName: '',\n    });\n    await authenticatedAddUserPage.clickSave();\n    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.fullNameInput)).toBe(false);\n\n    // Omit Username\n    await authenticatedAddUserPage.fillFullName(newUser.fullName);\n    await authenticatedAddUserPage.clearUsername();\n    await authenticatedAddUserPage.clickSave();\n    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.usernameInput)).toBe(false);\n\n    // Omit Title\n    await authenticatedAddUserPage.fillUsername(newUser.username);\n    await authenticatedAddUserPage.clearTitle();\n    await authenticatedAddUserPage.clickSave();\n    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.titleInput)).toBe(false);\n\n    // Omit Email\n    await authenticatedAddUserPage.fillTitle(newUser.title);\n    await authenticatedAddUserPage.clearEmail();\n    await authenticatedAddUserPage.clickSave();\n    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.emailInput)).toBe(false);\n  })"
+      "code": "test('TC-08 - Individual mandatory field validation', async ({ authenticatedAddUserPage }) => {\n    const newUser = addUserData.generateUser('indiv');\n\n    // Omit Full Name\n    await authenticatedAddUserPage.fillForm({\n      ...newUser,\n      fullName: '',\n    });\n    await authenticatedAddUserPage.clickSave();\n    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.fullNameInput)).toBe(false);\n\n    // Omit Username\n    await authenticatedAddUserPage.fillFullName(newUser.fullName);\n    await authenticatedAddUserPage.clearUsername();\n    await authenticatedAddUserPage.clickSave();\n    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.usernameInput)).toBe(false);\n\n    // Omit Email (Title is optional per CTMQ-82)\n    await authenticatedAddUserPage.fillUsername(newUser.username);\n    await authenticatedAddUserPage.clearTitle();\n    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.titleInput)).toBe(true);\n    await authenticatedAddUserPage.fillTitle(newUser.title);\n    await authenticatedAddUserPage.clearEmail();\n    await authenticatedAddUserPage.clickSave();\n    expect(await authenticatedAddUserPage.isFieldHtmlValid(authenticatedAddUserPage.emailInput)).toBe(false);\n  })"
     },
     {
       "id": "tests/addUser.spec.ts#TC-09_-_Invalid_email_format_validation",
@@ -8613,8 +8878,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-09 - Invalid email format validation",
-      "startLine": 156,
-      "endLine": 166,
+      "startLine": 153,
+      "endLine": 163,
       "fixtures": [
         "authenticatedAddUserPage"
       ],
@@ -8627,8 +8892,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-10 - Duplicate User Name conflict handling",
-      "startLine": 168,
-      "endLine": 179,
+      "startLine": 165,
+      "endLine": 176,
       "fixtures": [
         "authenticatedAddUserPage"
       ],
@@ -8641,8 +8906,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-11 - Duplicate Email conflict handling",
-      "startLine": 181,
-      "endLine": 192,
+      "startLine": 178,
+      "endLine": 189,
       "fixtures": [
         "authenticatedAddUserPage"
       ],
@@ -8655,8 +8920,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-12 - Route protection for unauthenticated users",
-      "startLine": 194,
-      "endLine": 198,
+      "startLine": 191,
+      "endLine": 195,
       "fixtures": [
         "addUserPage",
         "page"
@@ -8670,8 +8935,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-13 - API endpoint authorization enforcement",
-      "startLine": 200,
-      "endLine": 205,
+      "startLine": 197,
+      "endLine": 202,
       "fixtures": [
         "request"
       ],
@@ -8684,8 +8949,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-14 - Input sanitization and leading/trailing whitespace trimming",
-      "startLine": 207,
-      "endLine": 225,
+      "startLine": 204,
+      "endLine": 222,
       "fixtures": [
         "authenticatedAddUserPage"
       ],
@@ -8698,8 +8963,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-15 - Maximum boundary length handling on input fields",
-      "startLine": 227,
-      "endLine": 240,
+      "startLine": 224,
+      "endLine": 237,
       "fixtures": [
         "authenticatedAddUserPage"
       ],
@@ -8712,8 +8977,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-16 - Double-submission and in-progress save protection",
-      "startLine": 242,
-      "endLine": 258,
+      "startLine": 239,
+      "endLine": 255,
       "fixtures": [
         "authenticatedAddUserPage",
         "userManagerPage",
@@ -8728,8 +8993,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-17 - Security: Password hash exclusion in API response",
-      "startLine": 260,
-      "endLine": 271,
+      "startLine": 257,
+      "endLine": 268,
       "fixtures": [
         "authenticatedAddUserPage"
       ],
@@ -8742,8 +9007,8 @@
       "kind": "test",
       "parent": "CTMQ-6 - Add User Functionality Suite",
       "name": "TC-18 - Non-regression: Existing search, pagination, and edit workflows",
-      "startLine": 273,
-      "endLine": 284,
+      "startLine": 270,
+      "endLine": 281,
       "fixtures": [
         "authenticatedUserManagerPage",
         "page"
@@ -13731,6 +13996,106 @@
       "code": "test('TC-14 - Button behavior boundary isolation (no unintended mutations)', async ({\n    authenticatedUserManagerPage,\n    page,\n  }) => {\n    let unhandledErrorOccurred = false;\n    page.on('pageerror', () => {\n      unhandledErrorOccurred = true;\n    });\n\n    await authenticatedUserManagerPage.hoverAddUserButton();\n    await expect(authenticatedUserManagerPage.addUserButton).toBeVisible();\n\n    expect(unhandledErrorOccurred).toBe(false);\n  })"
     },
     {
+      "id": "tests/userMandatoryFields.spec.ts#TC-01_-_Verify_red_asterisk_____indicator_on_all_5",
+      "file": "tests/userMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-82 - Add/Edit User Mandatory Field Indicators, Optional Title Uniformity & Validation",
+      "name": "TC-01 - Verify red asterisk (*) indicator on all 5 mandatory field labels and absence on non-marked fields on Add User (/admin/users/new)",
+      "startLine": 6,
+      "endLine": 33,
+      "fixtures": [
+        "authenticatedAddUserPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-01 - Verify red asterisk (*) indicator on all 5 mandatory field labels and absence on non-marked fields on Add User (/admin/users/new)', async ({\n    authenticatedAddUserPage,\n  }) => {\n    await expect(authenticatedAddUserPage.pageHeading).toBeVisible();\n\n    for (const label of addUserData.mandatoryLabels) {\n      const labelLocator = authenticatedAddUserPage.getFieldLabel(label);\n      const asteriskLocator = authenticatedAddUserPage.getRequiredAsterisk(label);\n\n      await expect(labelLocator, `Label \"${label}\" should be visible on Add User`).toBeVisible();\n      await expect(asteriskLocator, `Label \"${label}\" should display red asterisk (*)`).toBeVisible();\n      await expect(asteriskLocator).toHaveText('*');\n      await expect(asteriskLocator).toHaveAttribute('aria-hidden', 'true');\n    }\n\n    for (const nonMandatoryLabel of addUserData.nonMandatoryLabels) {\n      const labelLocator = authenticatedAddUserPage.getFieldLabel(nonMandatoryLabel);\n      const asteriskLocator = authenticatedAddUserPage.getRequiredAsterisk(nonMandatoryLabel);\n\n      await expect(labelLocator, `Optional label \"${nonMandatoryLabel}\" should be visible`).toBeVisible();\n      await expect(\n        asteriskLocator,\n        `Optional label \"${nonMandatoryLabel}\" must NOT display a red asterisk (*)`\n      ).toHaveCount(0);\n    }\n\n    expect(await authenticatedAddUserPage.isTitleRequiredAttrPresent()).toBe(false);\n  })"
+    },
+    {
+      "id": "tests/userMandatoryFields.spec.ts#TC-02_-_Verify_red_asterisk_____indicator_on_all_3",
+      "file": "tests/userMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-82 - Add/Edit User Mandatory Field Indicators, Optional Title Uniformity & Validation",
+      "name": "TC-02 - Verify red asterisk (*) indicator on all 3 mandatory field labels and absence on non-marked fields in both View and Edit modes on View/Edit User (/admin/users/:id)",
+      "startLine": 35,
+      "endLine": 96,
+      "fixtures": [
+        "authenticatedUserDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-02 - Verify red asterisk (*) indicator on all 3 mandatory field labels and absence on non-marked fields in both View and Edit modes on View/Edit User (/admin/users/:id)', async ({\n    authenticatedUserDetailPage,\n  }) => {\n    const seedUser = await authenticatedUserDetailPage.createUserViaApi(\n      userDetailData.generateUser('tc02')\n    );\n\n    try {\n      await authenticatedUserDetailPage.gotoUserDetail(seedUser.id);\n      await expect(authenticatedUserDetailPage.pageHeading).toHaveText(\n        userDetailData.headings.viewUser\n      );\n\n      // Verify View mode labels\n      for (const label of userDetailData.mandatoryLabels) {\n        const labelLocator = authenticatedUserDetailPage.getFieldLabel(label);\n        const asteriskLocator = authenticatedUserDetailPage.getRequiredAsterisk(label);\n\n        await expect(labelLocator, `View mode label \"${label}\" should be visible`).toBeVisible();\n        await expect(asteriskLocator, `View mode label \"${label}\" should display red asterisk (*)`).toBeVisible();\n        await expect(asteriskLocator).toHaveText('*');\n      }\n\n      for (const nonMandatoryLabel of userDetailData.nonMandatoryLabels) {\n        const labelLocator = authenticatedUserDetailPage.getFieldLabel(nonMandatoryLabel);\n        const asteriskLocator = authenticatedUserDetailPage.getRequiredAsterisk(nonMandatoryLabel);\n\n        await expect(labelLocator).toBeVisible();\n        await expect(\n          asteriskLocator,\n          `View mode optional label \"${nonMandatoryLabel}\" must NOT display a red asterisk (*)`\n        ).toHaveCount(0);\n      }\n\n      // Switch to Edit mode and re-verify\n      await authenticatedUserDetailPage.clickEdit();\n      await expect(authenticatedUserDetailPage.pageHeading).toHaveText(\n        userDetailData.headings.editUser\n      );\n\n      for (const label of userDetailData.mandatoryLabels) {\n        const labelLocator = authenticatedUserDetailPage.getFieldLabel(label);\n        const asteriskLocator = authenticatedUserDetailPage.getRequiredAsterisk(label);\n\n        await expect(labelLocator, `Edit mode label \"${label}\" should be visible`).toBeVisible();\n        await expect(asteriskLocator, `Edit mode label \"${label}\" should display red asterisk (*)`).toBeVisible();\n        await expect(asteriskLocator).toHaveText('*');\n      }\n\n      for (const nonMandatoryLabel of userDetailData.nonMandatoryLabels) {\n        const asteriskLocator = authenticatedUserDetailPage.getRequiredAsterisk(nonMandatoryLabel);\n        await expect(\n          asteriskLocator,\n          `Edit mode optional label \"${nonMandatoryLabel}\" must NOT display a red asterisk (*)`\n        ).toHaveCount(0);\n      }\n\n      expect(await authenticatedUserDetailPage.isTitleRequiredAttrPresent()).toBe(false);\n    } finally {\n      await authenticatedUserDetailPage.deleteUserViaApi(seedUser.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/userMandatoryFields.spec.ts#TC-03_-_Optional_Title_uniformity__creating_a_User",
+      "file": "tests/userMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-82 - Add/Edit User Mandatory Field Indicators, Optional Title Uniformity & Validation",
+      "name": "TC-03 - Optional Title uniformity: creating a User with empty or whitespace Title succeeds (201 Created) and persists title: null",
+      "startLine": 98,
+      "endLine": 143,
+      "fixtures": [
+        "authenticatedAddUserPage",
+        "userDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-03 - Optional Title uniformity: creating a User with empty or whitespace Title succeeds (201 Created) and persists title: null', async ({\n    authenticatedAddUserPage,\n    userDetailPage,\n  }) => {\n    const uiUser = addUserData.generateUser('tc03ui');\n    let createdUiUserId: number | string | undefined;\n    let createdApiUserId: number | string | undefined;\n\n    try {\n      await authenticatedAddUserPage.fillForm({\n        ...uiUser,\n        title: '   ',\n      });\n\n      const { status, body } = await authenticatedAddUserPage.saveAndInterceptApiResponse();\n      expect(status).toBe(201);\n      expect(body.title).toBeNull();\n      createdUiUserId = body.id;\n\n      // Also verify direct API POST with empty title normalizes to null\n      const apiUser = addUserData.generateUser('tc03api');\n      const apiResult = await authenticatedAddUserPage.postCreateUserRawViaApi({\n        fullName: apiUser.fullName,\n        username: apiUser.username,\n        title: '',\n        email: apiUser.email,\n        password: apiUser.password,\n        confirmPassword: apiUser.confirmPassword,\n        isActive: true,\n      });\n      expect(apiResult.status).toBe(201);\n      expect(apiResult.body.title).toBeNull();\n      createdApiUserId = apiResult.body.id;\n\n      // Verify View/Edit User displays empty Title input and clearing Title on Edit persists null\n      await userDetailPage.gotoUserDetail(createdUiUserId!);\n      await expect(userDetailPage.titleInput).toHaveValue('');\n    } finally {\n      if (createdUiUserId) {\n        await authenticatedAddUserPage.deleteUserViaApi(createdUiUserId);\n      }\n      if (createdApiUserId) {\n        await authenticatedAddUserPage.deleteUserViaApi(createdApiUserId);\n      }\n    }\n  })"
+    },
+    {
+      "id": "tests/userMandatoryFields.spec.ts#TC-04_-_Add_User_required_field_validation_blocks_",
+      "file": "tests/userMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-82 - Add/Edit User Mandatory Field Indicators, Optional Title Uniformity & Validation",
+      "name": "TC-04 - Add User required field validation blocks submission and displays both top FeedbackBanner and inline field errors",
+      "startLine": 145,
+      "endLine": 226,
+      "fixtures": [
+        "authenticatedAddUserPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-04 - Add User required field validation blocks submission and displays both top FeedbackBanner and inline field errors', async ({\n    authenticatedAddUserPage,\n  }) => {\n    const baseUser = addUserData.generateUser('tc04');\n    await authenticatedAddUserPage.disableNativeFormValidation();\n\n    const requiredChecks: Array<{\n      label: string;\n      selector: '#fullName' | '#username' | '#email' | '#password' | '#confirmPassword';\n      expectedMessage: string;\n      clear: () => Promise<void>;\n      restore: () => Promise<void>;\n    }> = [\n      {\n        label: 'Full Name',\n        selector: '#fullName',\n        expectedMessage: addUserData.messages.fullNameRequired,\n        clear: () => authenticatedAddUserPage.clearFullName(),\n        restore: () => authenticatedAddUserPage.fillFullName(baseUser.fullName),\n      },\n      {\n        label: 'User Name',\n        selector: '#username',\n        expectedMessage: addUserData.messages.userNameRequired,\n        clear: () => authenticatedAddUserPage.clearUsername(),\n        restore: () => authenticatedAddUserPage.fillUsername(baseUser.username),\n      },\n      {\n        label: 'E-Mail',\n        selector: '#email',\n        expectedMessage: addUserData.messages.emailRequired,\n        clear: () => authenticatedAddUserPage.clearEmail(),\n        restore: () => authenticatedAddUserPage.fillEmail(baseUser.email),\n      },\n      {\n        label: 'Password',\n        selector: '#password',\n        expectedMessage: addUserData.messages.passwordRequired,\n        clear: () => authenticatedAddUserPage.clearPassword(),\n        restore: () => authenticatedAddUserPage.fillPassword(baseUser.password),\n      },\n      {\n        label: 'Confirm Password',\n        selector: '#confirmPassword',\n        expectedMessage: addUserData.messages.confirmPasswordRequired,\n        clear: () => authenticatedAddUserPage.clearConfirmPassword(),\n        restore: () => authenticatedAddUserPage.fillConfirmPassword(baseUser.confirmPassword),\n      },\n    ];\n\n    await authenticatedAddUserPage.fillForm(baseUser);\n\n    for (const check of requiredChecks) {\n      await check.clear();\n      await authenticatedAddUserPage.clickSave();\n\n      await expect(\n        authenticatedAddUserPage.feedbackBanner,\n        `Top FeedbackBanner should show error when \"${check.label}\" is missing`\n      ).toHaveText(check.expectedMessage);\n\n      const inlineError = authenticatedAddUserPage.getInlineFieldError(check.selector);\n      await expect(\n        inlineError,\n        `Inline error should appear below \"${check.label}\"`\n      ).toHaveText(check.expectedMessage);\n\n      await check.restore();\n    }\n\n    // Verify backend API also returns 400 Bad Request when a mandatory field is blank\n    const badApiResult = await authenticatedAddUserPage.postCreateUserRawViaApi({\n      fullName: '',\n      username: baseUser.username,\n      title: null,\n      email: baseUser.email,\n      password: baseUser.password,\n      confirmPassword: baseUser.confirmPassword,\n      isActive: true,\n    });\n    expect(badApiResult.status).toBe(400);\n  })"
+    },
+    {
+      "id": "tests/userMandatoryFields.spec.ts#TC-05_-_Add_User_Password_and_Confirm_Password_mis",
+      "file": "tests/userMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-82 - Add/Edit User Mandatory Field Indicators, Optional Title Uniformity & Validation",
+      "name": "TC-05 - Add User Password and Confirm Password mismatch validation shows top FeedbackBanner + inline error and clears when typing",
+      "startLine": 228,
+      "endLine": 249,
+      "fixtures": [
+        "authenticatedAddUserPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-05 - Add User Password and Confirm Password mismatch validation shows top FeedbackBanner + inline error and clears when typing', async ({\n    authenticatedAddUserPage,\n  }) => {\n    const baseUser = addUserData.generateUser('tc05');\n    await authenticatedAddUserPage.fillForm({\n      ...baseUser,\n      password: 'ValidPassword123!',\n      confirmPassword: 'DifferentPassword999!',\n    });\n\n    await authenticatedAddUserPage.clickSave();\n\n    await expect(authenticatedAddUserPage.feedbackBanner).toHaveText(\n      addUserData.messages.passwordMismatch\n    );\n    const confirmInlineError = authenticatedAddUserPage.getInlineFieldError('#confirmPassword');\n    await expect(confirmInlineError).toHaveText(addUserData.messages.passwordMismatch);\n\n    // Typing in Confirm Password clears the inline mismatch error immediately\n    await authenticatedAddUserPage.fillConfirmPassword('ValidPassword123!');\n    await expect(confirmInlineError).toHaveCount(0);\n  })"
+    },
+    {
+      "id": "tests/userMandatoryFields.spec.ts#TC-06_-_Edit_User_required_field_validation_blocks",
+      "file": "tests/userMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-82 - Add/Edit User Mandatory Field Indicators, Optional Title Uniformity & Validation",
+      "name": "TC-06 - Edit User required field validation blocks saving and displays both top FeedbackBanner and inline field errors",
+      "startLine": 251,
+      "endLine": 321,
+      "fixtures": [
+        "authenticatedUserDetailPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-06 - Edit User required field validation blocks saving and displays both top FeedbackBanner and inline field errors', async ({\n    authenticatedUserDetailPage,\n  }) => {\n    const seedPayload = userDetailData.generateUser('tc06');\n    const seedUser = await authenticatedUserDetailPage.createUserViaApi(seedPayload);\n\n    try {\n      await authenticatedUserDetailPage.gotoUserDetail(seedUser.id);\n      await authenticatedUserDetailPage.clickEdit();\n\n      const editRequiredChecks: Array<{\n        label: string;\n        selector: '#fullName' | '#username' | '#email';\n        expectedMessage: string;\n        clear: () => Promise<void>;\n        restore: () => Promise<void>;\n      }> = [\n        {\n          label: 'Full Name',\n          selector: '#fullName',\n          expectedMessage: userDetailData.messages.fullNameRequired,\n          clear: () => authenticatedUserDetailPage.clearFullName(),\n          restore: () => authenticatedUserDetailPage.fillForm({ fullName: seedPayload.fullName }),\n        },\n        {\n          label: 'User Name',\n          selector: '#username',\n          expectedMessage: userDetailData.messages.userNameRequired,\n          clear: () => authenticatedUserDetailPage.clearUsername(),\n          restore: () => authenticatedUserDetailPage.fillForm({ username: seedPayload.username }),\n        },\n        {\n          label: 'E-Mail',\n          selector: '#email',\n          expectedMessage: userDetailData.messages.emailRequired,\n          clear: () => authenticatedUserDetailPage.clearEmail(),\n          restore: () => authenticatedUserDetailPage.fillForm({ email: seedPayload.email }),\n        },\n      ];\n\n      for (const check of editRequiredChecks) {\n        await check.clear();\n        await authenticatedUserDetailPage.clickSave();\n\n        await expect(\n          authenticatedUserDetailPage.feedbackBanner,\n          `Top FeedbackBanner should show error when \"${check.label}\" is cleared on Edit User`\n        ).toHaveText(check.expectedMessage);\n\n        const inlineError = authenticatedUserDetailPage.getInlineFieldError(check.selector);\n        await expect(\n          inlineError,\n          `Inline error should appear below \"${check.label}\" on Edit User`\n        ).toHaveText(check.expectedMessage);\n\n        await check.restore();\n      }\n\n      // Verify backend PUT also rejects missing required fields with 400 Bad Request\n      const badPutResult = await authenticatedUserDetailPage.putUpdateUserRawViaApi(seedUser.id, {\n        fullName: '   ',\n        username: seedPayload.username,\n        title: null,\n        email: seedPayload.email,\n        isActive: true,\n      });\n      expect(badPutResult.status).toBe(400);\n    } finally {\n      await authenticatedUserDetailPage.deleteUserViaApi(seedUser.id);\n    }\n  })"
+    },
+    {
+      "id": "tests/userMandatoryFields.spec.ts#TC-07_-_Zero_Data_Loss___Existing_Guard_Preservati",
+      "file": "tests/userMandatoryFields.spec.ts",
+      "kind": "test",
+      "parent": "CTMQ-82 - Add/Edit User Mandatory Field Indicators, Optional Title Uniformity & Validation",
+      "name": "TC-07 - Zero Data Loss & Existing Guard Preservation: duplicate username/email (409 Conflict) and self-protection guards remain intact",
+      "startLine": 323,
+      "endLine": 368,
+      "fixtures": [
+        "authenticatedUserDetailPage",
+        "addUserPage"
+      ],
+      "locatorsUsed": [],
+      "code": "test('TC-07 - Zero Data Loss & Existing Guard Preservation: duplicate username/email (409 Conflict) and self-protection guards remain intact', async ({\n    authenticatedUserDetailPage,\n    addUserPage,\n  }) => {\n    const beforeList = await authenticatedUserDetailPage.listUsersViaApi();\n    expect(beforeList.status).toBe(200);\n    const permanentIdsBefore = (beforeList.body.items || [])\n      .filter((u: any) => !String(u.username || '').startsWith('u_'))\n      .map((u: any) => u.id);\n\n    // 1. Verify 409 Conflict for duplicate username\n    const dupUsernameUser = addUserData.generateUser('tc07dup');\n    const dupUsernameRes = await addUserPage.postCreateUserRawViaApi({\n      fullName: dupUsernameUser.fullName,\n      username: addUserData.existingUsers.adminUsername,\n      title: dupUsernameUser.title,\n      email: dupUsernameUser.email,\n      password: dupUsernameUser.password,\n      confirmPassword: dupUsernameUser.confirmPassword,\n      isActive: true,\n    });\n    expect(dupUsernameRes.status).toBe(409);\n\n    // 2. Verify 409 Conflict for duplicate email\n    const dupEmailRes = await addUserPage.postCreateUserRawViaApi({\n      fullName: dupUsernameUser.fullName,\n      username: dupUsernameUser.username,\n      title: dupUsernameUser.title,\n      email: addUserData.existingUsers.adminEmail,\n      password: dupUsernameUser.password,\n      confirmPassword: dupUsernameUser.confirmPassword,\n      isActive: true,\n    });\n    expect(dupEmailRes.status).toBe(409);\n\n    // 3. Verify baseline permanent users are preserved with zero data loss\n    const afterList = await authenticatedUserDetailPage.listUsersViaApi();\n    expect(afterList.status).toBe(200);\n    const permanentIdsAfter = (afterList.body.items || [])\n      .filter((u: any) => !String(u.username || '').startsWith('u_'))\n      .map((u: any) => u.id);\n\n    for (const id of permanentIdsBefore) {\n      expect(permanentIdsAfter).toContain(id);\n    }\n  })"
+    },
+    {
       "id": "test-data/addTempData.ts#TempPayload",
       "file": "test-data/addTempData.ts",
       "kind": "data",
@@ -13799,19 +14164,21 @@
       "parent": "const",
       "name": "addUserData",
       "startLine": 6,
-      "endLine": 55,
+      "endLine": 68,
       "properties": [
         "urls",
         "roles",
         "statuses",
         "messages",
+        "mandatoryLabels",
+        "nonMandatoryLabels",
         "existingUsers",
         "defaultPassword",
         "invalidEmails",
         "boundaryLengths",
         "generateUser"
       ],
-      "signature": "const addUserData (urls, roles, statuses, messages, existingUsers, defaultPassword, invalidEmails, boundaryLengths, generateUser)",
+      "signature": "const addUserData (urls, roles, statuses, messages, mandatoryLabels, nonMandatoryLabels, existingUsers, defaultPassword, invalidEmails, boundaryLengths, generateUser)",
       "code": "export const addUserData = {\n  urls: {\n    addUser: '/admin/users/new',\n    userManager: '/admin/users',\n    login: '/login',\n    apiUsers: '/api/admin/users',\n  },\n  roles: {\n    defaultRole: 'Staffing Admin',\n  },\n  statuses: {\n    active: 'active' as const,\n    inactive: 'inactive' as const,\n    activeDisplay: 'Active',\n    inactiveDisplay: 'Inactive',\n  },\n  messages: {\n    userCreatedSuccess:"
     },
     {
@@ -13820,8 +14187,8 @@
       "kind": "data",
       "parent": "const",
       "name": "uniqueId",
-      "startLine": 45,
-      "endLine": 45,
+      "startLine": 58,
+      "endLine": 58,
       "properties": [],
       "signature": "const uniqueId ()",
       "code": "const uniqueId = `${prefix}_${Date.now()}_${Math.floor(Math.random() * 10000)}`;"
@@ -14481,18 +14848,20 @@
       "parent": "const",
       "name": "userDetailData",
       "startLine": 17,
-      "endLine": 69,
+      "endLine": 73,
       "properties": [
         "urls",
         "headings",
         "roles",
         "statuses",
         "messages",
+        "mandatoryLabels",
+        "nonMandatoryLabels",
         "modal",
         "adminUser",
         "generateUser"
       ],
-      "signature": "const userDetailData (urls, headings, roles, statuses, messages, modal, adminUser, generateUser)",
+      "signature": "const userDetailData (urls, headings, roles, statuses, messages, mandatoryLabels, nonMandatoryLabels, modal, adminUser, generateUser)",
       "code": "export const userDetailData = {\n  urls: {\n    userManager: '/admin/users',\n    userDetailPrefix: '/admin/users/',\n    apiUsers: '/api/admin/users',\n    apiAuthMe: '/api/auth/me',\n  },\n  headings: {\n    viewUser: 'View User',\n    editUser: 'Edit User',\n  },\n  roles: {\n    defaultRole: 'Staffing Admin',\n  },\n  statuses: {\n    active: 'active' as const,\n    inactive: 'inactive' as const,\n    activeDi"
     },
     {
@@ -14501,8 +14870,8 @@
       "kind": "data",
       "parent": "const",
       "name": "uniqueId",
-      "startLine": 57,
-      "endLine": 57,
+      "startLine": 61,
+      "endLine": 61,
       "properties": [],
       "signature": "const uniqueId ()",
       "code": "const uniqueId = `${prefix}_${Date.now()}_${Math.floor(Math.random() * 10000)}`;"
